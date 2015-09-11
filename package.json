@@ -1,0 +1,9 @@
+{
+  "name": "codeSubmit",
+  "description": "codeSubmit is a web base code judge system",
+  "author": "Leo Yu Ho, Lo <leoyuholo@gmail.com>",
+  "version": "0.0.0",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
