@@ -10,5 +10,14 @@
     "grunt-express": "^1.4.1",
     "load-grunt-configs": "^0.4.3",
     "load-grunt-tasks": "^3.2.0"
+  },
+  "dependencies": {
+    "async": "^1.4.2",
+    "connect-redis": "^2.5.0",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "mongoose": "^4.1.6",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0"
   }
 }

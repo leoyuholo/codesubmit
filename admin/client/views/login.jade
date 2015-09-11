@@ -4,9 +4,11 @@ script(type="text/ng-template", id="views/login")
 			.panel.panel-primary
 				.panel-heading
 					.panel-title Sign In
-				form#login-form.panel-body
-					.form-group
-						input#inputEmail.form-control(type='text', placeholder='email', required='', autofocus='', ng-model="email")
-					.form-group
-						input#inputPassword.form-control(type='password', placeholder='password', required='', ng-model="password")
-					button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click="submitLogin(email, password)") Sign in
+				.panel-body
+					form#login-form
+						.form-group
+							input#inputEmail.form-control(type='text', placeholder='email', required='', autofocus='', ng-model="email")
+						.form-group
+							input#inputPassword.form-control(type='password', placeholder='password', required='', ng-model="password")
+						.text-danger(ng-if='errorMessage') {{errorMessage}}
+						button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click="submitLogin(email, password)") Sign in
