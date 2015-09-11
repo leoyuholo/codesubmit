@@ -6,7 +6,7 @@ module.exports = (grunt, options) ->
 		livereload:
 			options:
 				livereload: true
-			files: ['admin/client/*']
+			files: ['admin/client/**']
 			tasks: ['jade:admin']
 
 	return config

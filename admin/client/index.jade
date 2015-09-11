@@ -12,5 +12,18 @@ html(ng-app="codeSubmit-admin")
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
+	link(href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
+
+	include stylesheets/stylesheets.jade
+
+	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js")
+	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js")
+	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.min.js")
+
+	include scripts/scripts.jade
+
 body#codeSubmit
-	| Hello, codeSubmit!
+
+	div(ng-view)
+
+	include views/views.jade
