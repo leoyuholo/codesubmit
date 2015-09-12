@@ -8,6 +8,8 @@
     "grunt-contrib-jade": "^0.15.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express": "^1.4.1",
+    "jstransformer-coffee-script": "^1.0.0",
+    "jstransformer-stylus": "^1.0.0",
     "load-grunt-configs": "^0.4.3",
     "load-grunt-tasks": "^3.2.0"
   },
