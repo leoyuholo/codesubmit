@@ -3,10 +3,10 @@ module.exports = (grunt, options) ->
 	config =
 		options:
 			spawn: false
-		livereload:
+		admin:
 			options:
-				livereload: true
-			files: ['admin/client/**']
-			tasks: ['jade:admin']
+				livereload: grunt.option('livereload') || 35729
+			files: ['admin/client/**', 'admin/server/**']
+			tasks: ['jade:admin', 'replace:admin']
 
 	return config
