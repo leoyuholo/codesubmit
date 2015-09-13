@@ -1,29 +1,30 @@
 doctype html
 html(ng-app="codeSubmit-admin")
-	meta(charset="utf-8")
-	title codeSubmit
-	meta(name="Description", content="a web base code judge system")
-	meta(http-equiv="X-UA-Compatible", content="IE=edge")
-	meta(name="viewport", content="width=device-width")
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
+	head
+		meta(charset="utf-8")
+		title codeSubmit
+		meta(name="Description", content="a web base code judge system")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width")
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
 
-	link(href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
+		link(href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
 
-	include stylesheets/stylesheets.jade
+		include stylesheets/stylesheets.jade
 
-	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js")
-	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js")
-	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.min.js")
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js")
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js")
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.min.js")
 
-	include scripts/scripts.jade
+		include scripts/scripts.jade
 
-body#codeSubmit
+	body#codeSubmit
 
-	div(ng-view)
+		div(ng-view)
 
-	include views/views.jade
+		include views/views.jade

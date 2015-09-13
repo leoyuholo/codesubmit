@@ -33,7 +33,6 @@ api = $.express.Router()
 api.use '/user', $.controllers.userController
 
 api.use (req, res, next) ->
-	console.log('test')
 	return next() if req.isAuthenticated()
 	next new Error 'Unauthorized access.'
 
