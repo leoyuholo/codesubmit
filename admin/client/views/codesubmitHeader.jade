@@ -1,0 +1,18 @@
+script(type="text/ng-template", id="views/codesubmitHeader")
+	#codesubmitHeader.navbar.navbar-default.navbar-static-top
+		.container
+			.navbar-header
+				a.navbar-brand(href="#/") codeSubmit
+			div(ng-if="user.email")
+				ul.nav.navbar-nav
+					li.active
+						a(href="#/students") Students
+					li
+						a(href="#/assignments") Assignments
+				ul.nav.navbar-nav.navbar-right
+					li
+						p.navbar-text Hi, {{user.username}}
+					li
+						a(href="#/settings") Settings
+					li
+						a(href="javascript:void(0)" ng-click="logout()") Logout

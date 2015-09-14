@@ -13,5 +13,6 @@ async.series [
 	runSetups
 	startServer
 ], (err) ->
-	$.stores.userStore.create {email: 'leo', password: 'leo'}, (err) ->
+	$.stores.userStore.create {email: 'leo@cse.cuhk.edu.hk', username: 'leo', password: 'leo'}, (err) ->
+		console.log(err) if err
 		console.log 'codeSubmit admin listen on port', $.config.port

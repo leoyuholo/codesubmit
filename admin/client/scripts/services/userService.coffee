@@ -1,16 +1,16 @@
-app = angular.module 'codeSubmit-admin'
+app = angular.module 'codesubmit-admin'
 
 app.service 'userService', ($http, $rootScope, urlService) ->
 	self = {}
 
 	self.setUser = (user) ->
-		localStorage.setItem 'user', user
+		localStorage.setItem 'user', JSON.stringify user
 		$rootScope.user = user
 
 	self.getUser = () ->
 		return $rootScope.user if $rootScope.user
 
-		user = localStorage.getItem 'user'
+		user = JSON.parse localStorage.getItem 'user'
 		$rootScope.user = user if user
 
 		return user
@@ -36,7 +36,7 @@ app.service 'userService', ($http, $rootScope, urlService) ->
 	self.logout = (done) ->
 		$http.get(urlService.logout()).success( (data) ->
 			if data.success
-				userService.clearUser()
+				self.clearUser()
 				done null
 			else
 				done new Error(data.msg)

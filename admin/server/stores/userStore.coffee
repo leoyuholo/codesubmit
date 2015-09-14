@@ -9,3 +9,6 @@ self.findByEmail = (email, done) ->
 
 self.create = (user, done) ->
 	User.create user, done
+
+self.update = (user, done) ->
+	User.update user, user, done

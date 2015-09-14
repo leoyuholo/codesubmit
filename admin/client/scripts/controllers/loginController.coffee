@@ -1,6 +1,6 @@
-app = angular.module 'codeSubmit-admin'
+app = angular.module 'codesubmit-admin'
 
-app.controller 'LoginController', ($scope, $location, userService) ->
+app.controller 'LoginController' ,($scope, $location, userService) ->
 
 	$scope.errorMessage = ''
 

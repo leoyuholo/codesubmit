@@ -54,7 +54,9 @@ router.post '/login', (req, res, next) ->
 
 			res.json
 				success: true
-				user: user
+				user:
+					email: user.email
+					username: user.username
 	)(req, res, next)
 
 router.get '/logout', (req, res, next) ->
