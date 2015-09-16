@@ -40,7 +40,7 @@ configPassport = (app, config, userStore) ->
 	app.use passport.initialize()
 	app.use passport.session()
 
-configPassport($.app, $.config, $.stores.userStore)
+configPassport($.app, $.config, $.stores.adminStore)
 
 router = $.express.Router()
 

@@ -1,13 +1,11 @@
 app = angular.module 'codesubmit-admin'
 
-app.controller 'LoginController' ,($scope, $location, userService) ->
-
-	$scope.errorMessage = ''
+app.controller 'LoginController' ,($scope, userService, messageService, redirectService) ->
+	$scope.redirectToHome() if userService.getUser()
 
 	$scope.submitLogin = (email, password) ->
 		userService.login email, password, (err, user) ->
-			return $scope.errorMessage = err.message if err
-			return $scope.errorMessage = 'Server response no users' if !user
+			return messageService.error err.message if err
+			return messageService.error 'Server response no users' if !user
 
-			$location.path '/settings'
-			$location.replace()
+			redirectService.redirectToHome()

@@ -1,14 +1,14 @@
 $ = require '../globals'
 
-User = $.models.Admin
+Student = $.models.Student
 
 module.exports = self = {}
 
 self.findByEmail = (email, done) ->
-	User.findOne {email: email}, done
+	Student.findOne {email: email}, done
 
 self.create = (user, done) ->
-	User.create user, done
+	Student.create user, done
 
 self.update = (user, done) ->
-	User.update user, user, done
+	Student.update user, user, done

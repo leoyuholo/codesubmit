@@ -1,9 +1,8 @@
 app = angular.module 'codesubmit-admin', ['ngRoute', 'ngCookies']
 
 app.config ($routeProvider) ->
-
 	$routeProvider
-	.when('/login', {
+	.when('/', {
 		controller: 'LoginController',
 		templateUrl: 'views/login'
 	})
@@ -20,20 +19,12 @@ app.config ($routeProvider) ->
 		templateUrl: 'views/assignments'
 	})
 	.otherwise({
-		redirectTo: '/login'
+		redirectTo: '/'
 	})
 
 	return
 
-app.run ($rootScope, $location, userService) ->
-
-	redirectToHome = () ->
-		$location.path '/'
-		$location.replace()
-
-	$rootScope.logout = () ->
-		userService.logout redirectToHome
-
-	user = userService.getUser()
-
-	redirectToHome() if !user || !user.username
+app.run ($rootScope, $location, userService, messageService, redirectService) ->
+	$rootScope.$on '$routeChangeSuccess', () ->
+		redirectService.redirectToHome() if !userService.getUser(true)
+		messageService.clear()

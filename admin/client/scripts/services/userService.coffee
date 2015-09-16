@@ -7,40 +7,32 @@ app.service 'userService', ($http, $rootScope, urlService) ->
 		localStorage.setItem 'user', JSON.stringify user
 		$rootScope.user = user
 
-	self.getUser = () ->
-		return $rootScope.user if $rootScope.user
+	self.getUser = (forceReload) ->
+		if forceReload || !$rootScope.user
+			$rootScope.user = JSON.parse localStorage.getItem 'user'
 
-		user = JSON.parse localStorage.getItem 'user'
-		$rootScope.user = user if user
-
-		return user
+		return $rootScope.user
 
 	self.clearUser = () ->
 		localStorage.removeItem 'user'
-		$rootScope.user = {}
+		delete $rootScope.user
 
 	self.login = (email, password, done) ->
 		payload =
 			email: email
 			password: password
 
-		$http.post(urlService.login(), payload).success( (data) ->
-			if data.success
-				self.setUser data.user
-				done null, data
-			else
-				done new Error(data.msg)
-		).error (data, status) ->
-			done new Error("#{data} status: #{status}")
+		urlService.post urlService.loginUser(), payload, (err, data) ->
+			return done err if err
+
+			self.setUser data.user
+			done null, data
 
 	self.logout = (done) ->
-		$http.get(urlService.logout()).success( (data) ->
-			if data.success
-				self.clearUser()
-				done null
-			else
-				done new Error(data.msg)
-		).error (data, status) ->
-			done new Error("#{data} status: #{status}")
+		urlService.get urlService.logoutUser(), (err, data) ->
+			return done err if err
+
+			self.clearUser()
+			done null
 
 	return self

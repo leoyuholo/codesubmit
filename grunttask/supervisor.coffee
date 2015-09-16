@@ -4,7 +4,7 @@ module.exports = (grunt, options) ->
 		admin:
 			script: 'admin/server/app.coffee'
 			options:
-				watch: ['admin/server']
+				watch: ['admin/server/']
 				extensions: ['coffee']
 
 	return config

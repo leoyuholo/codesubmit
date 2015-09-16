@@ -26,11 +26,13 @@ $.config = $.configs.adminConfig
 # initialzation sequence is important
 $.models = requireAll path.join $.serverDir, 'models'
 $.stores = requireAll path.join $.serverDir, 'stores'
+$.services = requireAll path.join $.serverDir, 'services'
 $.controllers = requireAll path.join $.serverDir, 'controllers'
 
 # routes
 api = $.express.Router()
 api.use '/user', $.controllers.userController
+api.use '/admin', $.controllers.adminController
 
 api.use (req, res, next) ->
 	return next() if req.isAuthenticated()
