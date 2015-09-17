@@ -24,6 +24,7 @@ $.configs = requireAll path.join $.rootDir, 'configs'
 $.config = $.configs.adminConfig
 
 # initialzation sequence is important
+$.utils = requireAll path.join $.serverDir, 'utils'
 $.models = requireAll path.join $.serverDir, 'models'
 $.stores = requireAll path.join $.serverDir, 'stores'
 $.services = requireAll path.join $.serverDir, 'services'
@@ -33,13 +34,15 @@ $.controllers = requireAll path.join $.serverDir, 'controllers'
 api = $.express.Router()
 api.use '/user', $.controllers.userController
 api.use '/admin', $.controllers.adminController
+api.use '/student', $.controllers.studentController
 
-api.use (req, res, next) ->
-	return next() if req.isAuthenticated()
-	next new Error 'Unauthorized access.'
+api.use (req, res, done) ->
+	return done() if req.isAuthenticated()
+	done new Error 'Unauthorized access.'
 
-api.use (err, req, res, next) ->
+api.use (err, req, res, done) ->
 	if err
+		$.utils.onError (->), err
 		res.json
 			success: false
 			msg: err.message

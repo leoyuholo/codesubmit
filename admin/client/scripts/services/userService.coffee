@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit-admin'
 
-app.service 'userService', ($http, $rootScope, urlService) ->
+app.service 'userService', ($rootScope, urlService) ->
 	self = {}
 
 	self.setUser = (user) ->

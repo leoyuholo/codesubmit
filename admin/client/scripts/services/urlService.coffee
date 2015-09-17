@@ -14,6 +14,12 @@ app.service 'urlService', ($http) ->
 	self.updateAdmin = () ->
 		return "#{apiPrefix}/admin/update"
 
+	self.listStudents = () ->
+		return "#{apiPrefix}/student/list"
+
+	self.createStudent = () ->
+		return "#{apiPrefix}/student/create"
+
 	self.post = (url, payload, done) ->
 		$http.post(url, payload).success( (data) ->
 			if data.success

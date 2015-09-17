@@ -1,7 +1,7 @@
 app = angular.module 'codesubmit-admin'
 
 app.controller 'LoginController' ,($scope, userService, messageService, redirectService) ->
-	$scope.redirectToHome() if userService.getUser()
+	redirectService.redirectToHome() if userService.getUser()
 
 	$scope.submitLogin = (email, password) ->
 		userService.login email, password, (err, user) ->

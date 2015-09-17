@@ -19,7 +19,7 @@ configPassport = (app, config, userStore) ->
 	passport.use new passportLocal.Strategy(
 		localStrategyOptions, (email, password, done) ->
 			userStore.findByEmail email, (err, user) ->
-				return done err if err
+				return $.utils.onError done, err if err
 
 				return done null, false if !user
 				return done null, false if user.password != password
@@ -44,22 +44,22 @@ configPassport($.app, $.config, $.stores.adminStore)
 
 router = $.express.Router()
 
-router.post '/login', (req, res, next) ->
+router.post '/login', (req, res, done) ->
 	passport.authenticate('local', (err, user, info) ->
-		return next err if err
-		return next new Error 'Incorrect email or password.' if !user
+		return $.utils.onError done, err if err
+		return $.utils.onError done, new Error 'Incorrect email or password.' if !user
 
 		req.logIn user, (err) ->
-			return next new Error 'Server error.' if err
+			return $.utils.onError done, new Error 'Login error.' if err
 
 			res.json
 				success: true
 				user:
 					email: user.email
 					username: user.username
-	)(req, res, next)
+	)(req, res, done)
 
-router.get '/logout', (req, res, next) ->
+router.get '/logout', (req, res, done) ->
 	req.logout()
 	res.json
 		success: true

@@ -1,18 +1,24 @@
 script(type="text/ng-template", id="views/codesubmitHeader")
-	#codesubmitHeader.navbar.navbar-default.navbar-static-top
-		.container
+	nav.navbar.navbar-default.navbar-static-top
+		.container#codesubmitHeader
 			.navbar-header
+				button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#codesubmitHeaderNavbar")
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
 				a.navbar-brand(href="#/") codeSubmit
-			div(ng-if="user.email")
+			div.navbar-collapse.collapse#codesubmitHeaderNavbar(ng-if="user.email")
 				ul.nav.navbar-nav
-					li.active
+					li
 						a(href="#/students") Students
 					li
 						a(href="#/assignments") Assignments
 				ul.nav.navbar-nav.navbar-right
-					li
-						p.navbar-text Hi, {{user.username}}
-					li
-						a(href="#/settings") Settings
+					li.dropdown
+						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Hi, {{user.username}}
+							span.caret
+						ul.dropdown-menu
+							li
+								a(href="#/settings") Settings
 					li
 						a(href="javascript:void(0)" ng-click="logout()") Logout

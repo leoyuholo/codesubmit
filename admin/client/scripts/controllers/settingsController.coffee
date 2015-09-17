@@ -9,7 +9,7 @@ app.controller 'SettingsController', ($scope, $location, adminService, messageSe
 
 	$scope.clearChangePasswordForm = () ->
 		$scope.changePasswordForm.$setPristine()
-		$scope.changePasswordFormData = defaultForm
+		$scope.changePasswordFormData = _.cloneDeep defaultForm
 
 	$scope.submitChangePasswordForm = (oldPassword, newPassword, confirmNewPassword) ->
 		return messageService.error 'New password does not match confirm password.' if newPassword != confirmNewPassword
