@@ -9,10 +9,18 @@ script(type="text/ng-template", id="views/codesubmitHeader")
 				a.navbar-brand(href="#/") codeSubmit
 			div.navbar-collapse.collapse#codesubmitHeaderNavbar(ng-if="user.email")
 				ul.nav.navbar-nav
-					li
-						a(href="#/students") Students
+					li.dropdown
+						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Accounts
+							span.caret
+						ul.dropdown-menu
+							li
+								a(href="#/admins") Admins
+							li
+								a(href="#/students") Students
 					li
 						a(href="#/assignments") Assignments
+					li
+						a(href="#/submissions") Submissions
 				ul.nav.navbar-nav.navbar-right
 					li.dropdown
 						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Hi, {{user.username}}

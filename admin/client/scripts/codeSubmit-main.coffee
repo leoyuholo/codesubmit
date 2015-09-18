@@ -14,9 +14,17 @@ app.config ($routeProvider) ->
 		controller: 'StudentsController',
 		templateUrl: 'views/students'
 	})
+	.when('/admins', {
+		controller: 'AdminsController',
+		templateUrl: 'views/admins'
+	})
 	.when('/assignments', {
 		controller: 'AssignmentsController',
 		templateUrl: 'views/assignments'
+	})
+	.when('/submissions', {
+		controller: 'SubmissionsController',
+		templateUrl: 'views/submissions'
 	})
 	.otherwise({
 		redirectTo: '/'

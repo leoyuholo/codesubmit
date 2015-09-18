@@ -4,6 +4,9 @@ Admin = $.models.Admin
 
 module.exports = self = {}
 
+self.list = (done) ->
+	Admin.find {}, done
+
 self.findByEmail = (email, done) ->
 	Admin.findOne {email: email}, done
 

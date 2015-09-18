@@ -42,7 +42,7 @@ api.use (req, res, done) ->
 
 api.use (err, req, res, done) ->
 	if err
-		$.utils.onError (->), err
+		console.log err.stack
 		res.json
 			success: false
 			msg: err.message

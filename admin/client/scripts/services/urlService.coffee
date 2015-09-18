@@ -11,6 +11,12 @@ app.service 'urlService', ($http) ->
 	self.logoutUser = () ->
 		return "#{apiPrefix}/user/logout"
 
+	self.listAdmins = () ->
+		return "#{apiPrefix}/admin/list"
+
+	self.createAdmin = () ->
+		return "#{apiPrefix}/admin/create"
+
 	self.updateAdmin = () ->
 		return "#{apiPrefix}/admin/update"
 
