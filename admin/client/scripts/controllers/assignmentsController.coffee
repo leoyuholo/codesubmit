@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit-admin'
 
-app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService) ->
+app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService, urlService) ->
 
 	$scope.assignments = []
 	$scope.assignmentListMsg = {}
@@ -33,7 +33,8 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			return messageService.error $scope.sandboxConfigMsg, err.message if err
 
 			$scope.sandboxConfigFileDetails = data.info
-			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name.replace /\W/, '_'
+			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name.replace(/\W/, '_') + '.zip'
+			$scope.sandboxConfigFileDetails.downloadUrl = urlService.storage.get key, $scope.sandboxConfigFileDetails.filename
 
 	$scope.findAssignment = (asgId) ->
 		assignmentService.findAssignment asgId, (err, data) ->
@@ -55,7 +56,7 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment updated.'
 
-	$scope.sandboxConfigFileDetails = {}
+	$scope.sandboxConfigFileDetails = null
 	$scope.sandboxConfigMsg = {}
 
 	$scope.uploadSandboxConfigFile = () ->
