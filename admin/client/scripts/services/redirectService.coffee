@@ -7,4 +7,8 @@ app.service 'redirectService', ($rootScope, $location) ->
 		$location.path if $rootScope.user then '/students' else '/'
 		$location.replace()
 
+	self.redirectToAssignment = (asgId) ->
+		$location.path "assignments/#{asgId}"
+		$location.replace()
+
 	return self

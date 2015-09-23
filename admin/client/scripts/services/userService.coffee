@@ -22,14 +22,14 @@ app.service 'userService', ($rootScope, urlService) ->
 			email: email
 			password: password
 
-		urlService.post urlService.loginUser(), payload, (err, data) ->
+		urlService.post urlService.user.login(), payload, (err, data) ->
 			return done err if err
 
 			self.setUser data.user
 			done null, data
 
 	self.logout = (done) ->
-		urlService.get urlService.logoutUser(), (err, data) ->
+		urlService.get urlService.user.logout(), (err, data) ->
 			return done err if err
 
 			self.clearUser()

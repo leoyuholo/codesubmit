@@ -6,29 +6,36 @@ script(type="text/ng-template", id="views/students")
 				.panel-body
 					p
 						h2 Student List
-						.text-danger(ng-if="studentListMsg.errorMessage") {{studentListMsg.errorMessage}}
+						.message-text.text-danger(ng-if="studentListMsg.errorMessage") {{studentListMsg.errorMessage}}
+						.message-text.text-success(ng-if="studentListMsg.successMessage") {{studentListMsg.successMessage}}
 						button.pull-right.btn.btn-default(type="button" ng-disabled="studentListMsg.refreshing" ng-click="listStudents()")
 							span.glyphicon.glyphicon-refresh
 					table.table
 						thead
 							tr
-								th.col-sm-2 Username
-								th.col-sm-3 Email
-								th.col-sm-3 Remarks
-								th.col-sm-4 Actions
+								th Username
+								th Email
+								th Active
+								th Remarks
+								th Actions
 						tbody
 							tr(ng-repeat="student in students")
 								td {{student.username}}
 								td {{student.email}}
+								td
+									span.glyphicon.glyphicon-ok.text-success(ng-if="student.active")
+									span.glyphicon.glyphicon-remove.text-danger(ng-if="!student.active")
 								td {{student.remarks}}
 								td
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="deactivate(student)") Deactivate
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(student)") Reset Password
+									button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="student.active" ng-click="deactivate(student, $index)") Deactivate
+									button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!student.active" ng-click="activate(student, $index)") Activate
+									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(student, $index)") Reset Password
 			.panel.panel-default.shadowedBox
 				.panel-body
 					p
 						h2 Add New Students
-						.text-danger(ng-if="studentCreateMsg.errorMessage") {{studentCreateMsg.errorMessage}}
+						.message-text.text-danger(ng-if="studentCreateMsg.errorMessage") {{studentCreateMsg.errorMessage}}
+						.message-text.text-success(ng-if="studentCreateMsg.successMessage") {{studentCreateMsg.successMessage}}
 						button.pull-right.btn.btn-success(type="button" data-toggle="modal" data-target="#importStudent-modal" ng-click="") Import
 						.modal.fade#importStudent-modal(tabindex="-1" role="dialog")
 							.modal-dialog(role="document")
@@ -36,30 +43,30 @@ script(type="text/ng-template", id="views/students")
 									.modal-header
 										button.close(type="button" data-dismiss="modal")
 											span &times;
-										h4.modal-title Import Student
+										h4.modal-title Import Students
 									.modal-body
 										form
 											.form-group
 												textarea.form-control(rows="10" columns="10" ng-model="studentImportText")
 												p.help-block Supported formats: .csv
-											button.btn.btn-primary(type="button" ng-click="importStudent(studentImportText)") Import
+											button.btn.btn-primary(type="button" ng-click="importStudents(studentImportText)") Import
 					table.table
 						thead
 							tr
-								th.col-sm-2 Username
-								th.col-sm-3 Email
-								th.col-sm-3 Remarks
-								th.col-sm-4 Actions
+								th Username
+								th Email
+								th Remarks
+								th Actions
 						tbody
 							tr(ng-repeat="student in newStudents")
 								td
-									input.form-control(ng-if="!student.status" type="text" ng-model="student.username")
+									input.form-control(ng-if="!student.status" type="text" placeholder="username" ng-model="student.username")
 									p(ng-if="student.status") {{student.username}}
 								td
-									input.form-control(ng-if="!student.status" type="text" ng-model="student.email")
+									input.form-control(ng-if="!student.status" type="text" placeholder="email" ng-model="student.email")
 									p(ng-if="student.status") {{student.email}}
 								td
-									input.form-control(ng-if="!student.status" type="text" ng-model="student.remarks")
+									input.form-control(ng-if="!student.status" type="text" placeholder="remarks" ng-model="student.remarks")
 									p(ng-if="student.status") {{student.remarks}}
 								td
 									button.btn.btn-xs(type="button" ng-disabled="student.status" ng-class="student.status == 'Adding' ? 'btn-warning' : 'btn-success'" ng-click="createStudent(student)") {{student.status || 'Add'}}

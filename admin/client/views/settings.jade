@@ -13,6 +13,6 @@ script(type="text/ng-template", id="views/settings")
 							input.form-control(type="password" placeholder="new password" required="" ng-model="changePasswordFormData.newPassword")
 						.form-group
 							input.form-control(type="password" placeholder="confirm password" required="" ng-model="changePasswordFormData.confirmNewPassword")
-						.text-danger(ng-if="errorMessage") {{errorMessage}}
-						.text-success(ng-if="successMessage") {{successMessage}}
+						.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
+						.message-text.text-success(ng-if="successMessage") {{successMessage}}
 						button.btn.btn-lg.btn-primary.btn-block(type="submit" ng-click="submitChangePasswordForm(changePasswordFormData.oldPassword, changePasswordFormData.newPassword, changePasswordFormData.confirmNewPassword)") Change

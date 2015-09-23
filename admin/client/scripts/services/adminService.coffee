@@ -4,7 +4,10 @@ app.service 'adminService', (urlService) ->
 	self = {}
 
 	self.listAdmins = (done) ->
-		urlService.get urlService.listAdmins(), done
+		urlService.get urlService.admin.list(), done
+
+	self.findByEmail = (email, done) ->
+		urlService.get urlService.admin.findByEmail(email), done
 
 	self.createAdmin = (admin, done) ->
 		payload =
@@ -13,7 +16,28 @@ app.service 'adminService', (urlService) ->
 				email: admin.email
 				remarks: admin.remarks
 
-		urlService.post urlService.createAdmin(), payload, done
+		urlService.post urlService.admin.create(), payload, done
+
+	self.deactivate = (admin, done) ->
+		payload =
+			admin:
+				email: admin.email
+
+		urlService.post urlService.admin.deactivate(), payload, done
+
+	self.activate = (admin, done) ->
+		payload =
+			admin:
+				email: admin.email
+
+		urlService.post urlService.admin.activate(), payload, done
+
+	self.resetPassword = (admin, done) ->
+		payload =
+			admin:
+				email: admin.email
+
+		urlService.post urlService.admin.resetPassword(), payload, done
 
 	self.update = (oldPassword, newPassword, done) ->
 		return done new Error('Old password is empty') if !oldPassword
@@ -23,6 +47,6 @@ app.service 'adminService', (urlService) ->
 			oldPassword: oldPassword
 			newPassword: newPassword
 
-		urlService.post urlService.updateAdmin(), payload, done
+		urlService.post urlService.admin.update(), payload, done
 
 	return self

@@ -1,11 +1,21 @@
 mongoose = require 'mongoose'
 
 studentSchema = new mongoose.Schema(
-	email: String
-	username: String
-	password: String
+	email: {type: String, required: true, match: /.+@.+/}
+	username: {type: String, required: true, match: /\w+/}
+	password: {type: String, required: true, match: /[\w]+/}
+	active: {type: Boolean, default: true}
+	remarks: String
 )
 
 studentSchema.index {email: 1}, {unique: true}
+
+studentSchema.static 'envelop', (doc) ->
+	return {
+		username: doc.username
+		email: doc.email
+		active: doc.active
+		remarks: doc.remarks
+	}
 
 module.exports = mongoose.model 'Student', studentSchema

@@ -20,13 +20,30 @@ app.controller 'AdminsController', ($scope, adminService, messageService) ->
 
 			$scope.admins = data.admins
 
-	$scope.deactivate = (admin) ->
-		console.log "deactivate"
-		return
+	$scope.deactivate = (admin, index) ->
+		adminService.deactivate admin, (err) ->
+			return messageService.error $scope.adminListMsg, err.message if err
+			messageService.success $scope.adminListMsg, 'Admin deactivated.'
+
+			adminService.findByEmail admin.email, (err, data) ->
+				return messageService.error $scope.adminListMsg, err.message if err
+
+				$scope.admins[index] = data.admin
+
+	$scope.activate = (admin, index) ->
+		adminService.activate admin, (err) ->
+			return messageService.error $scope.adminListMsg, err.message if err
+			messageService.success $scope.adminListMsg, 'Admin activated.'
+
+			adminService.findByEmail admin.email, (err, data) ->
+				return messageService.error $scope.adminListMsg, err.message if err
+
+				$scope.admins[index] = data.admin
 
 	$scope.resetPassword = (admin) ->
-		console.log "resetPassword"
-		return
+		adminService.resetPassword admin, (err) ->
+			return messageService.error $scope.adminListMsg, err.message if err
+			messageService.success $scope.adminListMsg, 'Password reseted.'
 
 	$scope.createAdmin = (admin) ->
 		admin.status = 'Adding'

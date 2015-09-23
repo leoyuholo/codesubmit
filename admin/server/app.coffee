@@ -4,7 +4,10 @@ async = require 'async'
 $ = require './globals'
 
 runSetups = (done) ->
-	mongoose.connect "mongodb://#{$.config.mongodb.host}:#{$.config.mongodb.port}/#{$.config.mongodb.db}", done
+	process.nextTick () ->
+		async.eachSeries $.setups, ( (setup, done) ->
+			setup.run done
+		), done
 
 startServer = (done) ->
 	$.app.listen $.config.port, done

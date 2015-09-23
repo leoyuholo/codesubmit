@@ -13,5 +13,5 @@ self.findByEmail = (email, done) ->
 self.create = (student, done) ->
 	Student.create student, done
 
-self.update = (user, done) ->
-	Student.update user, user, done
+self.update = (student, done) ->
+	Student.update {email: student.email}, student, done

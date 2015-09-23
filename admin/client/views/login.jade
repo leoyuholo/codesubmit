@@ -11,5 +11,5 @@ script(type="text/ng-template", id="views/login")
 							input#inputEmail.form-control(type='text', placeholder='email', required='', autofocus='', ng-model="email")
 						.form-group
 							input#inputPassword.form-control(type='password', placeholder='password', required='', ng-model="password")
-						.text-danger(ng-if='errorMessage') {{errorMessage}}
+						.message-text.text-danger(ng-if='errorMessage') {{errorMessage}}
 						button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click="submitLogin(email, password)") Sign in

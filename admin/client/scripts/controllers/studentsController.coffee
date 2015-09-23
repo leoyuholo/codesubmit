@@ -20,13 +20,30 @@ app.controller 'StudentsController', ($scope, studentService, messageService) ->
 
 			$scope.students = data.students
 
-	$scope.deactivate = (student) ->
-		console.log "deactivate"
-		return
+	$scope.deactivate = (student, index) ->
+		studentService.deactivate student, (err) ->
+			return messageService.error $scope.studentListMsg, err.message if err
+			messageService.success $scope.studentListMsg, 'Student deactivated.'
+
+			studentService.findByEmail student.email, (err, data) ->
+				return messageService.error $scope.studentListMsg, err.message if err
+
+				$scope.students[index] = data.student
+
+	$scope.activate = (student, index) ->
+		studentService.activate student, (err) ->
+			return messageService.error $scope.studentListMsg, err.message if err
+			messageService.success $scope.studentListMsg, 'Student activated.'
+
+			studentService.findByEmail student.email, (err, data) ->
+				return messageService.error $scope.studentListMsg, err.message if err
+
+				$scope.students[index] = data.student
 
 	$scope.resetPassword = (student) ->
-		console.log "resetPassword"
-		return
+		studentService.resetPassword student, (err) ->
+			return messageService.error $scope.studentListMsg, err.message if err
+			messageService.success $scope.studentListMsg, 'Password reseted.'
 
 	$scope.createStudent = (student) ->
 		student.status = 'Adding'
@@ -38,9 +55,10 @@ app.controller 'StudentsController', ($scope, studentService, messageService) ->
 			messageService.success $scope.studentCreateMsg, 'Student added.'
 			student.status = 'Added'
 
-	$scope.importStudent = (text) ->
-		console.log "importStudent"
-		return
+	$scope.importStudents = (text) ->
+		studentService.importByCsv text, (err) ->
+			return messageService.error $scope.studentListMsg, err.message if err
+			messageService.success $scope.studentListMsg, 'Students imported.'
 
 	$scope.addEmptyStudent = () ->
 		$scope.newStudents.push _.cloneDeep defaultStudent

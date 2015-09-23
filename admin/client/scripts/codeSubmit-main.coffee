@@ -18,7 +18,7 @@ app.config ($routeProvider) ->
 		controller: 'AdminsController',
 		templateUrl: 'views/admins'
 	})
-	.when('/assignments', {
+	.when('/assignments/:id?', {
 		controller: 'AssignmentsController',
 		templateUrl: 'views/assignments'
 	})

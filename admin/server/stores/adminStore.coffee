@@ -13,5 +13,5 @@ self.findByEmail = (email, done) ->
 self.create = (user, done) ->
 	Admin.create user, done
 
-self.update = (email, admin, done) ->
-	Admin.update {email: email}, admin, done
+self.update = (admin, done) ->
+	Admin.update {email: admin.email}, admin, done

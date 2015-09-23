@@ -1,5 +1,75 @@
 script(type="text/ng-template", id="views/assignments")
 	div(codesubmit-header)
 	.container#assignments-view
-		| Assignments
-		.text-danger {{errorMessage}}
+		.col-md-3
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					p
+						h3
+							strong Assignment List
+				.list-group
+					a.list-group-item(ng-repeat="assignment in assignments" href="#/assignments/{{assignment.asgId}}") {{assignment.name}}
+					a.list-group-item.list-group-item-success(href="#/assignments")
+						span.glyphicon.glyphicon-plus
+						|  Create New
+		.col-md-9
+			.panel.panel-default.shadowedBox
+				.panel-body
+					p
+						h2
+							strong {{assignment.asgId ? 'Assignment Details' : 'New Assignment'}}
+					form
+						.form-group(ng-if="assignment.asgId")
+							label(for="assignmentAsgId-input") Assignment ID:
+							input.form-control#assignmentAsgId(type="text" disabled ng-model="assignment.asgId")
+						.form-group
+							label(for="assignmentName-input") Assignment Name:
+							input.form-control#assignmentName-input(type="text" placeholder="name" required="" ng-model="assignment.name")
+						.form-group
+							label(for="assignmentStartDate-input") Start Datetime:
+							input.form-control#assignmentStartDate-input(type="datetime-local" ng-model="assignment.startDt")
+						.form-group
+							label(for="assignmentDueDate-input") Due Datetime:
+							input.form-control#assignmentDueDate-input(type="datetime-local" ng-model="assignment.dueDt")
+						.form-group
+							label(for="assignmentHardDueDate-input") Hard Due Datetime:
+							input.form-control#assignmentHardDueDate-input(type="datetime-local" ng-model="assignment.hardDueDt")
+						.form-group
+							label(for="assignmentSubmissionLimit-input") Submission Limit:
+							input.form-control#assignmentSubmissionLimit-input(type="number" ng-model="assignment.submissionLimit")
+						.form-group
+							label(for="assignmentPenalty-input") Penalty:
+							.input-group
+								input.form-control#assignmentPenalty-input(type="number" ng-model="assignment.penalty")
+								span.input-group-addon %
+						p(ng-if="!assignment.asgId").help-block Remember to upload assignment config after create.
+						.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
+						.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
+						button.btn.btn-primary(type="submit" ng-if="!assignment.asgId" ng-click="createAssignment(assignment)") Create
+						button.btn.btn-primary(type="submit" ng-if="assignment.asgId" ng-click="updateAssignment(assignment)") Update
+			.panel.panel-default.shadowedBox(ng-if="assignment.asgId")
+				.panel-body
+					p
+						h2
+							strong Sandbox Config
+					div(ng-if=sandboxConfigFileDetails)
+						p
+							strong Filename:
+							|  {{sandboxConfigFileDetails.filename}}
+						p
+							strong File Size:
+							|  {{sandboxConfigFileDetails.length}} B
+						p
+							strong Upload Datetime:
+							|  {{sandboxConfigFileDetails.uploadDate | date : 'short'}}
+						p
+							strong MD5:
+							|  {{sandboxConfigFileDetails.md5}}
+					form
+						.form-group
+							label(for="sandboxConfig-input") Upload:
+							input#sandboxConfig-input(type="file")
+							p.help-block Supported format: .zip
+						.message-text.text-danger(ng-if="sandboxConfigMsg.errorMessage") {{sandboxConfigMsg.errorMessage}}
+						.message-text.text-success(ng-if="sandboxConfigMsg.successMessage") {{sandboxConfigMsg.successMessage}}
+						button.btn.btn-primary(type="submit" ng-click="uploadSandboxConfigFile()") Upload

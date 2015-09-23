@@ -6,46 +6,53 @@ script(type="text/ng-template", id="views/admins")
 				.panel-body
 					p
 						h2 Admin List
-						.text-danger(ng-if="adminListMsg.errorMessage") {{adminListMsg.errorMessage}}
+						.message-text.text-danger(ng-if="adminListMsg.errorMessage") {{adminListMsg.errorMessage}}
+						.message-text.text-success(ng-if="adminListMsg.successMessage") {{adminListMsg.successMessage}}
 						button.pull-right.btn.btn-default(type="button" ng-disabled="adminListMsg.refreshing" ng-click="listAdmins()")
 							span.glyphicon.glyphicon-refresh
 					table.table
 						thead
 							tr
-								th.col-sm-2 Username
-								th.col-sm-3 Email
-								th.col-sm-3 Remarks
-								th.col-sm-4 Actions
+								th Username
+								th Email
+								th Active
+								th Remarks
+								th Actions
 						tbody
 							tr(ng-repeat="admin in admins")
 								td {{admin.username}}
 								td {{admin.email}}
+								td
+									span.glyphicon.glyphicon-ok.text-success(ng-if="admin.active")
+									span.glyphicon.glyphicon-remove.text-danger(ng-if="!admin.active")
 								td {{admin.remarks}}
 								td
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="deactivate(admin)") Deactivate
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(admin)") Reset Password
+									button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="admin.active" ng-click="deactivate(admin, $index)") Deactivate
+									button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!admin.active" ng-click="activate(admin, $index)") Activate
+									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(admin, $index)") Reset Password
 			.panel.panel-default.shadowedBox
 				.panel-body
 					p
 						h2 Add New Admins
-						.text-danger(ng-if="adminCreateMsg.errorMessage") {{adminCreateMsg.errorMessage}}
+						.message-text.text-danger(ng-if="adminCreateMsg.errorMessage") {{adminCreateMsg.errorMessage}}
+						.message-text.text-success(ng-if="adminCreateMsg.successMessage") {{adminCreateMsg.successMessage}}
 					table.table
 						thead
 							tr
-								th.col-sm-2 Username
-								th.col-sm-3 Email
-								th.col-sm-3 Remarks
-								th.col-sm-4 Actions
+								th Username
+								th Email
+								th Remarks
+								th Actions
 						tbody
 							tr(ng-repeat="admin in newAdmins")
 								td
-									input.form-control(ng-if="!admin.status" type="text" ng-model="admin.username")
+									input.form-control(ng-if="!admin.status" type="text" placeholder="username" ng-model="admin.username")
 									p(ng-if="admin.status") {{admin.username}}
 								td
-									input.form-control(ng-if="!admin.status" type="text" ng-model="admin.email")
+									input.form-control(ng-if="!admin.status" type="text" placeholder="email" ng-model="admin.email")
 									p(ng-if="admin.status") {{admin.email}}
 								td
-									input.form-control(ng-if="!admin.status" type="text" ng-model="admin.remarks")
+									input.form-control(ng-if="!admin.status" type="text" placeholder="remarks" ng-model="admin.remarks")
 									p(ng-if="admin.status") {{admin.remarks}}
 								td
 									button.btn.btn-xs(type="button" ng-disabled="admin.status" ng-class="admin.status == 'Adding' ? 'btn-warning' : 'btn-success'" ng-click="createAdmin(admin)") {{admin.status || 'Add'}}

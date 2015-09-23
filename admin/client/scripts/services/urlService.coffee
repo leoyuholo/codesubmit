@@ -1,47 +1,59 @@
 app = angular.module 'codesubmit-admin'
 
 app.service 'urlService', ($http) ->
-	self = {}
 
 	apiPrefix = '/api'
 
-	self.loginUser = () ->
-		return "#{apiPrefix}/user/login"
+	self =
+		user:
+			login: () -> "#{apiPrefix}/user/login"
+			logout: () -> "#{apiPrefix}/user/logout"
+		admin:
+			list: () -> "#{apiPrefix}/admin/list"
+			findByEmail: (email) -> "#{apiPrefix}/admin/findbyemail/#{email}"
+			create: () -> "#{apiPrefix}/admin/create"
+			deactivate: () -> "#{apiPrefix}/admin/deactivate"
+			activate: () -> "#{apiPrefix}/admin/activate"
+			resetPassword: () -> "#{apiPrefix}/admin/resetpassword"
+			update: () -> "#{apiPrefix}/admin/update"
+		student:
+			list: () -> "#{apiPrefix}/student/list"
+			findByEmail: (email) -> "#{apiPrefix}/student/findbyemail/#{email}"
+			create: () -> "#{apiPrefix}/student/create"
+			deactivate: () -> "#{apiPrefix}/student/deactivate"
+			activate: () -> "#{apiPrefix}/student/activate"
+			resetPassword: () -> "#{apiPrefix}/student/resetpassword"
+			importByCsv: () -> "#{apiPrefix}/student/importbycsv"
+		assignment:
+			list: () -> "#{apiPrefix}/assignment/list"
+			findByAsgId: (asgId) -> "#{apiPrefix}/assignment/findbyasgid/#{asgId}"
+			create: () -> "#{apiPrefix}/assignment/create"
+			update: () -> "#{apiPrefix}/assignment/update"
+		storage:
+			get: (key, filename) -> "#{apiPrefix}/storage/#{key}?filename=#{filename}"
+			post: (key) -> "#{apiPrefix}/storage/#{key}"
+			findByKey: (key) -> "#{apiPrefix}/storage/#{key}?infoOnly=true"
 
-	self.logoutUser = () ->
-		return "#{apiPrefix}/user/logout"
+	self.post = (url, payload, options, done) ->
+		if _.isFunction options
+			done = options
+			options = null
 
-	self.listAdmins = () ->
-		return "#{apiPrefix}/admin/list"
-
-	self.createAdmin = () ->
-		return "#{apiPrefix}/admin/create"
-
-	self.updateAdmin = () ->
-		return "#{apiPrefix}/admin/update"
-
-	self.listStudents = () ->
-		return "#{apiPrefix}/student/list"
-
-	self.createStudent = () ->
-		return "#{apiPrefix}/student/create"
-
-	self.post = (url, payload, done) ->
-		$http.post(url, payload).success( (data) ->
-			if data.success
-				done null, data
+		$http.post(url, payload, options).then ( (res) ->
+			if res.data.success
+				done null, res.data
 			else
-				done new Error(data.msg)
-		).error (data, status) ->
-			done new Error("#{data} status: #{status}")
+				done new Error(res.data.msg)
+		), (res) ->
+			done new Error("#{res.data} status: #{res.status}")
 
 	self.get = (url, done) ->
-		$http.get(url).success( (data) ->
-			if data.success
-				done null, data
+		$http.get(url).then ( (res) ->
+			if res.data.success
+				done null, res.data
 			else
-				done new Error(data.msg)
-		).error (data, status) ->
-			done new Error("#{data} status: #{status}")
+				done new Error(res.data.msg)
+		), (res) ->
+			done new Error("#{res.data} status: #{res.status}")
 
 	return self
