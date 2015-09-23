@@ -61,7 +61,7 @@ script(type="text/ng-template", id="views/assignments")
 							|  {{sandboxConfigFileDetails.length}} B
 						p
 							strong Upload Datetime:
-							|  {{sandboxConfigFileDetails.uploadDate | date : 'short'}}
+							|  {{sandboxConfigFileDetails.uploadDate.toString()}}
 						p
 							strong MD5:
 							|  {{sandboxConfigFileDetails.md5}}
