@@ -22,7 +22,7 @@ app.config ($routeProvider) ->
 		controller: 'AssignmentsController',
 		templateUrl: 'views/assignments'
 	})
-	.when('/submissions', {
+	.when('/submissions/:id?', {
 		controller: 'SubmissionsController',
 		templateUrl: 'views/submissions'
 	})

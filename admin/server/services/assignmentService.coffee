@@ -1,5 +1,3 @@
-_ = require 'lodash'
-
 $ = require '../globals'
 
 module.exports = self = {}
@@ -7,7 +5,7 @@ module.exports = self = {}
 self.list = (done) ->
 	$.stores.assignmentStore.list (err, assignments) ->
 		return $.utils.onError done, err if err
-		done null, _.map assignments, $.models.Assignment.envelop
+		done null, assignments.map $.models.Assignment.envelop
 
 self.findByAsgId = (asgId, done) ->
 	$.stores.assignmentStore.findByAsgId asgId, (err, assignment) ->

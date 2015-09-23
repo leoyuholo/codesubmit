@@ -29,6 +29,8 @@ app.service 'urlService', ($http) ->
 			findByAsgId: (asgId) -> "#{apiPrefix}/assignment/findbyasgid/#{asgId}"
 			create: () -> "#{apiPrefix}/assignment/create"
 			update: () -> "#{apiPrefix}/assignment/update"
+		submission:
+			list: (asgId) -> "#{apiPrefix}/submission/list/#{asgId}"
 		storage:
 			get: (key, filename) -> "#{apiPrefix}/storage/#{key}?filename=#{filename}"
 			post: (key) -> "#{apiPrefix}/storage/#{key}"

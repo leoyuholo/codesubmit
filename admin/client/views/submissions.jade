@@ -1,5 +1,32 @@
 script(type="text/ng-template", id="views/submissions")
 	div(codesubmit-header)
 	.container#submissions-view
-		| Submissions
-		.text-danger {{errorMessage}}
+		.col-md-3
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					p
+						h3
+							strong Assignment List
+				.list-group
+					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" href="#/submissions/{{assignment.asgId}}") {{assignment.name}}
+		.col-md-9
+			.panel.panel-default.shadowedBox
+				.panel-body
+					p
+						h2
+							strong(ng-if="!asgId")
+								span.glyphicon.glyphicon-hand-left
+								|  Select an assignment on left
+							strong(ng-if="asgId") Submissions
+					table.table(ng-if="asgId")
+						thead
+							tr
+								th Username
+								th Email
+								th Actions
+							tr(ng-repeat="submission in submissions")
+								td {{submission.username}}
+								td {{submission.email}}
+								td
+									button.control-group.btn.btn-xs.btn-success(type="button" ng-click="downloadSubmission(submission)") Download
+									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="rerunSubmission(submission)") Re-run
