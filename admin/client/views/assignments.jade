@@ -52,7 +52,7 @@ script(type="text/ng-template", id="views/assignments")
 					p
 						h2
 							strong Sandbox Config
-					p(ng-if="sandboxConfigFileDetails")
+					div(ng-if="sandboxConfigFileDetails")
 						p
 							strong Filename:
 							|  {{sandboxConfigFileDetails.filename}}
@@ -65,7 +65,8 @@ script(type="text/ng-template", id="views/assignments")
 						p
 							strong MD5:
 							|  {{sandboxConfigFileDetails.md5}}
-						a.btn.btn-primary(href="{{sandboxConfigFileDetails.downloadUrl}}") Download
+						p
+							a.btn.btn-primary(href="{{sandboxConfigFileDetails.downloadUrl}}") Download
 					form
 						.form-group
 							label(for="sandboxConfig-input") Upload:

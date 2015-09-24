@@ -28,14 +28,6 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 
 	$scope.assignment.asgId = $routeParams.id if $routeParams.id
 
-	getSandboxConfigFileDetails = (key) ->
-		storageService.findByKey key, (err, data) ->
-			return messageService.error $scope.sandboxConfigMsg, err.message if err
-
-			$scope.sandboxConfigFileDetails = data.info
-			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name.replace(/\W/, '_') + '.zip'
-			$scope.sandboxConfigFileDetails.downloadUrl = urlService.storage.get key, $scope.sandboxConfigFileDetails.filename
-
 	$scope.findAssignment = (asgId) ->
 		assignmentService.findAssignment asgId, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
@@ -58,6 +50,17 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 
 	$scope.sandboxConfigFileDetails = null
 	$scope.sandboxConfigMsg = {}
+
+	getSandboxConfigFileDetails = (key) ->
+		$scope.sandboxConfigFileDetails = null
+
+		storageService.findByKey key, (err, data) ->
+			return if err && 'File not found.' == err.message
+			return messageService.error $scope.sandboxConfigMsg, err.message if err
+
+			$scope.sandboxConfigFileDetails = data.info
+			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name.replace(/\W/, '_') + '.zip'
+			$scope.sandboxConfigFileDetails.downloadUrl = urlService.storage.get key, $scope.sandboxConfigFileDetails.filename
 
 	$scope.uploadSandboxConfigFile = () ->
 		sandboxConfigFile = document.getElementById('sandboxConfig-input').files?[0]

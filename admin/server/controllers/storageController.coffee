@@ -15,6 +15,9 @@ router.get /^\/([\w_\/]+)/, (req, res, done) ->
 
 	if req.query.infoOnly
 		$.stores.storageStore.findByKey storageKey, (err, info) ->
+			return $.utils.onError done, err if err
+			return $.utils.onError done, new Error('File not found.') if !info
+
 			res.json
 				success: true
 				info:
