@@ -16,5 +16,6 @@ module.exports = (grunt) ->
 
 	grunt.registerTask 'admin', ['livereload:admin']
 	grunt.registerTask 'student', ['livereload:student']
+	grunt.registerTask 'worker', ['supervisor:worker']
 
 	grunt.registerTask 'default', ['livereload:admin']
