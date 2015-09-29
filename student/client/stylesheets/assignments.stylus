@@ -1,0 +1,4 @@
+#assignments-view
+	.editor
+		position: relative
+		height: 300px

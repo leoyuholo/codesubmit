@@ -15,7 +15,7 @@ app.service 'urlService', ($http) ->
 			deactivate: () -> "#{apiPrefix}/admin/deactivate"
 			activate: () -> "#{apiPrefix}/admin/activate"
 			resetPassword: () -> "#{apiPrefix}/admin/resetpassword"
-			update: () -> "#{apiPrefix}/admin/update"
+			changePassword: () -> "#{apiPrefix}/admin/changepassword"
 		student:
 			list: () -> "#{apiPrefix}/student/list"
 			findByEmail: (email) -> "#{apiPrefix}/student/findbyemail/#{email}"

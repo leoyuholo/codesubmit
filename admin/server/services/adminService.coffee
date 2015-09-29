@@ -50,7 +50,8 @@ self.resetPassword = (email, done) ->
 			# send email
 			done null
 
-self.changePassword = (user, oldPassword, newPassword, done) ->
-	return $.utils.onError done, new Error('Old password incorrect.') if user.password != oldPassword
+self.changePassword = (admin, oldPassword, newPassword, done) ->
+	return $.utils.onError done, new Error('Old password incorrect.') if admin.password != oldPassword
 
-	$.stores.adminStore.update user.email, {password: newPassword}, done
+	admin.password = newPassword
+	$.stores.adminStore.update admin, done

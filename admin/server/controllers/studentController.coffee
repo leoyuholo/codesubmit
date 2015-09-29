@@ -24,8 +24,6 @@ router.post '/create', (req, res, done) ->
 
 		res.json
 			success: true
-			student:
-				username: student.username
 
 router.post '/deactivate', (req, res, done) ->
 	$.services.studentService.deactivate req.body.student.email, (err) ->

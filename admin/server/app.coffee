@@ -1,4 +1,3 @@
-mongoose = require 'mongoose'
 async = require 'async'
 
 $ = require './globals'

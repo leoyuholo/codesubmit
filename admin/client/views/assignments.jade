@@ -8,8 +8,8 @@ script(type="text/ng-template", id="views/assignments")
 						h3
 							strong Assignment List
 				.list-group
-					a.list-group-item(ng-repeat="assignment in assignments" href="#/assignments/{{assignment.asgId}}") {{assignment.name}}
-					a.list-group-item.list-group-item-success(href="#/assignments")
+					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/assignments/{{assignment.asgId}}") {{assignment.name}}
+					a.list-group-item.list-group-item-success(ng-href="#/assignments")
 						span.glyphicon.glyphicon-plus
 						|  Create New
 		.col-md-9

@@ -1,0 +1,7 @@
+#codesubmit
+	background-color: #FFF
+	.shadowedBox
+		border-radius: 5px 5px
+		box-shadow: 2px 5px 12px #555
+	.message-text
+		white-space: pre

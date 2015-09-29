@@ -5,9 +5,10 @@ submissionSchema = new mongoose.Schema(
 	asgId: {type: String, required: true}
 	email: {type: String, required: true}
 	submitDt: {type: Date, required: true}
+	code: {type: String, require: true}
 )
 
-submissionSchema.index {asgId: 1}
+submissionSchema.index {subId: 1}
 
 submissionSchema.static 'envelop', (doc) ->
 	return {

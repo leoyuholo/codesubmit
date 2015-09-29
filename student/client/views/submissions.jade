@@ -1,0 +1,26 @@
+script(type="text/ng-template", id="views/submissions")
+	div(codesubmit-header)
+	.container#submissions-view
+		.col-md-12.col-sm-12
+			.panel.panel-default.shadowedBox
+				.panel-body
+					p
+						h2 Submission List
+						.message-text.text-danger(ng-if="submissionListMsg.errorMessage") {{submissionListMsg.errorMessage}}
+						.message-text.text-success(ng-if="submissionListMsg.successMessage") {{submissionListMsg.successMessage}}
+						button.pull-right.btn.btn-default(type="button" ng-disabled="submissionListMsg.refreshing" ng-click="listStudents()")
+							span.glyphicon.glyphicon-refresh
+					table.table
+						thead
+							tr
+								th Name
+								th Submission Date
+								th Scores
+								th Rerun
+						tbody
+							tr(ng-repeat="submission in submissions")
+								td {{submission.name}}
+								td {{submission.submitDt}}
+								td {{submission.scores}}
+								td
+									button.control-group.btn.btn-xs.btn-primary(type="button" ng-click="rerun(submission, $index)") Rerun

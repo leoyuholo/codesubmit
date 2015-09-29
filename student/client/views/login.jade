@@ -1,0 +1,15 @@
+script(type="text/ng-template", id="views/login")
+	div(codesubmit-header)
+	.container#login-view
+		.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+			.panel.panel-primary.shadowedBox
+				.panel-heading
+					.panel-title Sign In
+				.panel-body
+					form#login-form
+						.form-group
+							input#inputEmail.form-control(type='text', placeholder='email', required='', autofocus='', ng-model="email")
+						.form-group
+							input#inputPassword.form-control(type='password', placeholder='password', required='', ng-model="password")
+						.message-text.text-danger(ng-if='errorMessage') {{errorMessage}}
+						button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click="submitLogin(email, password)") Sign in

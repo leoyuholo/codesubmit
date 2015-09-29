@@ -39,7 +39,7 @@ app.service 'adminService', (urlService) ->
 
 		urlService.post urlService.admin.resetPassword(), payload, done
 
-	self.update = (oldPassword, newPassword, done) ->
+	self.changePassword = (oldPassword, newPassword, done) ->
 		return done new Error('Old password is empty') if !oldPassword
 		return done new Error('New password is empty') if !newPassword
 
@@ -47,6 +47,6 @@ app.service 'adminService', (urlService) ->
 			oldPassword: oldPassword
 			newPassword: newPassword
 
-		urlService.post urlService.admin.update(), payload, done
+		urlService.post urlService.admin.changePassword(), payload, done
 
 	return self

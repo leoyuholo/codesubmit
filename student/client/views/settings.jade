@@ -1,0 +1,18 @@
+script(type="text/ng-template", id="views/settings")
+	div(codesubmit-header)
+	.container#settings-view
+		.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+			.panel.shadowedBox
+				.panel-body
+					form#settings-form(name="changePasswordForm")
+						p
+							strong Change password
+						.form-group
+							input.form-control(type="password" placeholder="old password" required="" autofocus="" ng-model="changePasswordFormData.oldPassword")
+						.form-group
+							input.form-control(type="password" placeholder="new password" required="" ng-model="changePasswordFormData.newPassword")
+						.form-group
+							input.form-control(type="password" placeholder="confirm password" required="" ng-model="changePasswordFormData.confirmNewPassword")
+						.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
+						.message-text.text-success(ng-if="successMessage") {{successMessage}}
+						button.btn.btn-lg.btn-primary.btn-block(type="submit" ng-click="submitChangePasswordForm(changePasswordFormData.oldPassword, changePasswordFormData.newPassword, changePasswordFormData.confirmNewPassword)") Change

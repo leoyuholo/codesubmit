@@ -26,7 +26,7 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 	$scope.assignment = _.cloneDeep defaultAssignment
 	$scope.assignmentDetailsMsg = {}
 
-	$scope.assignment.asgId = $routeParams.id if $routeParams.id
+	$scope.asgId = $routeParams.id if $routeParams.id
 
 	$scope.findAssignment = (asgId) ->
 		assignmentService.findAssignment asgId, (err, data) ->
@@ -73,4 +73,4 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			messageService.success $scope.sandboxConfigMsg, 'Sandbox config uploaded.'
 
 	$scope.listAssignments()
-	$scope.findAssignment($scope.assignment.asgId) if $scope.assignment.asgId
+	$scope.findAssignment($scope.asgId) if $scope.asgId

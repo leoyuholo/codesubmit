@@ -5,5 +5,9 @@ module.exports = (grunt, options) ->
 			tasks: ['supervisor:admin', 'watch:admin']
 			options:
 				logConcurrentOutput: true
+		student:
+			tasks: ['supervisor:student', 'watch:student']
+			options:
+				logConcurrentOutput: true
 
 	return config

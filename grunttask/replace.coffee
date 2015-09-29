@@ -9,5 +9,11 @@ module.exports = (grunt, options) ->
 			replacements: [
 				{from: '</body>', to: "<script>(function(){document.write('<script src=\"#{http}://' + window.location.hostname + ':#{port}/livereload.js\" type=\"text/javascript\"><\\\/script>')}).call(this);</script></body>"}
 			]
+		student:
+			src: ['student/public/**/*.html']
+			overwrite: true
+			replacements: [
+				{from: '</body>', to: "<script>(function(){document.write('<script src=\"#{http}://' + window.location.hostname + ':#{port}/livereload.js\" type=\"text/javascript\"><\\\/script>')}).call(this);</script></body>"}
+			]
 
 	return config

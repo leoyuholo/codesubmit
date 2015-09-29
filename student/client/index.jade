@@ -1,0 +1,37 @@
+doctype html
+html(ng-app="codesubmit-student")
+	head
+		meta(charset="utf-8")
+		title codeSubmit
+		meta(name="Description", content="a web base code judge system")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width")
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		link(href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
+
+		include stylesheets/stylesheets.jade
+
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js")
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js")
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.min.js")
+
+		include scripts/scripts.jade
+
+	body#codesubmit
+
+		div(ng-view)
+
+		include views/views.jade
+
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js")
+		script(src="https://cdn.rawgit.com/RickStrahl/json.date-extensions/master/json.date-extensions.min.js")
+		script JSON.useDateParser();
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.min.js")

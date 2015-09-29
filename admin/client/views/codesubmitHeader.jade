@@ -6,7 +6,7 @@ script(type="text/ng-template", id="views/codesubmitHeader")
 					span.icon-bar
 					span.icon-bar
 					span.icon-bar
-				a.navbar-brand(href="#/") codeSubmit
+				a.navbar-brand(ng-href="#/") codeSubmit
 			div.navbar-collapse.collapse#codesubmitHeaderNavbar(ng-if="user.email")
 				ul.nav.navbar-nav
 					li.dropdown
@@ -14,19 +14,19 @@ script(type="text/ng-template", id="views/codesubmitHeader")
 							span.caret
 						ul.dropdown-menu
 							li
-								a(href="#/admins") Admins
+								a(ng-href="#/admins") Admins
 							li
-								a(href="#/students") Students
+								a(ng-href="#/students") Students
 					li
-						a(href="#/assignments") Assignments
+						a(ng-href="#/assignments") Assignments
 					li
-						a(href="#/submissions") Submissions
+						a(ng-href="#/submissions") Submissions
 				ul.nav.navbar-nav.navbar-right
 					li.dropdown
 						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Hi, {{user.username}}
 							span.caret
 						ul.dropdown-menu
 							li
-								a(href="#/settings") Settings
+								a(ng-href="#/settings") Settings
 					li
 						a(href="javascript:void(0)" ng-click="logout()") Logout
