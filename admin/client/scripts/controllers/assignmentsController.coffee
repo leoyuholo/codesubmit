@@ -59,14 +59,14 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			return messageService.error $scope.sandboxConfigMsg, err.message if err
 
 			$scope.sandboxConfigFileDetails = data.info
-			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name.replace(/\W/, '_') + '.zip'
+			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name + '.zip'
 			$scope.sandboxConfigFileDetails.downloadUrl = urlService.storage.get key, $scope.sandboxConfigFileDetails.filename
 
 	$scope.uploadSandboxConfigFile = () ->
 		sandboxConfigFile = document.getElementById('sandboxConfig-input').files?[0]
 
 		return messageService.error $scope.sandboxConfigMsg, 'No file chosen.' if !sandboxConfigFile
-		return messageService.error $scope.sandboxConfigMsg, "Sandbox config [#{sandboxConfigFile.type || 'no type'}] file type is not supported" if 'application/zip' != sandboxConfigFile.type
+		return messageService.error $scope.sandboxConfigMsg, "Sandbox config [#{sandboxConfigFile.type || 'no type'}] file type is not supported" if -1 == sandboxConfigFile.type?.indexOf?('zip')
 
 		storageService.post $scope.assignment.sandboxConfigFileStorageKey, sandboxConfigFile, (err) ->
 			return messageService.error $scope.sandboxConfigMsg, err.message if err

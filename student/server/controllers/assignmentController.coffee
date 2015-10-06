@@ -1,13 +1,13 @@
-$ = require '../globals'
 
-router = $.express.Router()
+module.exports = ($) ->
+	router = $.express.Router()
 
-router.get '/list', (req, res, done) ->
-	$.services.assignmentService.list (err, assignments) ->
-		return $.utils.onError done, err if err
+	router.get '/list', (req, res, done) ->
+		$.services.assignmentService.list (err, assignments) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
-			assignments: assignments
+			res.json
+				success: true
+				assignments: assignments
 
-module.exports = router
+	return router

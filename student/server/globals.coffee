@@ -6,10 +6,12 @@ bodyParser = require 'body-parser'
 _S = require 'string'
 S = (s) -> _S(s || '')
 _requireAll = require 'require-all'
-requireAll = (dir) ->
+requireAll = (dir, injections) ->
 	_requireAll
 		dirname: dir
 		filter: /(.+)\.(coffee|js(on)?)$/
+		resolve: (exports) ->
+			if _.isFunction exports then exports injections else exports
 
 module.exports = $ = {}
 
@@ -17,6 +19,7 @@ module.exports = $ = {}
 $.serverDir = __dirname
 $.studentDir = path.join $.serverDir, '../'
 $.rootDir = path.join $.studentDir, '../'
+$.commonDir = path.join $.rootDir, 'common'
 
 # express
 $.express = express
@@ -29,20 +32,22 @@ $.config = require path.join $.rootDir, 'configs', 'studentConfig'
 
 # initialzation sequence is important
 [
-	'utils'
-	'models'
-	'stores'
-	'services'
-	'setups'
-	'controllers'
-].forEach (component) ->
-	$[component] = requireAll path.join $.serverDir, component
+	['utils', path.join $.commonDir, 'server', 'utils']
+	['models', path.join $.commonDir, 'server', 'models']
+	['stores', path.join $.commonDir, 'server', 'stores']
+	['services', path.join $.commonDir, 'server', 'services']
+	['setups', path.join $.commonDir, 'server', 'setups']
+	['controllers', path.join $.serverDir, 'controllers']
+].forEach ([componentName, componentPath]) ->
+	$[componentName] = requireAll componentPath, $
 
 # routes
 api = $.express.Router()
 
+# allow unauthorized access to api/user
 api.use '/user', $.controllers.userController
 
+# otherwise, require authentication
 api.use (req, res, done) ->
 	return done() if req.isAuthenticated()
 	done new Error 'Unauthorized access.'

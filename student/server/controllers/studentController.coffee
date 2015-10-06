@@ -1,15 +1,15 @@
-$ = require '../globals'
 
-router = $.express.Router()
+module.exports = ($) ->
+	router = $.express.Router()
 
-router.post '/changepassword', (req, res, done) ->
-	oldPassword = req.body.oldPassword
-	newPassword = req.body.newPassword
+	router.post '/changepassword', (req, res, done) ->
+		oldPassword = req.body.oldPassword
+		newPassword = req.body.newPassword
 
-	$.services.studentService.changePassword req.user, oldPassword, newPassword, (err) ->
-		return $.utils.onError done, err if err
+		$.services.studentService.changePassword req.user, oldPassword, newPassword, (err) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
+			res.json
+				success: true
 
-module.exports = router
+	return router

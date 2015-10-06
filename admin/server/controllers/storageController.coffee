@@ -2,45 +2,43 @@ path = require 'path'
 
 multer = require 'multer'
 
-$ = require '../globals'
+module.exports = ($) ->
+	upload = multer {dest: path.join $.rootDir, 'storage/'}
+	router = $.express.Router()
 
-upload = multer {dest: path.join $.rootDir, 'storage/'}
+	router.get /^\/([\w_\/]+)/, (req, res, done) ->
+		storageKey = req.params[0]
 
-router = $.express.Router()
+		return $.utils.onError done, new Error('Invalid storage key.') if !storageKey
 
-router.get /^\/([\w_\/]+)/, (req, res, done) ->
-	storageKey = req.params[0]
+		if req.query.infoOnly
+			$.stores.storageStore.findByKey storageKey, (err, info) ->
+				return $.utils.onError done, err if err
+				return $.utils.onError done, new Error('File not found.') if !info
 
-	return $.utils.onError done, new Error('Invalid storage key.') if !storageKey
+				res.json
+					success: true
+					info:
+						length: info.length
+						uploadDate: info.uploadDate
+						md5: info.md5
+		else
+			filename = req.query.filename
+			res.setHeader 'Content-disposition', "attachment; filename=#{filename}" if filename
+			$.stores.storageStore.readStream(storageKey).pipe res
 
-	if req.query.infoOnly
-		$.stores.storageStore.findByKey storageKey, (err, info) ->
+	router.post /^\/([\w_\/]+)/, upload.single('file'), (req, res, done) ->
+		storageKey = req.params[0]
+		filePath = req.file?.path
+
+		return $.utils.onError done, new Error('Invalid storage key.') if !storageKey
+		return $.utils.onError done, new Error('Invalid file.') if !filePath
+
+		$.stores.storageStore.writeFromFs storageKey, filePath, (err) ->
 			return $.utils.onError done, err if err
-			return $.utils.onError done, new Error('File not found.') if !info
 
 			res.json
 				success: true
-				info:
-					length: info.length
-					uploadDate: info.uploadDate
-					md5: info.md5
-	else
-		filename = req.query.filename
-		res.setHeader 'Content-disposition', "attachment; filename=#{filename}" if filename
-		$.stores.storageStore.readStream(storageKey).pipe res
+				key: req.params.key
 
-router.post /^\/([\w_\/]+)/, upload.single('file'), (req, res, done) ->
-	storageKey = req.params[0]
-	filePath = req.file?.path
-
-	return $.utils.onError done, new Error('Invalid storage key.') if !storageKey
-	return $.utils.onError done, new Error('Invalid file.') if !filePath
-
-	$.stores.storageStore.writeFromFs storageKey, filePath, (err) ->
-		return $.utils.onError done, err if err
-
-		res.json
-			success: true
-			key: req.params.key
-
-module.exports = router
+	return router

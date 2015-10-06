@@ -6,12 +6,12 @@ module.exports = (grunt, options) ->
 		admin:
 			options:
 				livereload: grunt.option('livereload') || 35729
-			files: ['admin/client/**', 'admin/server/**']
+			files: ['admin/client/**', 'admin/server/**', 'common/server/**']
 			tasks: ['jade:admin', 'replace:admin']
 		student:
 			options:
 				livereload: grunt.option('livereload') || 35729
-			files: ['student/client/**', 'student/server/**']
+			files: ['student/client/**', 'student/server/**', 'common/server/**']
 			tasks: ['jade:student', 'replace:student']
 
 	return config

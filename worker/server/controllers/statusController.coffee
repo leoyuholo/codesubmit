@@ -1,21 +1,21 @@
-$ = require '../globals'
 
-router = $.express.Router()
+module.exports = ($) ->
+	router = $.express.Router()
 
-router.get '/jobstarted', (req, res, done) ->
-	$.services.statusService.getJobStarted (err, count) ->
-		return $.utils.onError done, err if err
+	router.get '/jobstarted', (req, res, done) ->
+		$.services.statusService.getJobStarted (err, count) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
-			count: count
+			res.json
+				success: true
+				count: count
 
-router.get '/jobfinished', (req, res, done) ->
-	$.services.statusService.getJobFinished (err, count) ->
-		return $.utils.onError done, err if err
+	router.get '/jobfinished', (req, res, done) ->
+		$.services.statusService.getJobFinished (err, count) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
-			count: count
+			res.json
+				success: true
+				count: count
 
-module.exports = router
+	return router

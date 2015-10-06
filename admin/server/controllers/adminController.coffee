@@ -1,61 +1,61 @@
-$ = require '../globals'
 
-router = $.express.Router()
+module.exports = ($) ->
+	router = $.express.Router()
 
-router.get '/list', (req, res, done) ->
-	$.services.adminService.list (err, admins) ->
-		return $.utils.onError done, err if err
+	router.get '/list', (req, res, done) ->
+		$.services.adminService.list (err, admins) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
-			admins: admins
+			res.json
+				success: true
+				admins: admins
 
-router.get '/findbyemail/:email', (req, res, done) ->
-	$.services.adminService.findByEmail req.params.email, (err, admin) ->
-		return $.utils.onError done, err if err
+	router.get '/findbyemail/:email', (req, res, done) ->
+		$.services.adminService.findByEmail req.params.email, (err, admin) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
-			admin: admin
+			res.json
+				success: true
+				admin: admin
 
-router.post '/create', (req, res, done) ->
-	$.services.adminService.create req.body.admin, (err, admin) ->
-		return $.utils.onError done, err if err
+	router.post '/create', (req, res, done) ->
+		$.services.adminService.create req.body.admin, (err, admin) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
-			admin:
-				username: admin.username
+			res.json
+				success: true
+				admin:
+					username: admin.username
 
-router.post '/deactivate', (req, res, done) ->
-	$.services.adminService.deactivate req.body.admin.email, (err) ->
-		return $.utils.onError done, err if err
+	router.post '/deactivate', (req, res, done) ->
+		$.services.adminService.deactivate req.body.admin.email, (err) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
+			res.json
+				success: true
 
-router.post '/activate', (req, res, done) ->
-	$.services.adminService.activate req.body.admin.email, (err) ->
-		return $.utils.onError done, err if err
+	router.post '/activate', (req, res, done) ->
+		$.services.adminService.activate req.body.admin.email, (err) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
+			res.json
+				success: true
 
-router.post '/resetpassword', (req, res, done) ->
-	$.services.adminService.resetPassword req.body.admin.email, (err) ->
-		return $.utils.onError done, err if err
+	router.post '/resetpassword', (req, res, done) ->
+		$.services.adminService.resetPassword req.body.admin.email, (err) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
+			res.json
+				success: true
 
-router.post '/changepassword', (req, res, done) ->
-	oldPassword = req.body.oldPassword
-	newPassword = req.body.newPassword
+	router.post '/changepassword', (req, res, done) ->
+		oldPassword = req.body.oldPassword
+		newPassword = req.body.newPassword
 
-	$.services.adminService.changePassword req.user, oldPassword, newPassword, (err) ->
-		return $.utils.onError done, err if err
+		$.services.adminService.changePassword req.user, oldPassword, newPassword, (err) ->
+			return $.utils.onError done, err if err
 
-		res.json
-			success: true
+			res.json
+				success: true
 
-module.exports = router
+	return router

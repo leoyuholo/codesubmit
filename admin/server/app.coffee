@@ -1,7 +1,7 @@
 async = require 'async'
 
 $ = require './globals'
-
+console.log 'codeSubmit admin'
 runSetups = (done) ->
 	process.nextTick () ->
 		async.eachSeries $.setups, ( (setup, done) ->

@@ -13,3 +13,5 @@ module.exports =
 	rabbitmq:
 		host: '192.168.0.111'
 		port: 5672
+		queues:
+			submission: 'submission'
