@@ -35,6 +35,7 @@ configPassport = (app, config, userStore) ->
 		secret: config.sessionSecret
 		cookie:
 			maxAge: 2419200000
+		name: config.sessionName
 		resave: true
 		saveUninitialized: true
 	app.use passport.initialize()
