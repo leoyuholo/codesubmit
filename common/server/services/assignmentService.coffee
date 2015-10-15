@@ -16,7 +16,7 @@ module.exports = ($) ->
 
 	self.create = (assignment, done) ->
 		assignment.asgId = $.utils.rng.generateId()
-		assignment.sandboxConfigFileStorageKey = "assignment/sanndboxConfigFiles/#{assignment.asgId}"
+		assignment.sandboxConfigFileStorageKey = $.services.namespaceService.makeStorageKey assignment.asgId
 
 		$.stores.assignmentStore.create assignment, (err) ->
 			return $.utils.onError done, err if err

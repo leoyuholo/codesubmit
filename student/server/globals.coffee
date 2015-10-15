@@ -32,14 +32,15 @@ $.config = require path.join $.rootDir, 'configs', 'studentConfig'
 
 # initialzation sequence is important
 [
-	['utils', path.join $.commonDir, 'server', 'utils']
-	['models', path.join $.commonDir, 'server', 'models']
-	['stores', path.join $.commonDir, 'server', 'stores']
-	['services', path.join $.commonDir, 'server', 'services']
-	['setups', path.join $.commonDir, 'server', 'setups']
-	['controllers', path.join $.serverDir, 'controllers']
-].forEach ([componentName, componentPath]) ->
-	$[componentName] = requireAll componentPath, $
+	{name: 'constants', path: path.join $.commonDir, 'server', 'constants'}
+	{name: 'utils', path: path.join $.commonDir, 'server', 'utils'}
+	{name: 'models', path: path.join $.commonDir, 'server', 'models'}
+	{name: 'stores', path: path.join $.commonDir, 'server', 'stores'}
+	{name: 'services', path: path.join $.commonDir, 'server', 'services'}
+	{name: 'setups', path: path.join $.commonDir, 'server', 'setups'}
+	{name: 'controllers', path: path.join $.serverDir, 'controllers'}
+].forEach (component) ->
+	$[component.name] = requireAll component.path, $
 
 # routes
 api = $.express.Router()

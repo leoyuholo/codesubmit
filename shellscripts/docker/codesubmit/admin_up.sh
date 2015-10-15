@@ -19,9 +19,18 @@ argument=$([ "$4" == "" ] && echo $default_argument || echo "$4")
 docker build -t ${USER}:$container_name $script_dir
 docker kill $container_name
 docker rm $container_name
+
 echo "shared_dir:" $host_shared_dir
 echo "container_name:" $container_name
 echo "mapped_host_port:" $mapped_host_port
 echo "host_ip": $host_ip
 echo "argument": $argument
-docker run -i -p $mapped_host_port:8000 -p 35728:35728 -v $host_shared_dir:/host_shared --name $container_name ${USER}:$container_name $argument
+
+docker run  -i \
+			-p \
+			$mapped_host_port:8000 \
+			-p 35728:35728 \
+			-v $host_shared_dir:/host_shared \
+			--name $container_name \
+			${USER}:$container_name \
+			$argument

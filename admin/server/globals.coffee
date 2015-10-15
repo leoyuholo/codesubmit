@@ -32,6 +32,7 @@ $.config = require path.join $.rootDir, 'configs', 'adminConfig'
 
 # initialzation sequence is important
 [
+	{name: 'constants', path: path.join $.commonDir, 'server', 'constants'}
 	{name: 'utils', path: path.join $.commonDir, 'server', 'utils'}
 	{name: 'models', path: path.join $.commonDir, 'server', 'models'}
 	{name: 'stores', path: path.join $.commonDir, 'server', 'stores'}

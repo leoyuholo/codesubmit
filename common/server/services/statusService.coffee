@@ -8,7 +8,7 @@ module.exports = ($) ->
 		jobStarted += 1
 		done null
 
-	self.finishJob = (submission, result, done) ->
+	self.finishJob = (submission, done) ->
 		jobFinished += 1
 		done null
 
