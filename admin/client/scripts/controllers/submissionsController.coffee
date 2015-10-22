@@ -1,27 +1,24 @@
-app = angular.module 'codesubmit-admin'
+app = angular.module 'codesubmit'
 
 app.controller 'SubmissionsController', ($scope, $routeParams, submissionService, assignmentService, messageService) ->
 
-	$scope.assignments = []
-	$scope.assignmentListMsg = {}
-
 	$scope.listAssignments = () ->
-		assignmentService.listAssignments (err, data) ->
+		assignmentService.list (err, data) ->
 			return messageService.error $scope.assignmentListMsg, err.message if err
 
 			$scope.assignments = data.assignments
 
-	$scope.submissions = []
-	$scope.submissionListMsg = {}
-
-	$scope.listSubmisstion = (asgId) ->
+	$scope.listSubmissions = (asgId) ->
 		submissionService.list asgId, (err, data) ->
 			return messageService.error $scope.submissionListMsg, err.message if err
 
 			$scope.submissions = data.submissions
 
-	$scope.asgId = $routeParams.id if $routeParams.id
-
-	$scope.listSubmisstion $scope.asgId if $scope.asgId
+	$scope.assignments = []
+	$scope.assignmentListMsg = {}
+	$scope.submissions = []
+	$scope.submissionListMsg = {}
 
 	$scope.listAssignments()
+	$scope.asgId = $routeParams.id if $routeParams.id
+	$scope.listSubmissions $scope.asgId if $scope.asgId

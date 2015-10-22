@@ -1,14 +1,19 @@
+_ = require 'lodash'
 
 module.exports = ($) ->
 	self = {}
 
 	Submission = $.models.Submission
 
-	self.list = (asgId, done) ->
-		Submission.find {asgId: asgId}, done
+	self.list = (condition, done) ->
+		if _.isFunction condition
+			done = condition
+			condition = {}
 
-	self.findBySubId = (subId, done) ->
-		Submission.findOne {subId: subId}, done
+		Submission.find condition, done
+
+	self.findBySubId = (condition, done) ->
+		Submission.findOne condition, done
 
 	self.create = (submission, done) ->
 		Submission.create submission, done

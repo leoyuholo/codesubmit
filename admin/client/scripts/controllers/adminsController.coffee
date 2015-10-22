@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-admin'
+app = angular.module 'codesubmit'
 
 app.controller 'AdminsController', ($scope, adminService, messageService) ->
 
@@ -7,14 +7,9 @@ app.controller 'AdminsController', ($scope, adminService, messageService) ->
 		email: ''
 		remarks: ''
 
-	$scope.admins = []
-	$scope.adminListMsg = {}
-	$scope.newAdmins = []
-	$scope.adminCreateMsg = {}
-
 	$scope.listAdmins = () ->
 		$scope.adminListMsg.refreshing = true
-		adminService.listAdmins (err, data) ->
+		adminService.list (err, data) ->
 			$scope.adminListMsg.refreshing = false
 			return messageService.error $scope.adminListMsg, err.message if err
 
@@ -47,7 +42,7 @@ app.controller 'AdminsController', ($scope, adminService, messageService) ->
 
 	$scope.createAdmin = (admin) ->
 		admin.status = 'Adding'
-		adminService.createAdmin admin, (err) ->
+		adminService.create admin, (err) ->
 			if err
 				delete admin.status
 				return messageService.error $scope.adminCreateMsg, err.message
@@ -57,6 +52,11 @@ app.controller 'AdminsController', ($scope, adminService, messageService) ->
 
 	$scope.addEmptyAdmin = () ->
 		$scope.newAdmins.push _.cloneDeep defaultAdmin
+
+	$scope.admins = []
+	$scope.adminListMsg = {}
+	$scope.newAdmins = []
+	$scope.adminCreateMsg = {}
 
 	$scope.listAdmins()
 	$scope.addEmptyAdmin()

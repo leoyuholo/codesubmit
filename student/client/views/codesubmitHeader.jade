@@ -8,17 +8,12 @@ script(type="text/ng-template", id="views/codesubmitHeader")
 					span.icon-bar
 				a.navbar-brand(ng-href="#/") codeSubmit
 			div.navbar-collapse.collapse#codesubmitHeaderNavbar(ng-if="user.email")
-				ul.nav.navbar-nav
-					li
-						a(ng-href="#/assignments") Assignments
-					li
-						a(ng-href="#/submissions") Submissions
 				ul.nav.navbar-nav.navbar-right
 					li.dropdown
-						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Hi, {{user.username}}
+						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown") Hi, {{user.username}}
 							span.caret
 						ul.dropdown-menu
 							li
-								a(ng-href="#/settings") Settings
+								a(ng-href="#/settings") Change Password
 					li
 						a(href="javascript:void(0)" ng-click="logout()") Logout

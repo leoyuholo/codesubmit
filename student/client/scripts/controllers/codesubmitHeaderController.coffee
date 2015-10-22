@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-student'
+app = angular.module 'codesubmit'
 
 app.controller 'codesubmitHeaderController', ($scope, $rootScope, userService, redirectService) ->
 	$scope.user = $rootScope.user

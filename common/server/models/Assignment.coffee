@@ -10,6 +10,8 @@ module.exports = ($) ->
 		submissionLimit: {type: Number, required: true, min: 1, max: 9999}
 		penalty: {type: Number, required: true, min: 0, max: 100}
 		sandboxConfigFileStorageKey: String
+		description: String
+		codeTemplate: String
 	)
 
 	assignmentSchema.index {asgId: 1}, {unique: true}
@@ -24,6 +26,8 @@ module.exports = ($) ->
 			submissionLimit: doc.submissionLimit
 			penalty: doc.penalty
 			sandboxConfigFileStorageKey: doc.sandboxConfigFileStorageKey
+			description: doc.description
+			codeTemplate: doc.codeTemplate
 		}
 
 	mongoose.model 'Assignment', assignmentSchema

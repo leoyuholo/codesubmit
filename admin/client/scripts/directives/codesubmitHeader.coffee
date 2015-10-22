@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-admin'
+app = angular.module 'codesubmit'
 
 app.directive 'codesubmitHeader', () ->
 	return {

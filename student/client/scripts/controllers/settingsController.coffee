@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-student'
+app = angular.module 'codesubmit'
 
 app.controller 'SettingsController', ($scope, $location, studentService, messageService) ->
 

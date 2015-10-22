@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-admin', ['ngRoute', 'ngCookies']
+app = angular.module 'codesubmit', ['ngRoute', 'ngCookies']
 
 app.config ($routeProvider) ->
 	$routeProvider
@@ -33,6 +33,8 @@ app.config ($routeProvider) ->
 	return
 
 app.run ($rootScope, $location, userService, messageService, redirectService) ->
+	$rootScope.homePath = '/students'
+
 	$rootScope.$on '$routeChangeSuccess', () ->
 		redirectService.redirectToHome() if !userService.getUser(true)
 		messageService.clear()

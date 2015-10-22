@@ -24,4 +24,5 @@ async.series [
 	startServer
 	injectRootUser
 ], (err) ->
+	return console.log 'error starting up codeSubmit admin', err if err
 	console.log 'codeSubmit admin listen on port', $.config.port

@@ -1,15 +1,6 @@
-app = angular.module 'codesubmit-admin'
+app = angular.module 'codesubmit'
 
 app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService, urlService) ->
-
-	$scope.assignments = []
-	$scope.assignmentListMsg = {}
-
-	$scope.listAssignments = () ->
-		assignmentService.listAssignments (err, data) ->
-			return messageService.error $scope.assignmentListMsg, err.message if err
-
-			$scope.assignments = data.assignments
 
 	newDate = new Date()
 	newDate.setMilliseconds 0
@@ -23,35 +14,33 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 		submissionLimit: 100
 		penalty: 0
 
-	$scope.assignment = _.cloneDeep defaultAssignment
-	$scope.assignmentDetailsMsg = {}
+	$scope.listAssignments = () ->
+		assignmentService.list (err, data) ->
+			return messageService.error $scope.assignmentListMsg, err.message if err
 
-	$scope.asgId = $routeParams.id if $routeParams.id
+			$scope.assignments = data.assignments
 
 	$scope.findAssignment = (asgId) ->
-		assignmentService.findAssignment asgId, (err, data) ->
+		assignmentService.findByAsgId asgId, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 
 			$scope.assignment = data.assignment
 
-			getSandboxConfigFileDetails $scope.assignment.sandboxConfigFileStorageKey
+			$scope.getSandboxConfigFileDetails $scope.assignment.sandboxConfigFileStorageKey
 
 	$scope.createAssignment = (assignment) ->
-		assignmentService.createAssignment assignment, (err, data) ->
+		assignmentService.create assignment, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment created.'
 
-			redirectService.redirectToAssignment data.assignment.asgId
+			redirectService.redirectTo 'assignments', data.assignment.asgId
 
 	$scope.updateAssignment = (assignment) ->
-		assignmentService.updateAssignment assignment, (err, data) ->
+		assignmentService.update assignment, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment updated.'
 
-	$scope.sandboxConfigFileDetails = null
-	$scope.sandboxConfigMsg = {}
-
-	getSandboxConfigFileDetails = (key) ->
+	$scope.getSandboxConfigFileDetails = (key) ->
 		$scope.sandboxConfigFileDetails = null
 
 		storageService.findByKey key, (err, data) ->
@@ -72,5 +61,15 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			return messageService.error $scope.sandboxConfigMsg, err.message if err
 			messageService.success $scope.sandboxConfigMsg, 'Sandbox config uploaded.'
 
+			$scope.getSandboxConfigFileDetails $scope.assignment.sandboxConfigFileStorageKey
+
+	$scope.assignments = []
+	$scope.assignmentListMsg = {}
+	$scope.assignment = _.cloneDeep defaultAssignment
+	$scope.assignmentDetailsMsg = {}
+	$scope.sandboxConfigFileDetails = null
+	$scope.sandboxConfigMsg = {}
+
 	$scope.listAssignments()
+	$scope.asgId = $routeParams.id if $routeParams.id
 	$scope.findAssignment($scope.asgId) if $scope.asgId

@@ -1,7 +1,6 @@
-app = angular.module 'codesubmit-student'
+app = angular.module 'codesubmit'
 
 app.controller 'LoginController' ,($scope, userService, messageService, redirectService) ->
-	redirectService.redirectToHome() if userService.getUser()
 
 	$scope.submitLogin = (email, password) ->
 		userService.login email, password, (err, user) ->
@@ -9,3 +8,5 @@ app.controller 'LoginController' ,($scope, userService, messageService, redirect
 			return messageService.error 'Server response no users' if !user
 
 			redirectService.redirectToHome()
+
+	redirectService.redirectToHome() if userService.getUser()

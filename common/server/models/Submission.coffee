@@ -7,6 +7,10 @@ module.exports = ($) ->
 		email: {type: String, required: true}
 		submitDt: {type: Date, required: true}
 		code: {type: String, require: true}
+		status: {type: String, default: 'Pending'}
+		evaluateDt: Date
+		results: Array
+		score: {type: Number}
 	)
 
 	submissionSchema.index {subId: 1}
@@ -17,6 +21,11 @@ module.exports = ($) ->
 			asgId: doc.asgId
 			email: doc.email
 			submitDt: doc.submitDt
+			code: doc.code
+			status: doc.status
+			evaluateDt: doc.evaluateDt
+			results: doc.results
+			score: doc.score
 		}
 
 	mongoose.model 'Submission', submissionSchema

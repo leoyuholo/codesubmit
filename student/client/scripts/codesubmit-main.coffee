@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-student', ['ngRoute', 'ngCookies']
+app = angular.module 'codesubmit', ['ngRoute', 'ngCookies']
 
 app.config ($routeProvider) ->
 	$routeProvider
@@ -14,9 +14,17 @@ app.config ($routeProvider) ->
 		controller: 'AssignmentsController',
 		templateUrl: 'views/assignments'
 	})
-	.when('/submissions/:id?', {
+	.when('/assignment/:asgid/:asgname?', {
+		controller: 'AssignmentController',
+		templateUrl: 'views/assignment'
+	})
+	.when('/submissions/:asgid/:asgname', {
 		controller: 'SubmissionsController',
 		templateUrl: 'views/submissions'
+	})
+	.when('/submission/:asgid/:asgname/:subid/:subname', {
+		controller: 'SubmissionController',
+		templateUrl: 'views/submission'
 	})
 	.otherwise({
 		redirectTo: '/'
@@ -25,6 +33,8 @@ app.config ($routeProvider) ->
 	return
 
 app.run ($rootScope, $location, userService, messageService, redirectService) ->
+	$rootScope.homePath = '/assignments'
+
 	$rootScope.$on '$routeChangeSuccess', () ->
 		redirectService.redirectToHome() if !userService.getUser(true)
 		messageService.clear()

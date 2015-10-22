@@ -14,6 +14,6 @@ module.exports = ($) ->
 				throw err if err
 
 				# done
-				# $.amqp.ack msg
+				$.amqp.ack msg
 
 	return self

@@ -1,0 +1,22 @@
+script(type="text/ng-template", id="views/submission")
+	div(codesubmit-header)
+	.container#submission-view
+		.col-md-12.col-sm-12
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					h2
+						ol.breadcrumb
+							li
+								a(ng-href="#/assignments") Assignments
+							li
+								a(ng-href="#/assignment/{{asgId}}/{{asgName}}") {{asgName}}
+							li
+								a(ng-href="#/submissions/{{asgId}}/{{asgName}}") Submissions
+							li {{subName}}
+				.panel-body
+					.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
+					p
+						strong Result
+					p
+						strong Submitted Code
+						.editor(id="editor")

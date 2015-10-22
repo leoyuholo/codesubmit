@@ -4,14 +4,18 @@ module.exports = (grunt, options) ->
 		options:
 			spawn: false
 		admin:
-			options:
-				livereload: grunt.option('livereload') || 35729
-			files: ['admin/client/**', 'admin/server/**', 'common/server/**']
+			files: ['admin/client/**', 'common/client/**']
 			tasks: ['jade:admin', 'replace:admin']
-		student:
+		adminReload:
 			options:
 				livereload: grunt.option('livereload') || 35729
-			files: ['student/client/**', 'student/server/**', 'common/server/**']
+			files: ['admin/public/**', 'admin/public/.rebooted']
+		student:
+			files: ['student/client/**', 'common/client/**']
 			tasks: ['jade:student', 'replace:student']
+		studentReload:
+			options:
+				livereload: grunt.option('livereload') || 35729
+			files: ['student/public/**', 'student/public/.rebooted']
 
 	return config

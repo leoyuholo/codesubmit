@@ -10,7 +10,7 @@ script(type="text/ng-template", id="views/codesubmitHeader")
 			div.navbar-collapse.collapse#codesubmitHeaderNavbar(ng-if="user.email")
 				ul.nav.navbar-nav
 					li.dropdown
-						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Accounts
+						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown") Accounts
 							span.caret
 						ul.dropdown-menu
 							li
@@ -23,7 +23,7 @@ script(type="text/ng-template", id="views/codesubmitHeader")
 						a(ng-href="#/submissions") Submissions
 				ul.nav.navbar-nav.navbar-right
 					li.dropdown
-						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown" role="button") Hi, {{user.username}}
+						a.dropdown-toggle(href="javascript:void(0)" data-toggle="dropdown") Hi, {{user.username}}
 							span.caret
 						ul.dropdown-menu
 							li

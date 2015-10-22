@@ -1,0 +1,21 @@
+script(type="text/ng-template", id="views/assignment")
+	div(codesubmit-header)
+	.container#assignment-view
+		.col-md-12.col-sm-12
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					h2
+						ol.breadcrumb
+							li
+								a(ng-href="#/assignments") Assignments
+							li {{assignment.name}}
+				.panel-body
+					.message-text.text-danger(ng-if="assignmentDetailMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
+					p.editor(id="editor")
+					p
+						.message-text.text-danger(ng-if="assignmentSubmitMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
+						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
+					p.text-right
+						button.btn.btn-primary(type="button" ng-click="submit()") Submit
+					p.text-right
+						a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}") Submission History

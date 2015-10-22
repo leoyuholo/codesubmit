@@ -9,7 +9,7 @@
     "grunt-concurrent": "^2.0.3",
     "grunt-contrib-jade": "^0.15.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-supervisor": "^0.2.4",
+    "grunt-nodemon": "^0.4.0",
     "grunt-text-replace": "^0.4.0",
     "jstransformer-coffee-script": "^1.0.0",
     "jstransformer-stylus": "^1.0.0",
@@ -34,7 +34,6 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "require-all": "^1.1.0",
-    "shortid": "^2.2.2",
-    "string": "^3.3.1"
+    "shortid": "^2.2.2"
   }
 }

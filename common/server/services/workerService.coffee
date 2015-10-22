@@ -59,7 +59,6 @@ module.exports = ($) ->
 			'-v', sandboxTask.sandboxrunPath + ':/vol/'
 			'-u $(id -u):$(id -g)'
 			'tomlau10/sandbox-run'
-			'-R'
 			'-e', sandboxConfig.errorToleranceLevel
 			'-n', 1
 			'-t', sandboxConfig.timeLimitS
@@ -91,7 +90,16 @@ module.exports = ($) ->
 			sandbox = childProcess.exec cmd, {timeout: 20000}, (err, stdout, stderr) ->
 				return reject err if err
 
-				answer = stdout.split('\x00')[1]
+				stdouts = stdout.split('\x00')
+
+				answer = stdouts[1]
+				resultJSON = {}
+				try
+					resultJSON = JSON.parse stdouts[2]
+				catch err
+					return reject err if err
+
+				return resolve {correct: false, message: resultJSON.result} if resultJSON.result[0] != 'OK'
 
 				fse.outputFile answerPath, answer, (err) ->
 					return reject err if err
@@ -102,7 +110,8 @@ module.exports = ($) ->
 						return resolve {correct: true} if !err
 
 						fse.readFile hintPath, 'utf8', (err, data) ->
-							resolve {correct: false, hint: data || ''}
+							console.log 'hint', err, data
+							resolve {correct: false, message: data || ''}
 
 			inStream.pipe(sandbox.stdin)
 				.on('error', reject)
@@ -123,8 +132,14 @@ module.exports = ($) ->
 			done null, sandboxTask
 
 	cleanup = (sandboxTask, done) ->
-		console.log sandboxTask.testResults
-		done null
+		submission =
+			subId: sandboxTask.subId
+			status: 'Done'
+			evaluateDt: new Date()
+			results: sandboxTask.testResults
+			score: _.filter(sandboxTask.testResults, 'correct').length
+		console.log submission
+		$.stores.submissionStore.update submission, done
 
 	processSubmission = (sandboxTask, done) ->
 		async.waterfall [

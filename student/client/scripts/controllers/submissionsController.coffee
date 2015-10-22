@@ -1,5 +1,15 @@
-app = angular.module 'codesubmit-student'
+app = angular.module 'codesubmit'
 
-app.controller 'SubmissionsController', ($scope, $routeParams) ->
+app.controller 'SubmissionsController', ($scope, $routeParams, submissionService, messageService) ->
 
-	$scope.asgId = $routeParams.id if $routeParams.id
+	$scope.asgId = $routeParams.asgid
+	$scope.asgName = $routeParams.asgname
+	$scope.submissions = []
+
+	listSubmissions = (asgId) ->
+		submissionService.listMine asgId, (err, data) ->
+			return messageService.error err.message if err
+
+			$scope.submissions = _.sortByOrder data.submissions, 'submitDt', 'desc'
+
+	listSubmissions $scope.asgId

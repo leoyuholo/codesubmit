@@ -3,24 +3,30 @@ script(type="text/ng-template", id="views/submissions")
 	.container#submissions-view
 		.col-md-12.col-sm-12
 			.panel.panel-default.shadowedBox
-				.panel-body
-					p
-						h2 Submission List
-						.message-text.text-danger(ng-if="submissionListMsg.errorMessage") {{submissionListMsg.errorMessage}}
-						.message-text.text-success(ng-if="submissionListMsg.successMessage") {{submissionListMsg.successMessage}}
-						button.pull-right.btn.btn-default(type="button" ng-disabled="submissionListMsg.refreshing" ng-click="listStudents()")
-							span.glyphicon.glyphicon-refresh
-					table.table
-						thead
-							tr
-								th Name
-								th Submission Date
-								th Scores
-								th Rerun
-						tbody
-							tr(ng-repeat="submission in submissions")
-								td {{submission.name}}
-								td {{submission.submitDt}}
-								td {{submission.scores}}
-								td
-									button.control-group.btn.btn-xs.btn-primary(type="button" ng-click="rerun(submission, $index)") Rerun
+				.panel-heading
+					h2
+						ol.breadcrumb
+							li
+								a(ng-href="#/assignments") Assignments
+							li
+								a(ng-href="#/assignment/{{asgId}}/{{asgName}}") {{asgName}}
+							li Submissions
+					.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
+				.panel-body(ng-if="!submissions.length")
+					p No submissions yet.
+				ul.list-group#submissionList(ng-if="submissions.length")
+					li.list-group-item(ng-repeat="submission in submissions")
+						p
+							strong Attempt # {{submissions.length - $index}}
+						ul.list-inline
+							li
+								strong Date
+								|  {{submission.submitDt.toString()}}
+							li
+								strong Status
+								|  {{submission.status}}
+							li
+								strong Score
+								|  {{submission.score || 'N/A'}}
+							li
+								a.btn.btn-primary(ng-href="#/submission/{{asgId}}/{{asgName}}/{{submission.subId}}/{{submissions.length - $index}}") View Details

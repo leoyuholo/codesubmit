@@ -38,7 +38,7 @@ script(type="text/ng-template", id="views/assignments")
 							label(for="assignmentSubmissionLimit-input") Submission Limit:
 							input.form-control#assignmentSubmissionLimit-input(type="number" ng-model="assignment.submissionLimit")
 						.form-group
-							label(for="assignmentPenalty-input") Penalty:
+							label(for="assignmentPenalty-input") Late Submission Penalty:
 							.input-group
 								input.form-control#assignmentPenalty-input(type="number" ng-model="assignment.penalty")
 								span.input-group-addon %
@@ -75,3 +75,18 @@ script(type="text/ng-template", id="views/assignments")
 						.message-text.text-danger(ng-if="sandboxConfigMsg.errorMessage") {{sandboxConfigMsg.errorMessage}}
 						.message-text.text-success(ng-if="sandboxConfigMsg.successMessage") {{sandboxConfigMsg.successMessage}}
 						button.btn.btn-primary(type="submit" ng-click="uploadSandboxConfigFile()") Upload
+			.panel.panel-default.shadowedBox(ng-if="assignment.asgId")
+				.panel-body
+					p
+						h2
+							strong Description
+			.panel.panel-default.shadowedBox(ng-if="assignment.asgId")
+				.panel-body
+					p
+						h2
+							strong Code Template
+			.panel.panel-default.shadowedBox(ng-if="assignment.asgId")
+				.panel-body
+					p
+						h2
+							strong Sample Input

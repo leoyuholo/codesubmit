@@ -2,11 +2,17 @@
 module.exports = ($) ->
 	self = {}
 
-	self.list = (asgId, done) ->
-		$.stores.submissionStore.list asgId, (err, submissions) ->
+	self.list = (condition, done) ->
+		$.stores.submissionStore.list condition, (err, submissions) ->
 			return $.utils.onError done, err if err
 
 			done null, submissions.map $.models.Submission.envelop
+
+	self.findBySubId = (condition, done) ->
+		$.stores.submissionStore.findBySubId condition, (err, submission) ->
+			return $.utils.onError done, err if err
+
+			done null, $.models.Submission.envelop submission
 
 	self.submit = (student, asgId, code, done) ->
 		submission =
@@ -22,6 +28,6 @@ module.exports = ($) ->
 			$.stores.mqStore.push submission, (err) ->
 				return $.utils.onError done, err if err
 
-				done null, submission
+				done null, $.models.Submission.envelop submission
 
 	return self

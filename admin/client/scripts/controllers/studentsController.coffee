@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit-admin'
+app = angular.module 'codesubmit'
 
 app.controller 'StudentsController', ($scope, studentService, messageService) ->
 
@@ -7,14 +7,9 @@ app.controller 'StudentsController', ($scope, studentService, messageService) ->
 		email: ''
 		remarks: ''
 
-	$scope.students = []
-	$scope.studentListMsg = {}
-	$scope.newStudents = []
-	$scope.studentCreateMsg = {}
-
 	$scope.listStudents = () ->
 		$scope.studentListMsg.refreshing = true
-		studentService.listStudents (err, data) ->
+		studentService.list (err, data) ->
 			$scope.studentListMsg.refreshing = false
 			return messageService.error $scope.studentListMsg, err.message if err
 
@@ -47,7 +42,7 @@ app.controller 'StudentsController', ($scope, studentService, messageService) ->
 
 	$scope.createStudent = (student) ->
 		student.status = 'Adding'
-		studentService.createStudent student, (err) ->
+		studentService.create student, (err) ->
 			if err
 				delete student.status
 				return messageService.error $scope.studentCreateMsg, err.message
@@ -62,6 +57,11 @@ app.controller 'StudentsController', ($scope, studentService, messageService) ->
 
 	$scope.addEmptyStudent = () ->
 		$scope.newStudents.push _.cloneDeep defaultStudent
+
+	$scope.students = []
+	$scope.studentListMsg = {}
+	$scope.newStudents = []
+	$scope.studentCreateMsg = {}
 
 	$scope.listStudents()
 	$scope.addEmptyStudent()

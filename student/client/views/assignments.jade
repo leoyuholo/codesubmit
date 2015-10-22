@@ -3,30 +3,25 @@ script(type="text/ng-template", id="views/assignments")
 	.container#assignments-view
 		.col-md-12.col-sm-12
 			.panel.panel-default.shadowedBox
-				.panel-body
-					p
-						h2 Assignments
-						.message-text.text-danger(ng-if="assignmentListMsg.errorMessage") {{assignmentListMsg.errorMessage}}
-						.message-text.text-success(ng-if="assignmentListMsg.successMessage") {{assignmentListMsg.successMessage}}
-					.panel-group#assignmentList(role="tablist")
-						p(ng-if="!assignments.length") No assignments yet.
-						.panel.panel-default(ng-repeat="assignment in assignments")
-							.panel-heading(role="tab" data-toggle="collapse" data-parent="#assignmentList" data-target="{{'#assignmentListItem-' + $index}}" ng-click="initEditor($index)")
-								h4.panel-title
-									h2 {{assignment.name}}
-									p
-										strong Due Date:
-										|  {{assignment.dueDt.toString()}}
-									p
-										strong Submission Limit:
-										|  {{assignment.submissionLimit}}
-							.panel-collapse.collapse(id="{{'assignmentListItem-' + $index}}" role="tabpanel")
-								.panel-body
-									p Write code:
-									p.editor(id="{{'assignmentListEditor-' + $index}}")
-										| // Enter your code here.
-									p
-										.message-text.text-danger(ng-if="assignmentSubmitMsg[$index].errorMessage") {{assignmentSubmitMsg[$index].errorMessage}}
-										.message-text.text-success(ng-if="assignmentSubmitMsg[$index].successMessage") {{assignmentSubmitMsg[$index].successMessage}}
-									p.text-right
-										button.btn.btn-primary(type="button" ng-click="submitAssignment($index)") Submit
+				.panel-heading
+					h2
+						ol.breadcrumb
+							li Assignments
+					.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
+					p(ng-if="!assignments.length") No assignments yet.
+				ul.list-group(ng-if="assignments.length")
+					li.list-group-item(ng-repeat="assignment in assignments")
+						h3 {{assignment.name}}
+						ul.list-inline
+							li
+								strong Due
+								|  {{assignment.dueDt.toString()}}
+							li
+								a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}")
+									strong Submissions
+									|  1 / {{assignment.submissionLimit}}
+							li
+								strong Score
+								|  8 / 10
+							li
+								a.btn.btn-primary(ng-href="#/assignment/{{assignment.asgId}}/{{assignment.name}}") Write Code

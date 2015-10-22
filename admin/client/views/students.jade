@@ -37,12 +37,10 @@ script(type="text/ng-template", id="views/students")
 						.message-text.text-danger(ng-if="studentCreateMsg.errorMessage") {{studentCreateMsg.errorMessage}}
 						.message-text.text-success(ng-if="studentCreateMsg.successMessage") {{studentCreateMsg.successMessage}}
 						button.pull-right.btn.btn-success(type="button" data-toggle="modal" data-target="#importStudent-modal" ng-click="") Import
-						.modal.fade#importStudent-modal(tabindex="-1" role="dialog")
-							.modal-dialog(role="document")
+						.modal.fade#importStudent-modal
+							.modal-dialog
 								.modal-content
 									.modal-header
-										button.close(type="button" data-dismiss="modal")
-											span &times;
 										h4.modal-title Import Students
 									.modal-body
 										form
