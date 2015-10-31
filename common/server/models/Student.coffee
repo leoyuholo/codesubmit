@@ -1,22 +1,19 @@
+_ = require 'lodash'
 mongoose = require 'mongoose'
 
 module.exports = ($) ->
-	studentSchema = new mongoose.Schema(
+	student =
 		email: {type: String, required: true, match: /.+@.+/}
 		username: {type: String, required: true, match: /\w+/}
 		password: {type: String, required: true, match: /[\w]+/}
 		active: {type: Boolean, default: true}
 		remarks: String
-	)
+
+	studentSchema = new mongoose.Schema(student)
 
 	studentSchema.index {email: 1}, {unique: true}
 
 	studentSchema.static 'envelop', (doc) ->
-		return {
-			username: doc.username
-			email: doc.email
-			active: doc.active
-			remarks: doc.remarks
-		}
+		_.pick doc, _.keys student
 
 	mongoose.model 'Student', studentSchema

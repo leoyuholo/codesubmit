@@ -1,3 +1,4 @@
+_ = require 'lodash'
 
 module.exports = ($) ->
 	self = {}
@@ -6,6 +7,26 @@ module.exports = ($) ->
 		$.stores.assignmentStore.list (err, assignments) ->
 			return $.utils.onError done, err if err
 			done null, assignments.map $.models.Assignment.envelop
+
+	self.listWithMyStats = (email, done) ->
+		self.list (err, assignments) ->
+			return $.utils.onError done, err if err
+
+			$.services.submissionService.findScoreStatsByEmail email, (err, statses) ->
+				return $.utils.onError done, err if err
+
+				statses = _.indexBy statses, (stats) -> stats.tags.asgId
+
+				_.each assignments, (assignment) ->
+					stats = statses[assignment.asgId]
+					if stats
+						assignment.scoreStats = {}
+						assignment.scoreStats.max = stats.max
+						assignment.scoreStats.count = stats.count
+
+				now = Date.now()
+
+				done null, _.filter assignments, (asg) -> asg.startDt < now
 
 	self.findByAsgId = (asgId, done) ->
 		$.stores.assignmentStore.findByAsgId asgId, (err, assignment) ->
@@ -16,7 +37,7 @@ module.exports = ($) ->
 
 	self.create = (assignment, done) ->
 		assignment.asgId = $.utils.rng.generateId()
-		assignment.sandboxConfigFileStorageKey = $.services.namespaceService.makeStorageKey assignment.asgId
+		assignment.testCaseFileStorageKey = $.services.namespaceService.makeStorageKey 'testCaseFiles', assignment.asgId
 
 		$.stores.assignmentStore.create assignment, (err) ->
 			return $.utils.onError done, err if err

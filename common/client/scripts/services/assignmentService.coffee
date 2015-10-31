@@ -6,6 +6,9 @@ app.service 'assignmentService', (urlService) ->
 	self.list = (done) ->
 		urlService.get urlService.assignment.list(), done
 
+	self.listWithMyStats = (done) ->
+		urlService.get urlService.assignment.listWithMyStats(), done
+
 	self.findByAsgId = (asgId, done) ->
 		urlService.get urlService.assignment.findByAsgId(asgId), done
 

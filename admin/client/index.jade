@@ -17,20 +17,25 @@ html(ng-app="codesubmit")
 
 		include ../../common/client/stylesheets/stylesheets.jade
 
+		script(src="//cdn.jsdelivr.net/ace/1.2.1/min/ace.js")
 		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js")
 		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js")
 		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.min.js")
+		script(src="//cdn.rawgit.com/angular-ui/ui-ace/bower/ui-ace.min.js")
 
 		include scripts/scripts.jade
+		include ../../common/client/scripts/scripts.jade
 
 	body#codesubmit
 
 		div(ng-view)
 
 		include views/views.jade
+		include ../../common/client/views/views.jade
 
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js")
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js")
 		script(src="https://cdn.rawgit.com/RickStrahl/json.date-extensions/master/json.date-extensions.min.js")
 		script JSON.useDateParser();

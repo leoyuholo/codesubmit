@@ -11,11 +11,43 @@ script(type="text/ng-template", id="views/assignment")
 							li {{assignment.name}}
 				.panel-body
 					.message-text.text-danger(ng-if="assignmentDetailMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
-					p.editor(id="editor")
+					p
+						strong Start Date:
+						|  {{assignment.startDt.toString()}}
+					p
+						strong Due Date:
+						|  {{assignment.dueDt.toString()}}
+					p
+						strong Hard Due Date:
+						|  {{assignment.hardDueDt.toString()}}
+					p
+						strong Penalty After Due Date:
+						|  {{assignment.penalty}}
+					p
+						strong Submission Limit:
+						|  {{assignment.submissionLimit}}
+					p
+						strong Language:
+						|  {{assignment.sandboxConfig.language}}
+					p
+						strong Time Limit (Seconds):
+						|  {{assignment.sandboxConfig.timeLimitS}}
+					p
+						strong Memory Limit (KB):
+						|  {{assignment.sandboxConfig.memoryLimitMB}} * 1024
+					p
+						strong Output Limit (KB):
+						|  {{assignment.sandboxConfig.outputLimitKB}}
+					p
+						strong Description:
+					p
+						strong Write Code:
+					codesubmit-editor(local-storage-key="localStorageKey" language="assignment.sandboxConfig.language" ng-model="code")
 					p
 						.message-text.text-danger(ng-if="assignmentSubmitMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
 						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
 					p.text-right
+						//- TODO: pop up confirmation
 						button.btn.btn-primary(type="button" ng-click="submit()") Submit
 					p.text-right
 						a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}") Submission History

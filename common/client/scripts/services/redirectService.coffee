@@ -7,8 +7,7 @@ app.service 'redirectService', ($rootScope, $location) ->
 		$location.path if $rootScope.user then $rootScope.homePath else '/'
 		$location.replace()
 
-	self.redirectTo = (key, id) ->
-		console.log('/' + Array.prototype.join.call arguments, '/')
+	self.redirectTo = () ->
 		$location.path '/' + Array.prototype.join.call arguments, '/'
 		$location.replace()
 

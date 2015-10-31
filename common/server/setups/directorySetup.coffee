@@ -4,7 +4,7 @@ module.exports = ($) ->
 	self = {}
 
 	setupDirectories = (done) ->
-		fse.ensureDir '/submission/worker/sandboxconfig', done
+		fse.ensureDir $.constants.namespaceConstants.fsNamespace.testCase, done
 
 	self.run = (done) ->
 		setupDirectories done

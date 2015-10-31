@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit', ['ngRoute', 'ngCookies']
+app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ui.ace']
 
 app.config ($routeProvider) ->
 	$routeProvider

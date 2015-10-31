@@ -2,7 +2,7 @@
 module.exports = ($) ->
 	self = {}
 
-	self.lsit = () ->
+	self.list = () ->
 		$.express.Router().get '/list/:asgId', (req, res, done) ->
 			asgId = req.params.asgId
 

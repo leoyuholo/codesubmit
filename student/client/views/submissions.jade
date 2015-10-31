@@ -27,6 +27,6 @@ script(type="text/ng-template", id="views/submissions")
 								|  {{submission.status}}
 							li
 								strong Score
-								|  {{submission.score || 'N/A'}}
+								|  {{submission.score == undefined ? 'N/A' : submission.score}}
 							li
 								a.btn.btn-primary(ng-href="#/submission/{{asgId}}/{{asgName}}/{{submission.subId}}/{{submissions.length - $index}}") View Details

@@ -5,8 +5,7 @@
 		box-shadow: 2px 5px 12px #555
 	.message-text
 		white-space: pre
-	.editor
-		position: relative
+	.ace_editor
 		height: 300px
 	.panel-heading .breadcrumb
 		padding: 0px

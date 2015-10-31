@@ -1,9 +1,19 @@
+
 module.exports = ($) ->
 	self = {}
 
 	self.list = () ->
 		$.express.Router().get '/list', (req, res, done) ->
 			$.services.assignmentService.list (err, assignments) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					assignments: assignments
+
+	self.listwithmystats = () ->
+		$.express.Router().get '/listwithmystats', (req, res, done) ->
+			$.services.assignmentService.listWithMyStats req.user.email, (err, assignments) ->
 				return $.utils.onError done, err if err
 
 				res.json

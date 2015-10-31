@@ -16,7 +16,20 @@ script(type="text/ng-template", id="views/submission")
 				.panel-body
 					.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
 					p
-						strong Result
+						strong Status
+						|  {{submission.status}}
 					p
-						strong Submitted Code
-						.editor(id="editor")
+						strong Score
+						|  {{submission.score}} / {{submission.results.length}}
+					p
+						strong Result
+						ul
+							li(ng-repeat="result in submission.results")
+								ul.list-inline
+									li {{result.testCaseName}}:
+									li(ng-class="result.correct ? 'text-success' : 'text-danger'")
+										span.glyphicon(ng-class="result.correct ? 'glyphicon-ok' : 'glyphicon-remove'")
+										| {{result.message}}
+									li(ng-if="result.hint") (hint: {{result.hint}})
+					//- TODO: get language from somewhere instead of hardcode
+					codesubmit-editor(language="'c'" read-only="true" ng-model="code")

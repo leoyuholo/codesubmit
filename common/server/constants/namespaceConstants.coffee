@@ -4,11 +4,11 @@ module.exports = ($) ->
 	self = {}
 
 	self.fsNamespace =
-		'sandboxRun': '/codesubmit/worker/sandboxrun'
-		'sandboxConfig': '/codesubmit/worker/sandboxconfig'
-		'sandboxOut': '/codesubmit/worker/sandboxout'
+		sandboxRun: '/codesubmit/worker/sandboxrun'
+		testCase: '/codesubmit/worker/testcase'
+		sandboxOut: '/codesubmit/worker/sandboxout'
 
 	self.storageNamespace =
-		'sandboxConfigFiles': 'assignment/sanndboxconfigfiles'
+		testCaseFiles: 'assignment/testcasefiles'
 
 	return self

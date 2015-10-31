@@ -19,9 +19,9 @@ script(type="text/ng-template", id="views/assignments")
 							li
 								a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}")
 									strong Submissions
-									|  1 / {{assignment.submissionLimit}}
+									|  {{assignment.scoreStats.count || 0}} / {{assignment.submissionLimit}}
 							li
 								strong Score
-								|  8 / 10
-							li
+								|  {{assignment.scoreStats.max || 0}} / {{assignment.sandboxConfig.testCaseNames.length}}
+							li(ng-if="assignment.hardDueDt > now")
 								a.btn.btn-primary(ng-href="#/assignment/{{assignment.asgId}}/{{assignment.name}}") Write Code

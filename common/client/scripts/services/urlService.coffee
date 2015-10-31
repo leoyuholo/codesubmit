@@ -27,6 +27,7 @@ app.service 'urlService', ($http) ->
 			changePassword: () -> "#{apiPrefix}/student/changepassword"
 		assignment:
 			list: () -> "#{apiPrefix}/assignment/list"
+			listWithMyStats: () -> "#{apiPrefix}/assignment/listwithmystats"
 			findByAsgId: (asgId) -> "#{apiPrefix}/assignment/findbyasgid/#{asgId}"
 			create: () -> "#{apiPrefix}/assignment/create"
 			update: () -> "#{apiPrefix}/assignment/update"

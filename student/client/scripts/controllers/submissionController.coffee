@@ -2,13 +2,12 @@ app = angular.module 'codesubmit'
 
 app.controller 'SubmissionController', ($scope, $routeParams, submissionService, messageService) ->
 
-	editor = {}
-
 	$scope.asgId = $routeParams.asgid
 	$scope.asgName = $routeParams.asgname
 	$scope.subId = $routeParams.subid
 	$scope.subName = if _.isNaN +$routeParams.subname then $routeParams.subname else 'Attempt # ' + $routeParams.subname
 	$scope.submission = {}
+	$scope.code = ''
 
 	findSubmission = (subId) ->
 		submissionService.findMineBySubId subId, (err, data) ->
@@ -16,12 +15,6 @@ app.controller 'SubmissionController', ($scope, $routeParams, submissionService,
 
 			$scope.submission = data.submission
 
-			editor.getSession().setValue $scope.submission.code
+			$scope.code = $scope.submission.code
 
-	initEditor = () ->
-		editor = ace.edit 'editor'
-
-		editor.$blockScrolling = Infinity
-
-	initEditor()
 	findSubmission $scope.subId

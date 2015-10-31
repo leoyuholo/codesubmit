@@ -2,6 +2,8 @@ app = angular.module 'codesubmit'
 
 app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService, urlService) ->
 
+	editor = {}
+
 	newDate = new Date()
 	newDate.setMilliseconds 0
 	newDate.setSeconds 0
@@ -14,19 +16,13 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 		submissionLimit: 100
 		penalty: 0
 
-	$scope.listAssignments = () ->
-		assignmentService.list (err, data) ->
-			return messageService.error $scope.assignmentListMsg, err.message if err
-
-			$scope.assignments = data.assignments
-
-	$scope.findAssignment = (asgId) ->
-		assignmentService.findByAsgId asgId, (err, data) ->
-			return messageService.error $scope.assignmentDetailsMsg, err.message if err
-
-			$scope.assignment = data.assignment
-
-			$scope.getSandboxConfigFileDetails $scope.assignment.sandboxConfigFileStorageKey
+	$scope.assignments = []
+	$scope.assignmentListMsg = {}
+	$scope.assignment = _.cloneDeep defaultAssignment
+	$scope.assignmentDetailsMsg = {}
+	$scope.testCaseFileDetails = null
+	$scope.testCaseMsg = {}
+	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 
 	$scope.createAssignment = (assignment) ->
 		assignmentService.create assignment, (err, data) ->
@@ -35,41 +31,49 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 
 			redirectService.redirectTo 'assignments', data.assignment.asgId
 
-	$scope.updateAssignment = (assignment) ->
+	$scope.updateAssignment = (assignment, properties) ->
+		assignment.sandboxConfig.testCaseNames = _.invoke assignment.sandboxConfig.testCaseNames.split(','), 'trim' if _.isString assignment.sandboxConfig?.testCaseNames
+
 		assignmentService.update assignment, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment updated.'
 
-	$scope.getSandboxConfigFileDetails = (key) ->
-		$scope.sandboxConfigFileDetails = null
+	$scope.uploadTestCaseFile = () ->
+		testCaseFile = document.getElementById('testCase-input').files?[0]
+
+		return messageService.error $scope.testCaseMsg, 'No file chosen.' if !testCaseFile
+		return messageService.error $scope.testCaseMsg, "Test cases [#{testCaseFile.type || 'no type'}] file type is not supported" if -1 == testCaseFile.type?.indexOf?('zip')
+
+		storageService.post $scope.assignment.testCaseFileStorageKey, testCaseFile, (err) ->
+			return messageService.error $scope.testCaseMsg, err.message if err
+			messageService.success $scope.testCaseMsg, 'Test cases uploaded.'
+
+			getTestCaseFileDetails $scope.assignment.testCaseFileStorageKey
+
+	listAssignments = () ->
+		assignmentService.list (err, data) ->
+			return messageService.error $scope.assignmentListMsg, err.message if err
+
+			$scope.assignments = data.assignments
+
+	findAssignment = (asgId) ->
+		assignmentService.findByAsgId asgId, (err, data) ->
+			return messageService.error $scope.assignmentDetailsMsg, err.message if err
+
+			$scope.assignment = data.assignment
+
+			getTestCaseFileDetails $scope.assignment.testCaseFileStorageKey
+
+	getTestCaseFileDetails = (key) ->
+		$scope.testCaseFileDetails = null
 
 		storageService.findByKey key, (err, data) ->
 			return if err && 'File not found.' == err.message
-			return messageService.error $scope.sandboxConfigMsg, err.message if err
+			return messageService.error $scope.testCaseMsg, err.message if err
 
-			$scope.sandboxConfigFileDetails = data.info
-			$scope.sandboxConfigFileDetails.filename = $scope.assignment.name + '.zip'
-			$scope.sandboxConfigFileDetails.downloadUrl = urlService.storage.get key, $scope.sandboxConfigFileDetails.filename
+			$scope.testCaseFileDetails = data.info
+			$scope.testCaseFileDetails.filename = $scope.assignment.name + '.zip'
+			$scope.testCaseFileDetails.downloadUrl = urlService.storage.get key, $scope.testCaseFileDetails.filename
 
-	$scope.uploadSandboxConfigFile = () ->
-		sandboxConfigFile = document.getElementById('sandboxConfig-input').files?[0]
-
-		return messageService.error $scope.sandboxConfigMsg, 'No file chosen.' if !sandboxConfigFile
-		return messageService.error $scope.sandboxConfigMsg, "Sandbox config [#{sandboxConfigFile.type || 'no type'}] file type is not supported" if -1 == sandboxConfigFile.type?.indexOf?('zip')
-
-		storageService.post $scope.assignment.sandboxConfigFileStorageKey, sandboxConfigFile, (err) ->
-			return messageService.error $scope.sandboxConfigMsg, err.message if err
-			messageService.success $scope.sandboxConfigMsg, 'Sandbox config uploaded.'
-
-			$scope.getSandboxConfigFileDetails $scope.assignment.sandboxConfigFileStorageKey
-
-	$scope.assignments = []
-	$scope.assignmentListMsg = {}
-	$scope.assignment = _.cloneDeep defaultAssignment
-	$scope.assignmentDetailsMsg = {}
-	$scope.sandboxConfigFileDetails = null
-	$scope.sandboxConfigMsg = {}
-
-	$scope.listAssignments()
-	$scope.asgId = $routeParams.id if $routeParams.id
-	$scope.findAssignment($scope.asgId) if $scope.asgId
+	listAssignments()
+	findAssignment($scope.asgId) if $scope.asgId

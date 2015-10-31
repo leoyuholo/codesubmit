@@ -5,50 +5,38 @@ _ = require 'lodash'
 async = require 'async'
 fse = require 'fs-extra'
 unzip = require 'node-unzip-2'
-Promise = require 'bluebird'
+q = require 'q'
+Promise = q.Promise
 
 module.exports = ($) ->
 	self = {}
 
-	extractSandboxConfig = (sandboxConfigFileStorageKey, extractPath, done) ->
-		fse.remove extractPath, (err) ->
+	extractTestCase = (sandboxTask, done) ->
+		# TODO: cache test case
+		fse.remove sandboxTask.extractPath, (err) ->
 			return $.utils.onError done, err if err
 
-			$.stores.storageStore.readStream(sandboxConfigFileStorageKey)
-				.pipe(unzip.Extract {path: extractPath})
+			$.stores.storageStore.readStream(sandboxTask.assignment.testCaseFileStorageKey)
+				.pipe(unzip.Extract {path: sandboxTask.extractPath})
 				.on('error', done)
-				.on 'close', () ->
-					fse.readFile path.join(extractPath, 'assignment.json'), 'utf8', (err, data) ->
-						return $.utils.onError done, err if err
-
-						sandboxConfig = {}
-
-						try
-							sandboxConfig = JSON.parse data.replace /^\uFEFF/, ''
-						catch err
-							return $.utils.onError done, err if err
-
-						done null, sandboxConfig
+				.on 'close', done
 
 	prepare = (sandboxTask, done) ->
-		sandboxTask.sandboxConfigFileStorageKey = $.services.namespaceService.makeStorageKey 'sandboxConfigFiles', sandboxTask.asgId
-		sandboxTask.extractPath = $.services.namespaceService.makeFsPath 'sandboxConfig', sandboxTask.asgId
-		sandboxTask.sandboxrunPath = $.services.namespaceService.makeFsPath 'sandboxRun', sandboxTask.subId
-		sandboxTask.sandboxoutPath = $.services.namespaceService.makeFsPath 'sandboxOut', sandboxTask.subId
+		sandboxTask.extractPath = $.services.namespaceService.makeFsPath 'testCase', sandboxTask.submission.asgId
+		sandboxTask.sandboxrunPath = $.services.namespaceService.makeFsPath 'sandboxRun', sandboxTask.submission.subId
+		sandboxTask.sandboxoutPath = $.services.namespaceService.makeFsPath 'sandboxOut', sandboxTask.submission.subId
 
-		extractSandboxConfig sandboxTask.sandboxConfigFileStorageKey, sandboxTask.extractPath, (err, sandboxConfig) ->
-			return $.utils.onError done, err if err
+		$.services.assignmentService.findByAsgId sandboxTask.submission.asgId, (err, assignment) ->
+			sandboxTask.assignment = assignment
+			sandboxTask.codePath = path.join sandboxTask.sandboxrunPath, assignment.sandboxConfig.codeFilename
 
-			sandboxTask.sandboxConfig = sandboxConfig
-			sandboxTask.codePath = path.join sandboxTask.sandboxrunPath, sandboxConfig.codeFilename
-
-			fse.outputFile sandboxTask.codePath, sandboxTask.code, (err) ->
-				return $.utils.onError done, err if err
-
-				done null, sandboxTask
+			async.parallel [
+				_.partial fse.outputFile, sandboxTask.codePath, sandboxTask.submission.code
+				_.partial extractTestCase, sandboxTask
+			], done
 
 	makeRunCmd = (sandboxTask) ->
-		sandboxConfig = sandboxTask.sandboxConfig
+		sandboxConfig = sandboxTask.assignment.sandboxConfig
 		[
 			'docker'
 			'run'
@@ -62,8 +50,8 @@ module.exports = ($) ->
 			'-e', sandboxConfig.errorToleranceLevel
 			'-n', 1
 			'-t', sandboxConfig.timeLimitS
-			'-m', sandboxConfig.memoryLimitMb
-			'-o', sandboxConfig.outputLimitKb
+			'-m', sandboxConfig.memoryLimitMB
+			'-o', sandboxConfig.outputLimitKB
 			'-c', sandboxConfig.codeFilename
 			sandboxConfig.executableFilename
 		].join ' '
@@ -85,9 +73,8 @@ module.exports = ($) ->
 			cmd = makeRunCmd sandboxTask
 
 			inStream = fse.createReadStream inPath
-			answerStream = fse.createOutputStream answerPath
 
-			sandbox = childProcess.exec cmd, {timeout: 20000}, (err, stdout, stderr) ->
+			sandbox = childProcess.exec cmd, {timeout: sandboxTask.assignment.sandboxConfig.commandTimeout}, (err, stdout, stderr) ->
 				return reject err if err
 
 				stdouts = stdout.split('\x00')
@@ -99,19 +86,18 @@ module.exports = ($) ->
 				catch err
 					return reject err if err
 
-				return resolve {correct: false, message: resultJSON.result} if resultJSON.result[0] != 'OK'
+				return resolve {testCaseName: testCaseName, correct: false, message: resultJSON.result[0]} if resultJSON.result[0] != 'OK'
 
 				fse.outputFile answerPath, answer, (err) ->
 					return reject err if err
 
-					diffCmd = makeDiffCmd outPath, answerPath, sandboxTask.strictCompare
+					diffCmd = makeDiffCmd outPath, answerPath, sandboxTask.assignment.sandboxConfig.strictCompare
 
 					childProcess.exec diffCmd, (err, stdout, stderr) ->
-						return resolve {correct: true} if !err
+						return resolve {testCaseName: testCaseName, correct: true, message: 'Accepted', time: resultJSON.execute_time} if !err
 
 						fse.readFile hintPath, 'utf8', (err, data) ->
-							console.log 'hint', err, data
-							resolve {correct: false, message: data || ''}
+							resolve {testCaseName: testCaseName, correct: false, message: 'Wrong Answer', time: resultJSON.execute_time, hint: data || ''}
 
 			inStream.pipe(sandbox.stdin)
 				.on('error', reject)
@@ -119,36 +105,37 @@ module.exports = ($) ->
 					sandbox.stdin.end()
 
 	runSandbox = (sandboxTask, done) ->
-
-		async.mapSeries sandboxTask.sandboxConfig.testCases, ( (testCase, done) ->
-			runTestCasePromise = runTestCase sandboxTask, testCase
-
-			runTestCasePromise.then (_.partial done, null), done
+		async.mapSeries sandboxTask.assignment.sandboxConfig.testCaseNames, ( (testCaseName, done) ->
+			runTestCase(sandboxTask, testCaseName).then (_.partial done, null), done
 		), (err, results) ->
+			console.log err, results
 			return $.utils.onError done, err if err
 
 			sandboxTask.testResults = results
 
-			done null, sandboxTask
+			done null
 
 	cleanup = (sandboxTask, done) ->
 		submission =
-			subId: sandboxTask.subId
-			status: 'Done'
+			subId: sandboxTask.submission.subId
+			status: 'evaluated'
 			evaluateDt: new Date()
 			results: sandboxTask.testResults
 			score: _.filter(sandboxTask.testResults, 'correct').length
-		console.log submission
+
 		$.stores.submissionStore.update submission, done
 
 	processSubmission = (sandboxTask, done) ->
-		async.waterfall [
+		async.series [
 			_.partial prepare, sandboxTask
-			runSandbox
-			cleanup
+			_.partial runSandbox, sandboxTask
+			_.partial cleanup, sandboxTask
 		], done
 
-	self.work = (sandboxTask, done) ->
+	self.work = (submission, done) ->
+		sandboxTask =
+			submission: submission
+
 		async.series [
 			_.partial $.services.statusService.startJob, sandboxTask
 			_.partial processSubmission, sandboxTask

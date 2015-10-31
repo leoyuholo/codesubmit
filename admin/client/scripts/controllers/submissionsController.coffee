@@ -20,5 +20,5 @@ app.controller 'SubmissionsController', ($scope, $routeParams, submissionService
 	$scope.submissionListMsg = {}
 
 	$scope.listAssignments()
-	$scope.asgId = $routeParams.id if $routeParams.id
+	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 	$scope.listSubmissions $scope.asgId if $scope.asgId

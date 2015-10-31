@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit', ['ngRoute', 'ngCookies']
+app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ui.ace']
 
 app.config ($routeProvider) ->
 	$routeProvider
@@ -18,11 +18,11 @@ app.config ($routeProvider) ->
 		controller: 'AdminsController',
 		templateUrl: 'views/admins'
 	})
-	.when('/assignments/:id?', {
+	.when('/assignments/:asgid?', {
 		controller: 'AssignmentsController',
 		templateUrl: 'views/assignments'
 	})
-	.when('/submissions/:id?', {
+	.when('/submissions/:asgid?', {
 		controller: 'SubmissionsController',
 		templateUrl: 'views/submissions'
 	})

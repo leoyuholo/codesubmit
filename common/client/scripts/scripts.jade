@@ -3,16 +3,20 @@ script
 script
 	include:coffee-script services/urlService.coffee
 script
-	include:coffee-script services/adminService.coffee
-script
 	include:coffee-script services/messageService.coffee
 script
 	include:coffee-script services/redirectService.coffee
+script
+	include:coffee-script services/adminService.coffee
 script
 	include:coffee-script services/studentService.coffee
 script
 	include:coffee-script services/assignmentService.coffee
 script
+	include:coffee-script services/submissionService.coffee
+script
 	include:coffee-script services/storageService.coffee
 script
-	include:coffee-script services/submissionService.coffee
+	include:coffee-script directives/codesubmitEditor.coffee
+script
+	include:coffee-script controllers/codesubmitEditorController.coffee
