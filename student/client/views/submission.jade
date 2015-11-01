@@ -20,7 +20,7 @@ script(type="text/ng-template", id="views/submission")
 						|  {{submission.status}}
 					p
 						strong Score
-						|  {{submission.score}} / {{submission.results.length}}
+						|  {{submission.score == undefined ? '...' : submission.score}} / {{submission.results.length}}
 					p
 						strong Result
 						ul
