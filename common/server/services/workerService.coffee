@@ -11,8 +11,9 @@ Promise = q.Promise
 module.exports = ($) ->
 	self = {}
 
+	testCaseCache = {}
+
 	extractTestCase = (sandboxTask, done) ->
-		# TODO: cache test case
 		fse.remove sandboxTask.extractPath, (err) ->
 			return $.utils.onError done, err if err
 
@@ -20,6 +21,20 @@ module.exports = ($) ->
 				.pipe(unzip.Extract {path: sandboxTask.extractPath})
 				.on('error', done)
 				.on 'close', done
+
+	extractTestCaseCached = (sandboxTask, done) ->
+		key = sandboxTask.assignment.testCaseFileStorageKey
+
+		$.stores.storageStore.findByKey key, (err, fileInfo) ->
+			if testCaseCache[key] && _.isEqual testCaseCache[key].uploadDate, fileInfo.uploadDate
+				return done null
+
+			extractTestCase sandboxTask, (err) ->
+				return $.utils.onError done, err if err
+
+				testCaseCache[key] = fileInfo
+
+				done null
 
 	prepare = (sandboxTask, done) ->
 		sandboxTask.extractPath = $.services.namespaceService.makeFsPath 'testCase', sandboxTask.submission.asgId
@@ -32,7 +47,7 @@ module.exports = ($) ->
 
 			async.parallel [
 				_.partial fse.outputFile, sandboxTask.codePath, sandboxTask.submission.code
-				_.partial extractTestCase, sandboxTask
+				_.partial extractTestCaseCached, sandboxTask
 			], done
 
 	makeRunCmd = (sandboxTask) ->
@@ -108,7 +123,6 @@ module.exports = ($) ->
 		async.mapSeries sandboxTask.assignment.sandboxConfig.testCaseNames, ( (testCaseName, done) ->
 			runTestCase(sandboxTask, testCaseName).then (_.partial done, null), done
 		), (err, results) ->
-			console.log err, results
 			return $.utils.onError done, err if err
 
 			sandboxTask.testResults = results

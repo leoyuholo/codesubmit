@@ -12,16 +12,16 @@ module.exports = ($) ->
 			return $.utils.onError done, new Error('Invalid storage key.') if !storageKey
 
 			if req.query.infoOnly
-				$.stores.storageStore.findByKey storageKey, (err, info) ->
+				$.stores.storageStore.findByKey storageKey, (err, fileInfo) ->
 					return $.utils.onError done, err if err
-					return $.utils.onError done, new Error('File not found.') if !info
+					return $.utils.onError done, new Error('File not found.') if !fileInfo
 
 					res.json
 						success: true
-						info:
-							length: info.length
-							uploadDate: info.uploadDate
-							md5: info.md5
+						fileInfo:
+							length: fileInfo.length
+							uploadDate: fileInfo.uploadDate
+							md5: fileInfo.md5
 			else
 				filename = req.query.filename
 				res.setHeader 'Content-disposition', "attachment; filename=#{filename}" if filename
