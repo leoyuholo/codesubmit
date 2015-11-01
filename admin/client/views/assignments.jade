@@ -135,9 +135,14 @@ script(type="text/ng-template", id="views/assignments")
 								h2
 									strong Description
 							codesubmit-editor(local-storage-key="'description/' + assignment.asgId" language="'markdown'" ng-model="assignment.description")
-							.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
-							.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
-							button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
+							p
+								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
+								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
+							p.help-block You can see live preview in the panel below.
+							p
+								button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
+					.panel.panel-default.shadowedBox
+						.panel-body(marked="assignment.description")
 				uib-tab(heading="Code Template" disable="assignment.asgId === undefined")
 					.panel.panel-default.shadowedBox
 						.panel-body
@@ -145,9 +150,11 @@ script(type="text/ng-template", id="views/assignments")
 								h2
 									strong Code Template
 							codesubmit-editor(local-storage-key="'codeTemplate/' + assignment.asgId" language="assignment.sandboxConfig.language" ng-model="assignment.codeTemplate")
-							.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
-							.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
-							button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
+							p
+								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
+								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
+							p
+								button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
 				uib-tab(heading="Sample Input" disable="assignment.asgId === undefined")
 					.panel.panel-default.shadowedBox
 						.panel-body
@@ -155,6 +162,8 @@ script(type="text/ng-template", id="views/assignments")
 								h2
 									strong Sample Input
 							codesubmit-editor(local-storage-key="'sampleInput/' + assignment.asgId" ng-model="assignment.sampleInput")
-							.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
-							.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
-							button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
+							p
+								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
+								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
+							p
+								button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update

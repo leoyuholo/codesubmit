@@ -40,6 +40,7 @@ script(type="text/ng-template", id="views/assignment")
 						|  {{assignment.sandboxConfig.outputLimitKB}}
 					p
 						strong Description:
+					div(marked="assignment.description")
 					p
 						strong Write Code:
 					codesubmit-editor(local-storage-key="localStorageKey" language="assignment.sandboxConfig.language" ng-model="code")

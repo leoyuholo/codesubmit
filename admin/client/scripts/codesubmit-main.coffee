@@ -1,6 +1,6 @@
-app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ui.ace']
+app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'ui.ace', 'hc.marked']
 
-app.config ($routeProvider) ->
+app.config ($routeProvider, markedProvider) ->
 	$routeProvider
 	.when('/', {
 		controller: 'LoginController',
@@ -29,6 +29,9 @@ app.config ($routeProvider) ->
 	.otherwise({
 		redirectTo: '/'
 	})
+
+	markedProvider.setOptions
+		sanitize: true
 
 	return
 
