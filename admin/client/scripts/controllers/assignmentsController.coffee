@@ -7,14 +7,17 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 	newDate = new Date()
 	newDate.setMilliseconds 0
 	newDate.setSeconds 0
+	newDate.setDate newDate.getDate() + 14
 
 	defaultAssignment =
 		name: ''
-		startDt: newDate
+		startDt: new Date(1970, 0, 2)
 		dueDt: newDate
-		hardDueDt: newDate
+		hardDueDt: new Date(2038, 0, 18)
 		submissionLimit: 100
 		penalty: 0
+
+	$scope.now = new Date()
 
 	$scope.assignments = []
 	$scope.assignmentListMsg = {}
