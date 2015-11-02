@@ -5,7 +5,9 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 	$scope.asgId = $routeParams.asgid
 	$scope.assignmentDetailsMsg = {}
 	$scope.assignmentSubmitMsg = {}
+	$scope.assignmentRunMsg = {}
 	$scope.assignment = {}
+	$scope.runResult = {}
 	$scope.localStorageKey = "assignment/#{$scope.asgId}"
 	$scope.code = ''
 	$scope.input = ''
@@ -17,12 +19,15 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 		input = $scope.input
 		output = if input == $scope.assignment.sampleInput then $scope.assignment.sampleOutput else ''
 
-		messageService.success $scope.assignmentSubmitMsg, 'Running...'
+		$scope.runResult = {}
+		messageService.success $scope.assignmentRunMsg, 'Running...'
 
 		submissionService.run $scope.assignment.asgId, $scope.code, input, output, (err, data) ->
-			return messageService.error $scope.assignmentSubmitMsg, err.message if err
+			return messageService.error $scope.assignmentRunMsg, err.message if err
 
 			$scope.runResult = data.runResult
+
+			messageService.clear $scope.assignmentRunMsg
 
 	submit = () ->
 		submissionService.submit $scope.assignment.asgId, $scope.code, (err, data) ->

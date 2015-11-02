@@ -49,6 +49,7 @@ module.exports = ($) ->
 		runResult.compileErrorMessage = result.compileErrorMessage if result.compileErrorMessage
 		runResult.memory = result.memory_usage if result.memory_usage
 		runResult.time = result.execute_time if result.execute_time
+		runResult.input = result.input if result.input
 		runResult.output = result.output if result.output
 		runResult.expectedOutput = result.expectedOutput if result.expectedOutput
 
@@ -149,6 +150,7 @@ module.exports = ($) ->
 				# ignore err
 
 				result = results[1]
+				result.input = sandboxTask.submission.input
 				result.expectedOutput = sandboxTask.submission.output
 				result.output = stdout0 if !err && stdout0
 				runResult = makeRunResult results[1], 'run'
@@ -164,7 +166,8 @@ module.exports = ($) ->
 			fse.readFile path.join(sandboxTask.sandboxrunPath, 'stdout0'), 'utf8', (err, stdout0) ->
 				# ignore err
 
-				result.output = stdout0 if !err && stdout0
+				result.input = sandboxTask.submission.input
+				result.output = if !err && stdout0 != undefined then stdout0 else ''
 				runResult = makeRunResult result, 'run'
 
 				done null, runResult
