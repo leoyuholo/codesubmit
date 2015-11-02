@@ -18,7 +18,7 @@ $.controllers = $.utils.routerHelper.makeControllers
 	include:
 		assignmentController: ['list', 'listwithmystats', 'findbyasgid']
 		studentController: ['changepassword']
-		submissionController: ['listmine', 'findminebysubid', 'submit']
+		submissionController: ['listmine', 'findminebysubid', 'submit', 'run']
 $.controllers.userController = $.utils.routerHelper.makeUserController $.stores.studentStore
 
 # routes

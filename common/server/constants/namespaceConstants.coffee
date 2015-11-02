@@ -6,7 +6,6 @@ module.exports = ($) ->
 	self.fsNamespace =
 		sandboxRun: '/codesubmit/worker/sandboxrun'
 		testCase: '/codesubmit/worker/testcase'
-		sandboxOut: '/codesubmit/worker/sandboxout'
 
 	self.storageNamespace =
 		testCaseFiles: 'assignment/testcasefiles'

@@ -74,7 +74,7 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			return if err && 'File not found.' == err.message
 			return messageService.error $scope.testCaseMsg, err.message if err
 
-			$scope.testCaseFileDetails = data.info
+			$scope.testCaseFileDetails = data.fileInfo
 			$scope.testCaseFileDetails.filename = $scope.assignment.name + '.zip'
 			$scope.testCaseFileDetails.downloadUrl = urlService.storage.get key, $scope.testCaseFileDetails.filename
 

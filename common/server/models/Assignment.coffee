@@ -29,6 +29,7 @@ module.exports = ($) ->
 		description: String
 		codeTemplate: {type: String, default: '// Enter your code here.'}
 		sampleInput: {type: String, default: ''}
+		sampleOutput: {type: String, default: ''}
 
 	assignmentSchema = new mongoose.Schema(assignment)
 

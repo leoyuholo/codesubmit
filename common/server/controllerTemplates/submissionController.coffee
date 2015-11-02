@@ -35,6 +35,20 @@ module.exports = ($) ->
 					success: true
 					submission: submission
 
+	self.run = () ->
+		$.express.Router().post '/run/:asgId', (req, res, done) ->
+			asgId = req.params.asgId
+			code = req.body.code
+			input = req.body.input
+			output = req.body.output
+
+			$.services.submissionService.run req.user, asgId, code, input, output, (err, runResult) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					runResult: runResult
+
 	self.submit = () ->
 		$.express.Router().post '/submit/:asgId', (req, res, done) ->
 			asgId = req.params.asgId

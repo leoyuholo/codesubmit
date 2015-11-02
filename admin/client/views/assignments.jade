@@ -156,13 +156,17 @@ script(type="text/ng-template", id="views/assignments")
 								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
 							p
 								button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
-				uib-tab(heading="Sample Input" disable="assignment.asgId === undefined")
+				uib-tab(heading="Sample Input/Output" disable="assignment.asgId === undefined")
 					.panel.panel-default.shadowedBox
 						.panel-body
 							p
 								h2
 									strong Sample Input
 							codesubmit-editor(local-storage-key="'sampleInput/' + assignment.asgId" ng-model="assignment.sampleInput")
+							p
+								h2
+									strong Sample Output
+							codesubmit-editor(local-storage-key="'sampleOutput/' + assignment.asgId" ng-model="assignment.sampleOutput")
 							p
 								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
 								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}

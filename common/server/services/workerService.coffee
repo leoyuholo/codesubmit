@@ -13,147 +13,181 @@ module.exports = ($) ->
 
 	testCaseCache = {}
 
-	extractTestCase = (sandboxTask, done) ->
-		fse.remove sandboxTask.extractPath, (err) ->
+	extractTestCase = (testCaseFileStorageKey, extractPath, done) ->
+		fse.remove extractPath, (err) ->
 			return $.utils.onError done, err if err
 
-			$.stores.storageStore.readStream(sandboxTask.assignment.testCaseFileStorageKey)
-				.pipe(unzip.Extract {path: sandboxTask.extractPath})
+			$.stores.storageStore.readStream(testCaseFileStorageKey)
+				.pipe(unzip.Extract {path: extractPath})
 				.on('error', done)
 				.on 'close', done
 
-	extractTestCaseCached = (sandboxTask, done) ->
-		key = sandboxTask.assignment.testCaseFileStorageKey
+	extractTestCaseCached = (testCaseFileStorageKey, extractPath, done) ->
+		$.stores.storageStore.findByKey testCaseFileStorageKey, (err, fileInfo) ->
+			return done null if testCaseCache[testCaseFileStorageKey] && _.isEqual testCaseCache[testCaseFileStorageKey].uploadDate, fileInfo.uploadDate
 
-		$.stores.storageStore.findByKey key, (err, fileInfo) ->
-			if testCaseCache[key] && _.isEqual testCaseCache[key].uploadDate, fileInfo.uploadDate
-				return done null
-
-			extractTestCase sandboxTask, (err) ->
+			extractTestCase testCaseFileStorageKey, extractPath, (err) ->
 				return $.utils.onError done, err if err
 
-				testCaseCache[key] = fileInfo
+				testCaseCache[testCaseFileStorageKey] = fileInfo
 
 				done null
 
-	prepare = (sandboxTask, done) ->
-		sandboxTask.extractPath = $.services.namespaceService.makeFsPath 'testCase', sandboxTask.submission.asgId
-		sandboxTask.sandboxrunPath = $.services.namespaceService.makeFsPath 'sandboxRun', sandboxTask.submission.subId
-		sandboxTask.sandboxoutPath = $.services.namespaceService.makeFsPath 'sandboxOut', sandboxTask.submission.subId
+	makeRunResult = (result, testCaseName) ->
+		runResult = {}
 
-		$.services.assignmentService.findByAsgId sandboxTask.submission.asgId, (err, assignment) ->
-			sandboxTask.assignment = assignment
-			sandboxTask.codePath = path.join sandboxTask.sandboxrunPath, assignment.sandboxConfig.codeFilename
+		runResult.testCaseName = if testCaseName then testCaseName else 'run'
+		if result.ok && result.matchExpected != undefined
+			runResult.correct = result.matchExpected
+			if runResult.correct
+				runResult.message = 'Accepted'
+			else
+				runResult.message = 'Wrong Answer'
+		else
+			runResult.message = result.errorMessage
+		runResult.hint = result.hint if !runResult.correct && result.hint
+		runResult.compileErrorMessage = result.compileErrorMessage if result.compileErrorMessage
+		runResult.memory = result.memory_usage if result.memory_usage
+		runResult.time = result.execute_time if result.execute_time
+		runResult.output = result.output if result.output
+		runResult.expectedOutput = result.expectedOutput if result.expectedOutput
 
-			async.parallel [
-				_.partial fse.outputFile, sandboxTask.codePath, sandboxTask.submission.code
-				_.partial extractTestCaseCached, sandboxTask
-			], done
+		return runResult
 
-	makeRunCmd = (sandboxTask) ->
-		sandboxConfig = sandboxTask.assignment.sandboxConfig
-		[
-			'docker'
-			'run'
-			'-i'
-			'--rm'
-			'--net', 'none'
-			'--security-opt apparmor:unconfined'
-			'-v', sandboxTask.sandboxrunPath + ':/vol/'
-			'-u $(id -u):$(id -g)'
-			'tomlau10/sandbox-run'
-			'-e', sandboxConfig.errorToleranceLevel
-			'-n', 1
-			'-t', sandboxConfig.timeLimitS
-			'-m', sandboxConfig.memoryLimitMB
-			'-o', sandboxConfig.outputLimitKB
-			'-c', sandboxConfig.codeFilename
-			sandboxConfig.executableFilename
-		].join ' '
-
-	makeDiffCmd = (outPath, answerPath, strictCompare) ->
-		[
+	compareFiles = (fileAPath, fileBPath, strictCompare, done) ->
+		cmd = [
 			'diff'
 			if strictCompare then '' else '-bB'
-			outPath
-			answerPath
+			fileAPath
+			fileBPath
 		].join ' '
 
-	runTestCase = (sandboxTask, testCaseName) ->
-		return new Promise (resolve, reject) ->
-			inPath = path.join sandboxTask.extractPath, testCaseName, 'in'
-			outPath = path.join sandboxTask.extractPath, testCaseName, 'out'
-			hintPath = path.join sandboxTask.extractPath, testCaseName, 'hint'
-			answerPath = path.join sandboxTask.sandboxoutPath, testCaseName, 'out'
-			cmd = makeRunCmd sandboxTask
+		childProcess.exec cmd, (err, stdout, stderr) ->
+			return $.utils.onError done, err if err && err.code != 1
+			done null, stdout == ''
 
-			inStream = fse.createReadStream inPath
+	run = (input, code, sandboxrunPath, sandboxConfig, done) ->
+		async.series [
+			_.partial fse.outputFile, path.join(sandboxrunPath, sandboxConfig.codeFilename), code
+			_.partial $.services.sandboxService.compile, sandboxConfig.compileCommand, sandboxrunPath, sandboxConfig
+			_.partial $.services.sandboxService.runWithInput, input, sandboxrunPath, sandboxConfig
+		], (err, results) ->
+			return $.utils.onError done, err if err && err.message != 'Compile Error'
 
-			sandbox = childProcess.exec cmd, {timeout: sandboxTask.assignment.sandboxConfig.commandTimeout}, (err, stdout, stderr) ->
-				return reject err if err
+			results[2] = {result: ['Compile Error'], compileErrorMessage: err.compileErrorMessage} if err && err.message == 'Compile Error'
+			result = results[2]
+			result.ok = result.result[0] == 'OK'
+			result.errorMessage = result.result[0] if result.result[0] != 'OK'
 
-				stdouts = stdout.split('\x00')
+			done null, result
 
-				answer = stdouts[1]
-				resultJSON = {}
-				try
-					resultJSON = JSON.parse stdouts[2]
-				catch err
-					return reject err if err
+	runAndCompare = (input, outPath, code, sandboxrunPath, sandboxConfig, done) ->
+		run input, code, sandboxrunPath, sandboxConfig, (err, result) ->
+			return $.utils.onError done, err if err
+			return done null, result if !result.ok
 
-				return resolve {testCaseName: testCaseName, correct: false, message: resultJSON.result[0]} if resultJSON.result[0] != 'OK'
+			compareFiles outPath, path.join(sandboxrunPath, 'stdout0'), sandboxConfig.strictCompare, (err, matchExpected) ->
+				return $.utils.onError done, err if err
 
-				fse.outputFile answerPath, answer, (err) ->
-					return reject err if err
+				result.matchExpected = matchExpected
 
-					diffCmd = makeDiffCmd outPath, answerPath, sandboxTask.assignment.sandboxConfig.strictCompare
+				done null, result
 
-					childProcess.exec diffCmd, (err, stdout, stderr) ->
-						return resolve {testCaseName: testCaseName, correct: true, message: 'Accepted', time: resultJSON.execute_time} if !err
+	runTestCase = (sandboxTask, testCaseName, done) ->
+		testCaseRunPath = path.join sandboxTask.sandboxrunPath, testCaseName
 
-						fse.readFile hintPath, 'utf8', (err, data) ->
-							resolve {testCaseName: testCaseName, correct: false, message: 'Wrong Answer', time: resultJSON.execute_time, hint: data || ''}
+		inPath = path.join sandboxTask.extractPath, testCaseName, 'in'
+		outPath = path.join sandboxTask.extractPath, testCaseName, 'out'
+		hintPath = path.join sandboxTask.extractPath, testCaseName, 'hint'
 
-			inStream.pipe(sandbox.stdin)
-				.on('error', reject)
-				.on 'close', () ->
-					sandbox.stdin.end()
-
-	runSandbox = (sandboxTask, done) ->
-		async.mapSeries sandboxTask.assignment.sandboxConfig.testCaseNames, ( (testCaseName, done) ->
-			runTestCase(sandboxTask, testCaseName).then (_.partial done, null), done
-		), (err, results) ->
+		runAndCompare fse.createReadStream(inPath), outPath, sandboxTask.submission.code, testCaseRunPath, sandboxTask.assignment.sandboxConfig, (err, result) ->
 			return $.utils.onError done, err if err
 
-			sandboxTask.testResults = results
+			# Accepted
+			return done null, result if result.ok && result.matchExpected
 
-			done null
+			# Wrong Answer
+			fse.readFile hintPath, 'utf8', (err, hint) ->
+				result.hint = hint if !err && hint
+				done null, result
 
-	cleanup = (sandboxTask, done) ->
-		submission =
-			subId: sandboxTask.submission.subId
-			status: 'evaluated'
-			evaluateDt: new Date()
-			results: sandboxTask.testResults
-			score: _.filter(sandboxTask.testResults, 'correct').length
+	processSubmission = (sandboxTask, notify, done) ->
+		sandboxTask.sandboxrunPath = $.services.namespaceService.makeFsPath 'sandboxRun', sandboxTask.submission.subId
+		sandboxTask.extractPath = $.services.namespaceService.makeFsPath 'testCase', sandboxTask.assignment.asgId
 
-		$.stores.submissionStore.update submission, done
+		_runTestCase = (testCaseName, done) ->
+			runTestCase sandboxTask, testCaseName, (err, result) ->
+				return $.utils.onError done, err if err
 
-	processSubmission = (sandboxTask, done) ->
+				runResult = makeRunResult result, testCaseName
+
+				notify runResult
+
+				done null, runResult
+
 		async.series [
-			_.partial prepare, sandboxTask
-			_.partial runSandbox, sandboxTask
-			_.partial cleanup, sandboxTask
-		], done
+			_.partial extractTestCaseCached, sandboxTask.assignment.testCaseFileStorageKey, sandboxTask.extractPath
+			_.partial async.mapSeries, sandboxTask.assignment.sandboxConfig.testCaseNames, _runTestCase
+		], (err, results) ->
+			return $.utils.onError done, err if err
 
-	self.work = (submission, done) ->
+			done null, results[1]
+
+	processRun = (sandboxTask, done) ->
+		sandboxTask.sandboxrunPath = $.services.namespaceService.makeFsPath 'sandboxRun', sandboxTask.submission.subId
+
+		outPath = path.join sandboxTask.sandboxrunPath, 'out'
+		testCaseRunPath = path.join sandboxTask.sandboxrunPath, 'run'
+
+		async.series [
+			_.partial fse.outputFile, outPath, sandboxTask.submission.output
+			_.partial runAndCompare, sandboxTask.submission.input, outPath, sandboxTask.submission.code, testCaseRunPath, sandboxTask.assignment.sandboxConfig
+		], (err, results) ->
+			return $.utils.onError done, err if err
+
+			fse.readFile path.join(testCaseRunPath, 'stdout0'), 'utf8', (err, stdout0) ->
+				# ignore err
+
+				result = results[1]
+				result.expectedOutput = sandboxTask.submission.output
+				result.output = stdout0 if !err && stdout0
+				runResult = makeRunResult results[1], 'run'
+
+				done null, runResult
+
+	processEval = (sandboxTask, done) ->
+		sandboxTask.sandboxrunPath = $.services.namespaceService.makeFsPath 'sandboxRun', sandboxTask.submission.subId
+
+		run sandboxTask.submission.input, sandboxTask.submission.code, sandboxTask.sandboxrunPath, sandboxTask.assignment.sandboxConfig, (err, result) ->
+			return $.utils.onError done, err if err
+
+			fse.readFile path.join(sandboxTask.sandboxrunPath, 'stdout0'), 'utf8', (err, stdout0) ->
+				# ignore err
+
+				result.output = stdout0 if !err && stdout0
+				runResult = makeRunResult result, 'run'
+
+				done null, runResult
+
+	self.work = (submission, notify, done) ->
 		sandboxTask =
 			submission: submission
 
-		async.series [
-			_.partial $.services.statusService.startJob, sandboxTask
-			_.partial processSubmission, sandboxTask
-			_.partial $.services.statusService.finishJob, sandboxTask
-		], done
+		$.services.assignmentService.findByAsgId sandboxTask.submission.asgId, (err, assignment) ->
+			return $.utils.onError done, err if err
+
+			sandboxTask.assignment = assignment
+
+			if sandboxTask.submission.type
+				switch sandboxTask.submission.type
+					when 'run'
+						processRun sandboxTask, done
+					when 'eval'
+						processEval sandboxTask, done
+			else
+				processSubmission sandboxTask, notify, (err, evaluateResults) ->
+					return $.utils.onError done, err if err
+
+					$.services.submissionService.updateWithEvaluateResult sandboxTask.submission, evaluateResults, done
 
 	return self

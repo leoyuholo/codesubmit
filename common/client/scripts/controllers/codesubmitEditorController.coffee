@@ -21,9 +21,17 @@ app.controller 'codesubmitEditorController', ($scope) ->
 
 		editor.setReadOnly $scope.readOnly
 
-	$scope.aceOptions =
-		onLoad: aceLoaded
-		onChange: _.throttle saveCode, 500
+	setAceOptions = () ->
+		defaultOptions =
+			onLoad: aceLoaded
+			onChange: _.throttle saveCode, 500
 
-	$scope.$watch 'language', () ->
+		$scope.aceOptions = _.defaults $scope.aceOptions || {}, defaultOptions
+
+	setLanguage = () ->
 		editor.getSession().setMode "ace/mode/#{if $scope.language == 'c' then 'c_cpp' else $scope.language}" if $scope.language
+
+	$scope.$watch 'aceOptions', setAceOptions
+	$scope.$watch 'language', setLanguage
+
+	setAceOptions()

@@ -36,6 +36,7 @@ app.service 'urlService', ($http) ->
 			listMine: (asgId) -> "#{apiPrefix}/submission/listmine/#{asgId}"
 			findBySubId: (subId) -> "#{apiPrefix}/submission/findbysubid/#{subId}"
 			findMineBySubId: (subId) -> "#{apiPrefix}/submission/findminebysubid/#{subId}"
+			run: (asgId) -> "#{apiPrefix}/submission/run/#{asgId}"
 			submit: (asgId) -> "#{apiPrefix}/submission/submit/#{asgId}"
 		storage:
 			get: (key, filename) -> "#{apiPrefix}/storage/#{key}?filename=#{filename || key}"

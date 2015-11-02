@@ -11,36 +11,48 @@ script(type="text/ng-template", id="views/assignment")
 							li {{assignment.name}}
 				.panel-body
 					.message-text.text-danger(ng-if="assignmentDetailMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
-					p
-						strong Start Date:
-						|  {{assignment.startDt.toString()}}
-					p
-						strong Due Date:
-						|  {{assignment.dueDt.toString()}}
-					p
-						strong Hard Due Date:
-						|  {{assignment.hardDueDt.toString()}}
-					p
-						strong Penalty After Due Date:
-						|  {{assignment.penalty}}
-					p
-						strong Submission Limit:
-						|  {{assignment.submissionLimit}}
-					p
-						strong Language:
-						|  {{assignment.sandboxConfig.language}}
-					p
-						strong Time Limit (Seconds):
-						|  {{assignment.sandboxConfig.timeLimitS}}
-					p
-						strong Memory Limit (KB):
-						|  {{assignment.sandboxConfig.memoryLimitMB}} * 1024
-					p
-						strong Output Limit (KB):
-						|  {{assignment.sandboxConfig.outputLimitKB}}
-					p
-						strong Description:
 					div(marked="assignment.description")
+					p
+						strong Details: 
+						a(href="javascript:void(0)" ng-click="showDetails = !showDetails") {{showDetails ? 'hide' : 'show'}}
+					div(ng-class="showDetails ? 'show' : 'hide'")
+						p
+							strong Start Date:
+							|  {{assignment.startDt.toString()}}
+						p
+							strong Due Date:
+							|  {{assignment.dueDt.toString()}}
+						p
+							strong Hard Due Date:
+							|  {{assignment.hardDueDt.toString()}}
+						p
+							strong Penalty After Due Date:
+							|  {{assignment.penalty}}
+						p
+							strong Submission Limit:
+							|  {{assignment.submissionLimit}}
+						p
+							strong Language:
+							|  {{assignment.sandboxConfig.language}}
+						p
+							strong Time Limit (Seconds):
+							|  {{assignment.sandboxConfig.timeLimitS}}
+						p
+							strong Memory Limit (KB):
+							|  {{assignment.sandboxConfig.memoryLimitMB}} * 1024
+						p
+							strong Output Limit (KB):
+							|  {{assignment.sandboxConfig.outputLimitKB}}
+					.row
+						.col-md-4
+							strong Input (for Run):
+							p.help-block Reminder: Be aware of end of line characters ("\n" and "\n\r").
+							codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'clouds_midnight', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'terminal', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chaos', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chrome', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'dawn', showGutter: false}" ng-model="input")
 					p
 						strong Write Code:
 					codesubmit-editor(local-storage-key="localStorageKey" language="assignment.sandboxConfig.language" ng-model="code")
@@ -48,7 +60,7 @@ script(type="text/ng-template", id="views/assignment")
 						.message-text.text-danger(ng-if="assignmentSubmitMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
 						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
 					p.text-right
-						//- TODO: pop up confirmation
+						button.btn.btn-default(type="button" ng-click="run()") Run
 						button.btn.btn-primary(type="button" ng-click="submit()") Submit
 					p.text-right
 						a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}") Submission History

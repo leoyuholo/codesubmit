@@ -12,6 +12,14 @@ app.service 'submissionService', (urlService) ->
 	self.findMineBySubId = (subId, done) ->
 		urlService.get urlService.submission.findMineBySubId(subId), done
 
+	self.run = (asgId, code, input, output, done) ->
+		payload =
+			code: code
+			input: input
+			output: output
+
+		urlService.post urlService.submission.run(asgId), payload, done
+
 	self.submit = (asgId, code, done) ->
 		payload =
 			code: code

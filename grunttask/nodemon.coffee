@@ -11,7 +11,7 @@ module.exports = (grunt, options) ->
 					nodemon.on 'restart', () ->
 						setTimeout ( () ->
 							fs.writeFileSync path.join(__dirname, '..', 'admin', 'public', '.rebooted'), 'rebooted'
-						), 1000
+						), 5000
 		student:
 			script: 'student/server/app.coffee'
 			options:
@@ -20,7 +20,7 @@ module.exports = (grunt, options) ->
 					nodemon.on 'restart', () ->
 						setTimeout ( () ->
 							fs.writeFileSync path.join(__dirname, '..', 'student', 'public', '.rebooted'), 'rebooted'
-						), 1000
+						), 5000
 		worker:
 			script: 'worker/server/app.coffee'
 			options:

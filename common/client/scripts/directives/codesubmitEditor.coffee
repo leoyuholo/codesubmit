@@ -9,5 +9,6 @@ app.directive 'codesubmitEditor', () ->
 			language: '='
 			readOnly: '='
 			ngModel: '='
+			aceOptions: '='
 		controller: 'codesubmitEditorController'
 	}

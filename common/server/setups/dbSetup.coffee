@@ -25,8 +25,8 @@ module.exports = ($) ->
 				$.amqp = ch
 
 				queues = rabbitmq.queues
-				ch.assertQueue queues.submission, {durable: true}
-				ch.prefetch 1
+				$.amqp.assertQueue queues.submission, {durable: true}
+				$.amqp.prefetch 1
 
 				done null
 
