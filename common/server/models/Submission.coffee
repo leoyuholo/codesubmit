@@ -16,10 +16,13 @@ module.exports = ($) ->
 		results: [
 			{
 				testCaseName: String
+				status: {type: String, enum: status, default: 'pending'}
 				correct: Boolean
 				message: String
+				compileErrorMessage: String
 				hint: String
 				time: Number
+				memory: Number
 			}
 		]
 		score: {type: Number}

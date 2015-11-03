@@ -3,44 +3,45 @@ _ = require 'lodash'
 module.exports = ($) ->
 	self = {}
 
-	self.push = (data, done) ->
-		$.amqp.sendToQueue $.config.rabbitmq.queues.submission, new Buffer(JSON.stringify data), {persisten: true}
+	sendToQueue = (queue, data, options) ->
+		$.amqp.sendToQueue queue, new Buffer(JSON.stringify data), options
 
-		done null
+	self.pushTask = (data) ->
+		sendToQueue $.config.rabbitmq.queues.submission, data, {persisten: true}
 
-	envelop = (data, lastFlag) ->
-		lastFlag = true if lastFlag == undefined
-		new Buffer(JSON.stringify {data: data, lastFlag: lastFlag})
+	self.rpc = (data, done) ->
+		$.amqp.assertQueue '', {exclusive: true}, (err, replyQueue) ->
+			corr = $.utils.rng.generateUuid()
 
-	self.worker = (worker) ->
+			$.amqp.consume replyQueue.queue, ( (msg) ->
+				done null, JSON.parse msg.content.toString() if msg.properties.correlationId == corr
+			), {noAck: true}
+
+			sendToQueue $.config.rabbitmq.queues.submission, data, {correlationId: corr, replyTo: replyQueue.queue}
+
+	self.work = (worker) ->
 		$.amqp.consume $.config.rabbitmq.queues.submission, ( (msg) ->
-			notify = (data) ->
-				if msg.properties.replyTo
-					$.amqp.sendToQueue msg.properties.replyTo, envelop(data, false), {correlationId: msg.properties.correlationId}
-
-			worker (JSON.parse msg.content.toString()), notify, (err, result) ->
+			worker (JSON.parse msg.content.toString()), (err, result) ->
 				$.utils.onError _.noop, err if err
 
 				if msg.properties.replyTo
-					$.amqp.sendToQueue msg.properties.replyTo, envelop(result, true), {correlationId: msg.properties.correlationId}
+					sendToQueue msg.properties.replyTo, result, {correlationId: msg.properties.correlationId}
 
-				# done
 				$.amqp.ack msg
 		), {noAck: false}
 
-	self.rpc = (data, notify, done) ->
-		$.amqp.assertQueue '', {exclusive: true}, (err, q) ->
-			corr = $.utils.rng.generateUuid()
+	self.publish = (key, data) ->
+		$.amqp.publish $.config.rabbitmq.queues.runResult, key, new Buffer(JSON.stringify data)
 
-			$.amqp.consume q.queue, ( (msg) ->
-				if msg.properties.correlationId == corr
-					content = JSON.parse msg.content.toString()
-					if content.lastFlag
-						done null, content.data
-					else
-						notify content.data
+	self.subscribe = (key, listener) ->
+		$.amqp.assertQueue '', {exclusive: true}, (err, subscribeQueue) ->
+			$.amqp.bindQueue subscribeQueue.queue, $.config.rabbitmq.queues.runResult, key
+
+			consumerTag = $.amqp.consume subscribeQueue.queue, ( (msg) ->
+				listener JSON.parse msg.content.toString(), consumerTag
 			), {noAck: true}
 
-			$.amqp.sendToQueue $.config.rabbitmq.queues.submission, new Buffer(JSON.stringify data), {correlationId: corr, replyTo: q.queue}
+	self.cancelConsume = (consumerTag) ->
+		$.amqp.cancel consumerTag
 
 	return self

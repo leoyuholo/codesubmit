@@ -21,4 +21,7 @@ module.exports = ($) ->
 	self.update = (submission, done) ->
 		Submission.update {subId: submission.subId}, submission, done
 
+	self.updateResult = (subId, testCaseName, result, done) ->
+		Submission.update {subId: subId, "results.testCaseName": testCaseName}, {$set: {"results.$": result}}, done
+
 	return self

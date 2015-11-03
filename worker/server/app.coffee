@@ -9,7 +9,7 @@ runSetups = (done) ->
 		), done
 
 registerWorker = (done) ->
-	$.stores.mqStore.worker $.services.workerService.work
+	$.stores.mqStore.work $.services.workerService.worker
 	done null
 
 startServer = (done) ->

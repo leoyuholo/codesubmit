@@ -15,3 +15,4 @@ module.exports =
 		port: 5672
 		queues:
 			submission: 'submission'
+			runResult: 'runResult'

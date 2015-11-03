@@ -51,35 +51,66 @@ module.exports = ($) ->
 			input: input
 			output: output
 
-		$.stores.mqStore.rpc submission, ( (data) -> console.log data), (err, runResult) ->
+		$.stores.mqStore.rpc submission, (err, runResult) ->
 			return $.utils.onError done, err if err
-
 			done null, runResult
 
 	self.submit = (student, asgId, code, done) ->
-		submission =
-			subId: $.utils.rng.generateId()
-			asgId: asgId
-			email: student.email
-			submitDt: new Date()
-			code: code
-
-		$.stores.submissionStore.create submission, (err, submission) ->
+		$.services.assignmentService.findByAsgId asgId, (err, assignment) ->
 			return $.utils.onError done, err if err
 
-			$.stores.mqStore.push submission, (err) ->
+			submission =
+				subId: $.utils.rng.generateId()
+				asgId: asgId
+				email: student.email
+				submitDt: new Date()
+				code: code
+				status: 'pending'
+				results: assignment.sandboxConfig.testCaseNames.map (n) -> {testCaseName: n, status: 'pending'}
+
+			$.stores.submissionStore.create submission, (err, submission) ->
 				return $.utils.onError done, err if err
 
-				done null, $.models.Submission.envelop submission
+				$.stores.mqStore.pushTask submission
 
-	self.updateWithEvaluateResult = (submission, evaluateResults, done) ->
+				$.stores.mqStore.subscribe submission.subId, (runResult) ->
+					console.log 'subscribe received', runResult
+
+				done null, submission
+
+	self.updateResult = (subId, testCaseName, runResult, done) ->
+		$.stores.submissionStore.updateResult subId, testCaseName, runResult, (err) ->
+			return $.utils.onError done, err if err
+
+			$.stores.mqStore.publish subId, runResult
+
+			done null
+
+	self.updateResultRunning = (subId, testCaseName, done) ->
+		runResult =
+			testCaseName: testCaseName
+			status: 'running'
+
+		$.stores.submissionStore.updateResult subId, runResult.testCaseName, runResult, (err) ->
+			return $.utils.onError done, err if err
+
+			$.stores.mqStore.publish subId, runResult
+
+			done null
+
+	self.updateEvaluated = (subId, runResults, done) ->
 		newSubmission =
-			subId: submission.subId
+			subId: subId
 			status: 'evaluated'
 			evaluateDt: new Date()
-			results: evaluateResults
-			score: _.filter(evaluateResults, 'correct').length
+			results: runResults
+			score: _.filter(runResults, 'correct').length
 
-		$.stores.submissionStore.update newSubmission, done
+		$.stores.submissionStore.update newSubmission, (err) ->
+			return $.utils.onError done, err if err
+
+			$.stores.mqStore.publish subId, runResults
+
+			done null
 
 	return self

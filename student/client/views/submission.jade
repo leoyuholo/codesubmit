@@ -27,9 +27,14 @@ script(type="text/ng-template", id="views/submission")
 							li(ng-repeat="result in submission.results")
 								ul.list-inline
 									li {{result.testCaseName}}:
-									li(ng-class="result.correct ? 'text-success' : 'text-danger'")
+									li.text-warning(ng-if="result.status == 'pending'")
+										span.glyphicon.glyphicon-hourglass
+										| Waiting
+									li.text-success(ng-if="result.status == 'running'")
+										span.glyphicon.glyphicon-console
+										| Running
+									li(ng-if="result.status == 'evaluated'" ng-class="result.correct ? 'text-success' : 'text-danger'")
 										span.glyphicon(ng-class="result.correct ? 'glyphicon-ok' : 'glyphicon-remove'")
 										| {{result.message}}
 									li(ng-if="result.hint") (hint: {{result.hint}})
-					//- TODO: get language from somewhere instead of hardcode
-					codesubmit-editor(language="'c'" read-only="true" ng-model="code")
+					codesubmit-editor(language="assignment.sandboxConfig.language" read-only="true" ng-model="code")
