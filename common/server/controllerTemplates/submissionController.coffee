@@ -6,7 +6,7 @@ module.exports = ($) ->
 		$.express.Router().get '/list/:asgId', (req, res, done) ->
 			asgId = req.params.asgId
 
-			$.services.submissionService.list {asgId: asgId}, (err, submissions) ->
+			$.services.submissionService.list asgId, (err, submissions) ->
 				return $.utils.onError done, err if err
 
 				res.json

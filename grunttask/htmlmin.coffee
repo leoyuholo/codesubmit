@@ -9,13 +9,10 @@ module.exports = (grunt, options) ->
 		minifyCSS: true
 
 	config =
-		admin:
+		html:
 			options: opts
 			files:
 				'admin/public/index-min.html': 'admin/public/index.html'
-		student:
-			options: opts
-			files:
 				'student/public/index-min.html': 'student/public/index.html'
 
 	return config

@@ -37,6 +37,6 @@ module.exports = ($) ->
 		_.pick doc, _.keys submission
 
 	submissionSchema.post 'save', (doc, done) ->
-		$.services.submissionService.updateScoreStats doc.asgId, doc.email, done
+		$.services.submissionService.updateScoreStats doc.subId, done
 
 	mongoose.model 'Submission', submissionSchema

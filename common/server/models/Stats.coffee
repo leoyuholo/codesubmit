@@ -5,8 +5,8 @@ module.exports = ($) ->
 	stats =
 		statsId: String
 		tags: [String]
-		max: Number
-		count: Number
+		max: {type: Number, default: 0}
+		count: {type: Number, default: 0}
 		updateDt: Date
 
 	StatsSchema = new mongoose.Schema(stats)

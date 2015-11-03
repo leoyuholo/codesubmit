@@ -37,6 +37,7 @@
     "passport-local": "^1.0.0",
     "q": "^1.4.1",
     "require-all": "^1.1.0",
-    "shortid": "^2.2.2"
+    "shortid": "^2.2.2",
+    "winston": "^2.0.1"
   }
 }

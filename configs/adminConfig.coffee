@@ -6,5 +6,6 @@ config =
 	sessionName: 'codesubmitadmin'
 	redis:
 		db: 1
+	logfile: "admin-#{Date.now()}.log"
 
 module.exports = _.defaultsDeep config, require './commonConfig'

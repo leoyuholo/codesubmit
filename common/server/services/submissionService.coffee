@@ -4,23 +4,26 @@ async = require 'async'
 module.exports = ($) ->
 	self = {}
 
-	self.updateScoreStats = (asgId, email, done) ->
-		$.services.submissionService.list {asgId: asgId, email: email}, (err, submissions) ->
+	self.updateScoreStats = (subId, done) ->
+		self.findBySubId subId, (err, submission) ->
 			return $.utils.onError done, err if err
 
-			stats =
-				tags:
-					key: 'submission.score'
-					email: email
-					asgId: asgId
-				max: _.max _.pluck submissions, 'score'
-				count: submissions.length
-				updateDt: new Date()
-
-			$.services.statsService.update stats, (err) ->
+			$.services.submissionService.list {asgId: submission.asgId, email: submission.email}, (err, submissions) ->
 				return $.utils.onError done, err if err
 
-				done null
+				stats =
+					tags:
+						key: 'submission.score'
+						email: submission.email
+						asgId: submission.asgId
+					max: _.max _.pluck(submissions, 'score').concat(0)
+					count: submissions.length
+					updateDt: new Date()
+
+				$.services.statsService.update stats, (err) ->
+					return $.utils.onError done, err if err
+
+					done null
 
 	self.findScoreStatsByEmail = (email, done) ->
 		$.services.statsService.findByTags {key: 'submission.score', email: email}, (err, statses) ->
@@ -29,12 +32,14 @@ module.exports = ($) ->
 			done null, _.map statses, $.models.Stats.envelop
 
 	self.list = (condition, done) ->
+		condition = {asgId: condition} if _.isString condition
 		$.stores.submissionStore.list condition, (err, submissions) ->
 			return $.utils.onError done, err if err
 
 			done null, submissions.map $.models.Submission.envelop
 
 	self.findBySubId = (condition, done) ->
+		condition = {subId: condition} if _.isString condition
 		$.stores.submissionStore.findBySubId condition, (err, submission) ->
 			return $.utils.onError done, err if err
 			return $.utils.onError done, new Error("Submission with subId: [#{condition.subId}] not found.") if !submission
@@ -78,8 +83,8 @@ module.exports = ($) ->
 
 				$.stores.mqStore.pushTask submission
 
-				$.stores.mqStore.subscribe submission.subId, (runResult) ->
-					console.log 'subscribe received', runResult
+				# $.stores.mqStore.subscribe submission.subId, (runResult) ->
+				# 	console.log 'subscribe received', runResult
 
 				done null, submission
 
@@ -111,7 +116,10 @@ module.exports = ($) ->
 			results: runResults
 			score: _.filter(runResults, 'correct').length
 
-		$.stores.submissionStore.update newSubmission, (err) ->
+		async.series [
+			_.partial $.stores.submissionStore.update, newSubmission
+			_.partial self.updateScoreStats, subId
+		], (err) ->
 			return $.utils.onError done, err if err
 
 			$.stores.mqStore.publish subId, runResults
