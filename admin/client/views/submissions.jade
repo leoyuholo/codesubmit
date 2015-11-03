@@ -22,12 +22,15 @@ script(type="text/ng-template", id="views/submissions")
 					table.table(ng-if="asgId")
 						thead
 							tr
-								th Username
 								th Email
+								th Date
+								th Status
+								th Score
 								th Actions
 							tr(ng-repeat="submission in submissions")
-								td {{submission.username}}
 								td {{submission.email}}
+								td {{submission.submitDt.toString()}}
+								td {{submission.status}}
+								td {{submission.score == undefined ? 'N/A' : submission.score}}
 								td
-									button.control-group.btn.btn-xs.btn-success(type="button" ng-click="downloadSubmission(submission)") Download
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="rerunSubmission(submission)") Re-run
+									a.btn.btn-xs.btn-primary(ng-href="#/submission/{{submission.subId}}") View Details

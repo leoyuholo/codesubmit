@@ -26,6 +26,10 @@ app.config ($routeProvider, markedProvider) ->
 		controller: 'SubmissionsController',
 		templateUrl: 'views/submissions'
 	})
+	.when('/submission/:subid?', {
+		controller: 'SubmissionController',
+		templateUrl: 'views/submission'
+	})
 	.otherwise({
 		redirectTo: '/'
 	})

@@ -9,6 +9,9 @@ app.service 'submissionService', (urlService) ->
 	self.listMine = (asgId, done) ->
 		urlService.get urlService.submission.listMine(asgId), done
 
+	self.findBySubId = (subId, done) ->
+		urlService.get urlService.submission.findBySubId(subId), done
+
 	self.findMineBySubId = (subId, done) ->
 		urlService.get urlService.submission.findMineBySubId(subId), done
 

@@ -1,0 +1,34 @@
+script(type="text/ng-template", id="views/submission")
+	div(codesubmit-header)
+	.container#submission-view
+		.col-md-12.col-sm-12
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					p
+						h2
+							strong Submission of {{assignment.name}} by {{submission.email}}
+				.panel-body
+					.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
+					p
+						strong Status
+						|  {{submission.status}}
+					p
+						strong Score
+						|  {{submission.score == undefined ? '...' : submission.score}} / {{submission.results.length}}
+					p
+						strong Result
+						ul
+							li(ng-repeat="result in submission.results")
+								ul.list-inline
+									li {{result.testCaseName}}:
+									li.text-warning(ng-if="result.status == 'pending'")
+										span.glyphicon.glyphicon-hourglass
+										| Waiting
+									li.text-success(ng-if="result.status == 'running'")
+										span.glyphicon.glyphicon-console
+										| Running
+									li(ng-if="result.status == 'evaluated'" ng-class="result.correct ? 'text-success' : 'text-danger'")
+										span.glyphicon(ng-class="result.correct ? 'glyphicon-ok' : 'glyphicon-remove'")
+										| {{result.message}}
+									li(ng-if="result.hint") (hint: {{result.hint}})
+					codesubmit-editor(language="assignment.sandboxConfig.language" read-only="true" ng-model="code")

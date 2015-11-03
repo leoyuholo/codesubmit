@@ -24,6 +24,17 @@ module.exports = ($) ->
 					success: true
 					submissions: submissions
 
+	self.findBySubId = () ->
+		$.express.Router().get '/findbysubid/:subId', (req, res, done) ->
+			subId = req.params.subId
+
+			$.services.submissionService.findBySubId subId, (err, submission) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					submission: submission
+
 	self.findminebysubid = () ->
 		$.express.Router().get '/findminebysubid/:subId', (req, res, done) ->
 			subId = req.params.subId
