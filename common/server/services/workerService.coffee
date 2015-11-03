@@ -136,6 +136,8 @@ module.exports = ($) ->
 
 			sandboxTask.assignment = assignment
 
-			dispatch sandboxTask, done
+			dispatch sandboxTask, (err, runResult) ->
+				$.logger.log 'error', err if err
+				done null, runResult
 
 	return self

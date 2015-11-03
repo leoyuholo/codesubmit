@@ -12,7 +12,7 @@ module.exports = (grunt, options) ->
 		html:
 			options: opts
 			files:
-				'admin/public/index-min.html': 'admin/public/index.html'
-				'student/public/index-min.html': 'student/public/index.html'
+				'admin/public/index.html': 'admin/public/index.html'
+				'student/public/index.html': 'student/public/index.html'
 
 	return config
