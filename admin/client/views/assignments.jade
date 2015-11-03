@@ -162,11 +162,11 @@ script(type="text/ng-template", id="views/assignments")
 							p
 								h2
 									strong Sample Input
-							codesubmit-editor(local-storage-key="'sampleInput/' + assignment.asgId" ng-model="assignment.sampleInput")
+							codesubmit-editor(local-storage-key="'sampleInput/' + assignment.asgId" ace-options="{showInvisibles: true, theme: 'twilight'}" ng-model="assignment.sampleInput")
 							p
 								h2
 									strong Sample Output
-							codesubmit-editor(local-storage-key="'sampleOutput/' + assignment.asgId" ng-model="assignment.sampleOutput")
+							codesubmit-editor(local-storage-key="'sampleOutput/' + assignment.asgId" ace-options="{showInvisibles: true, theme: 'twilight'}" ng-model="assignment.sampleOutput")
 							p
 								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
 								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
