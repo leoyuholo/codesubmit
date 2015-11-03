@@ -1,4 +1,5 @@
 _ = require 'lodash'
+async = require 'async'
 
 module.exports = ($) ->
 	self = {}
@@ -56,8 +57,12 @@ module.exports = ($) ->
 			done null, runResult
 
 	self.submit = (student, asgId, code, done) ->
-		$.services.assignmentService.findByAsgId asgId, (err, assignment) ->
+		async.parallel [
+			_.partial $.services.assignmentService.findByAsgId, asgId
+			_.partial $.services.statsService.findByTags, {key: 'submission.score', asgId: asgId, email: student.email}
+		], (err, [assignment, stats]) ->
 			return $.utils.onError done, err if err
+			return done new Error('Submission Limit Exceeded.') if stats.count >= assignment.submissionLimit
 
 			submission =
 				subId: $.utils.rng.generateId()
