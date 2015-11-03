@@ -6,7 +6,7 @@ module.exports = ($) ->
 	self = {}
 
 	self.get = () ->
-		$.express.Router().get /^\/([\w_-\/]+)/, (req, res, done) ->
+		$.express.Router().get /^\/([-\w_\/]+)/, (req, res, done) ->
 			storageKey = req.params[0]
 
 			return $.utils.onError done, new Error('Invalid storage key.') if !storageKey
@@ -28,7 +28,7 @@ module.exports = ($) ->
 				$.stores.storageStore.readStream(storageKey).pipe res
 
 	self.post = () ->
-		$.express.Router().post /^\/([\w_-\/]+)/, multer({dest: path.join $.rootDir, 'storage/'}).single('file'), (req, res, done) ->
+		$.express.Router().post /^\/([-\w_\/]+)/, multer({dest: path.join $.rootDir, 'storage/'}).single('file'), (req, res, done) ->
 			storageKey = req.params[0]
 			filePath = req.file?.path
 
