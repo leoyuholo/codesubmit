@@ -18,4 +18,7 @@ module.exports = (grunt) ->
 	grunt.registerTask 'student', ['livereload:student']
 	grunt.registerTask 'worker', ['nodemon:worker']
 
+	grunt.registerTask 'admin:jadehtmlmin', ['jade:admin', 'htmlmin:admin']
+	grunt.registerTask 'student:jadehtmlmin', ['jade:student', 'htmlmin:student']
+
 	grunt.registerTask 'default', ['livereload:admin']
