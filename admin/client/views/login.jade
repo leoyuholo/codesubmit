@@ -8,7 +8,7 @@ script(type="text/ng-template", id="views/login")
 				.panel-body
 					form#login-form
 						.form-group
-							input#inputEmail.form-control(type='text', placeholder='email', required='', autofocus='', ng-model="email")
+							input#inputEmail.form-control(type='email', placeholder='email', required='', autofocus='', ng-model="email")
 						.form-group
 							input#inputPassword.form-control(type='password', placeholder='password', required='', ng-model="password")
 						.message-text.text-danger(ng-if='errorMessage') {{errorMessage}}
