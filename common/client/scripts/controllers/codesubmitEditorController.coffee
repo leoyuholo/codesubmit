@@ -7,6 +7,8 @@ app.controller 'codesubmitEditorController', ($scope) ->
 	saveCode = () ->
 		localStorage.setItem $scope.localStorageKey, editor.getValue() if $scope.localStorageKey
 
+	saveCodeThrottled = _.throttle saveCode, 500
+
 	aceLoaded = (_editor) ->
 		editor = _editor
 
@@ -24,7 +26,9 @@ app.controller 'codesubmitEditorController', ($scope) ->
 	setAceOptions = () ->
 		defaultOptions =
 			onLoad: aceLoaded
-			onChange: _.throttle saveCode, 500
+			onChange: () ->
+				$scope.ngModel = editor.getValue()
+				saveCodeThrottled()
 
 		$scope.aceOptions = _.defaults $scope.aceOptions || {}, defaultOptions
 
