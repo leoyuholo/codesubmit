@@ -44,8 +44,7 @@ script(type="text/ng-template", id="views/assignment")
 							strong Output Limit (KB):
 							|  {{assignment.sandboxConfig.outputLimitKB}}
 					p
-						strong Input (for Run): 
-						a(href="javascript:void(0)" ng-click="input = assignment.sampleInput") reset
+						strong Input (for Run):
 						.help-block Reminder: Be aware of end of line characters ("\n" and "\r\n").
 					.row
 						.col-md-4
@@ -55,6 +54,8 @@ script(type="text/ng-template", id="views/assignment")
 							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chaos', showGutter: false}" ng-model="input")
 							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chrome', showGutter: false}" ng-model="input")
 							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'dawn', showGutter: false}" ng-model="input")
+							.text-right
+								a(href="javascript:void(0)" ng-click="input = assignment.sampleInput") reset
 					p
 						strong Write Code:
 					codesubmit-editor(local-storage-key="localStorageKey" language="assignment.sandboxConfig.language" ng-model="code")
@@ -63,6 +64,7 @@ script(type="text/ng-template", id="views/assignment")
 						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
 					p.text-right
 						button.btn.btn-default(type="button" ng-click="run()") Run
+						| 
 						button.btn.btn-primary(type="button" ng-click="submit()") Submit
 					p.text-right
 						a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}") Submission History
