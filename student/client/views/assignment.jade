@@ -43,11 +43,13 @@ script(type="text/ng-template", id="views/assignment")
 						p
 							strong Output Limit (KB):
 							|  {{assignment.sandboxConfig.outputLimitKB}}
+					p
+						strong Input (for Run): 
+						a(href="javascript:void(0)" ng-click="input = assignment.sampleInput") reset
+						.help-block Reminder: Be aware of end of line characters ("\n" and "\r\n").
 					.row
 						.col-md-4
-							strong Input (for Run):
-							p.help-block Reminder: Be aware of end of line characters ("\n" and "\r\n").
-							codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" ng-model="input")
+							codesubmit-editor.ace_editor-small(local-storage-key="inputLocalStorageKey" ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" ng-model="input")
 							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'clouds_midnight', showGutter: false}" ng-model="input")
 							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'terminal', showGutter: false}" ng-model="input")
 							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chaos', showGutter: false}" ng-model="input")

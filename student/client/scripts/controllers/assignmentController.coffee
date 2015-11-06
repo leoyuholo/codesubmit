@@ -9,6 +9,7 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 	$scope.assignment = {}
 	$scope.runResult = {}
 	$scope.localStorageKey = "assignment/#{$scope.asgId}"
+	$scope.inputLocalStorageKey = "input/#{$scope.asgId}"
 	$scope.code = ''
 	$scope.input = ''
 
@@ -44,6 +45,8 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 
 			$scope.code = localStorage.getItem($scope.localStorageKey) || $scope.assignment?.codeTemplate || '// Enter your code here.\n'
 
-			$scope.input = $scope.assignment?.sampleInput
+			$scope.input = localStorage.getItem($scope.inputLocalStorageKey)
+			if $scope.input == undefined
+				$scope.input = $scope.assignment?.sampleInput
 
 	findAssignment $scope.asgId
