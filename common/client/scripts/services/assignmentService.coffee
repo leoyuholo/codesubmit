@@ -24,4 +24,10 @@ app.service 'assignmentService', (urlService) ->
 
 		urlService.post urlService.assignment.update(), payload, done
 
+	self.remove = (assignment, done) ->
+		payload=
+			assignment: assignment
+
+		urlService.post urlService.assignment.remove(), payload, done
+
 	return self

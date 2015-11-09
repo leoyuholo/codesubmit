@@ -24,4 +24,7 @@ module.exports = ($) ->
 	self.updateResult = (subId, testCaseName, result, done) ->
 		Submission.update {subId: subId, "results.testCaseName": testCaseName}, {$set: {"results.$": result}}, done
 
+	self.removeByAsgId = (asgId, done) ->
+		Submission.remove {asgId: asgId}, done
+
 	return self

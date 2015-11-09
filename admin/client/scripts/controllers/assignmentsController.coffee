@@ -34,12 +34,21 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 
 			redirectService.redirectTo 'assignments', data.assignment.asgId
 
-	$scope.updateAssignment = (assignment, properties) ->
+	$scope.updateAssignment = (assignment) ->
 		assignment.sandboxConfig.testCaseNames = _.invoke assignment.sandboxConfig.testCaseNames.split(','), 'trim' if _.isString assignment.sandboxConfig?.testCaseNames
 
 		assignmentService.update assignment, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment updated.'
+
+	deleteAssignment = (assignment) ->
+		assignmentService.remove assignment, (err) ->
+			return messageService.error $scope.assignmentDetailsMsg, err.message if err
+			messageService.success $scope.assignmentDetailsMsg, 'Assignment deleted.'
+			redirectService.redirectTo 'assignments'
+
+	$scope.deleteAssignment = (assignment) ->
+		deleteAssignment assignment if confirm "Click OK to delete assignment [#{assignment.name}] Assignment Id:[#{assignment.asgId}]."
 
 	$scope.uploadTestCaseFile = () ->
 		testCaseFile = document.getElementById('testCase-input').files?[0]

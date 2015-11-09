@@ -17,4 +17,7 @@ module.exports = ($) ->
 	self.findByKey = (gridfsKey, done) ->
 		$.gridfs.findOne {filename: gridfsKey}, done
 
+	self.remove = (gridfsKey, done) ->
+		$.gridfs.remove {filename: gridfsKey}, done
+
 	return self

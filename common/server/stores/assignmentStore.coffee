@@ -17,4 +17,7 @@ module.exports = ($) ->
 	self.update = (assignment, done) ->
 		Assignment.update {asgId: assignment.asgId}, assignment, done
 
+	self.removeByAsgId = (asgId, done) ->
+		Assignment.findOneAndRemove {asgId: asgId}, done
+
 	return self

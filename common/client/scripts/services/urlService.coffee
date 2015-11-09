@@ -31,6 +31,7 @@ app.service 'urlService', ($http) ->
 			findByAsgId: (asgId) -> "#{apiPrefix}/assignment/findbyasgid/#{asgId}"
 			create: () -> "#{apiPrefix}/assignment/create"
 			update: () -> "#{apiPrefix}/assignment/update"
+			remove: () -> "#{apiPrefix}/assignment/remove"
 		submission:
 			list: (asgId) -> "#{apiPrefix}/submission/list/#{asgId}"
 			listMine: (asgId) -> "#{apiPrefix}/submission/listmine/#{asgId}"

@@ -55,4 +55,12 @@ module.exports = ($) ->
 				res.json
 					success: true
 
+	self.remove = () ->
+		$.express.Router().post '/remove', (req, res, done) ->
+			$.services.assignmentService.remove req.body.assignment, (err, assignment) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+
 	return self

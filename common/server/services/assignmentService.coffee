@@ -1,4 +1,5 @@
 _ = require 'lodash'
+async = require 'async'
 
 module.exports = ($) ->
 	self = {}
@@ -51,5 +52,15 @@ module.exports = ($) ->
 		$.stores.assignmentStore.update assignment, (err) ->
 			return $.utils.onError done, err if err
 			done null
+
+	self.remove = (assignment, done) ->
+		self.findByAsgId assignment.asgId, (err, assignment) ->
+			return $.utils.onError done, err if err
+
+			async.series [
+				_.partial $.stores.assignmentStore.removeByAsgId, assignment.asgId
+				_.partial $.stores.storageStore.remove, assignment.testCaseFileStorageKey
+				_.partial $.stores.submissionStore.removeByAsgId, assignment.asgId
+			], done
 
 	return self
