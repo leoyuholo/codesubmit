@@ -15,7 +15,7 @@ app.controller 'codesubmitEditorController', ($scope) ->
 		editor.$blockScrolling = Infinity
 
 		editor.setOptions
-			minLines: $scope.aceOptions.minLines || 6
+			minLines: $scope.aceOptions.minLines || 20
 			maxLines: $scope.aceOptions.maxLines || Infinity
 
 		editor.commands.addCommand

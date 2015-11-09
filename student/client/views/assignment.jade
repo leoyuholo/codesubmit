@@ -48,12 +48,12 @@ script(type="text/ng-template", id="views/assignment")
 						.help-block Reminder: Be aware of end of line characters ("\n" and "\r\n").
 					.row
 						.col-md-4
-							codesubmit-editor.ace_editor-small(local-storage-key="inputLocalStorageKey" ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'clouds_midnight', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'terminal', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chaos', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'chrome', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'dawn', showGutter: false}" ng-model="input")
+							codesubmit-editor.ace_editor-small(local-storage-key="inputLocalStorageKey" ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'clouds_midnight', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'terminal', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'chaos', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'chrome', showGutter: false}" ng-model="input")
+							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'dawn', showGutter: false}" ng-model="input")
 							.text-right
 								a(href="javascript:void(0)" ng-click="input = assignment.sampleInput") reset
 					p
@@ -62,10 +62,10 @@ script(type="text/ng-template", id="views/assignment")
 					p
 						.message-text.text-danger(ng-if="assignmentSubmitMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
 						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
-					p.text-right
-						button.btn.btn-default(type="button" ng-click="run()") Run
-						| 
-						button.btn.btn-primary(type="button" ng-click="submit()") Submit
+					.clearfix
+						.btn-toolbar.pull-right
+							button.btn.btn-default(type="button" ng-click="run()") Run
+							button.btn.btn-primary(type="button" ng-click="submit()") Submit
 					p.text-right
 						a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}") Submission History
 					p
@@ -86,10 +86,10 @@ script(type="text/ng-template", id="views/assignment")
 					.row
 						.col-md-4(ng-if="runResult.input != undefined")
 							strong Input:
-							codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.input")
+							codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.input")
 						.col-md-4(ng-if="runResult.output != undefined")
 							strong Your Output:
-							codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.output")
+							codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.output")
 						.col-md-4(ng-if="runResult.expectedOutput != undefined")
 							strong Expect Output:
-							codesubmit-editor.ace_editor-small(ace-options="{showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.expectedOutput")
+							codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.expectedOutput")
