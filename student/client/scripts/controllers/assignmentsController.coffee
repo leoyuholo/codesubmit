@@ -6,7 +6,7 @@ app.controller 'AssignmentsController', ($scope, assignmentService, messageServi
 	$scope.assignments = []
 
 	listAssignments = () ->
-		assignmentService.listWithMyStats (err, data) ->
+		assignmentService.listPublishedWithMyStats (err, data) ->
 			return messageService.error err.message if err
 
 			$scope.assignments = _.sortByOrder data.assignments, 'dueDt', 'asc'

@@ -17,6 +17,8 @@ $ = require(path.join $.commonDir, 'server', 'globals')($)
 $.controllers = $.utils.routerHelper.makeControllers
 	exclude:
 		statusController: '*'
+		assignmentController: 'listpublishedwithmystats'
+$.controllers.assignmentController.use $.controllerTemplates.assignmentController.listwithmystats('/listpublishedwithmystats')
 $.controllers.userController = $.utils.routerHelper.makeUserController $.stores.adminStore
 
 # routes

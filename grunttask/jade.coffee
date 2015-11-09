@@ -4,12 +4,14 @@ module.exports = (grunt, options) ->
 		minify:
 			files:
 				'admin/public/index.html': 'admin/client/index.jade'
+				'admin/public/preview/index.html': 'student/client/index.jade'
 				'student/public/index.html': 'student/client/index.jade'
 		admin:
 			options:
 				pretty: true
 			files:
 				'admin/public/index.html': 'admin/client/index.jade'
+				'admin/public/preview/index.html': 'student/client/index.jade'
 		student:
 			options:
 				pretty: true

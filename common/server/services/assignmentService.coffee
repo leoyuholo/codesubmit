@@ -24,9 +24,13 @@ module.exports = ($) ->
 						assignment.scoreStats.max = stats.max
 						assignment.scoreStats.count = stats.count
 
-				now = Date.now()
+				done null, assignments
 
-				done null, _.filter assignments, (asg) -> asg.startDt < now
+	self.listPublishedWithMyStats = (email, done) ->
+		self.listWithMyStats email, (err, assignments) ->
+			return $.utils.onError done, err if err
+			now = Date.now()
+			done null, _.filter assignments, (asg) -> asg.startDt < now
 
 	self.findByAsgId = (asgId, done) ->
 		$.stores.assignmentStore.findByAsgId asgId, (err, assignment) ->

@@ -11,9 +11,18 @@ module.exports = ($) ->
 					success: true
 					assignments: assignments
 
-	self.listwithmystats = () ->
-		$.express.Router().get '/listwithmystats', (req, res, done) ->
+	self.listwithmystats = (customPath) ->
+		$.express.Router().get (customPath || '/listwithmystats'), (req, res, done) ->
 			$.services.assignmentService.listWithMyStats req.user.email, (err, assignments) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					assignments: assignments
+
+	self.listpublishedwithmystats = () ->
+		$.express.Router().get '/listpublishedwithmystats', (req, res, done) ->
+			$.services.assignmentService.listPublishedWithMyStats req.user.email, (err, assignments) ->
 				return $.utils.onError done, err if err
 
 				res.json

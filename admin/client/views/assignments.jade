@@ -17,7 +17,6 @@ script(type="text/ng-template", id="views/assignments")
 		.col-md-9
 			uib-tabset
 				uib-tab(heading="General")
-					//- TODO: tell timezone in datetime field
 					//- TODO: switch to use library building this form
 					.panel.panel-default.shadowedBox
 						.panel-body
@@ -50,8 +49,10 @@ script(type="text/ng-template", id="views/assignments")
 								p(ng-if="!assignment.asgId").help-block Remember to fill in configs after create.
 								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
 								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
-								button.btn.btn-primary(type="submit" ng-if="!assignment.asgId" ng-click="createAssignment(assignment)") Create
-								button.btn.btn-primary(type="submit" ng-if="assignment.asgId" ng-click="updateAssignment(assignment)") Update
+								.btn-toolbar
+									button.btn.btn-primary(type="submit" ng-if="!assignment.asgId" ng-click="createAssignment(assignment)") Create
+									button.btn.btn-primary(type="submit" ng-if="assignment.asgId" ng-click="updateAssignment(assignment)") Update
+									a.btn.btn-link(href="preview/#/assignment/{{assignment.asgId}}" target="_blank" ng-if="assignment.asgId") Preview
 				uib-tab(heading="Sandbox Config" disable="assignment.asgId === undefined")
 					.panel.panel-default.shadowedBox
 						.panel-body

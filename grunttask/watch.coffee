@@ -3,6 +3,7 @@ module.exports = (grunt, options) ->
 	config =
 		options:
 			spawn: false
+			debounceDelay: 2000
 		admin:
 			files: ['admin/client/**', 'common/client/**']
 			tasks: ['jade:admin', 'replace:admin']

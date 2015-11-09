@@ -16,7 +16,7 @@ $ = require(path.join $.commonDir, 'server', 'globals')($)
 # init controllers
 $.controllers = $.utils.routerHelper.makeControllers
 	include:
-		assignmentController: ['list', 'listwithmystats', 'findbyasgid']
+		assignmentController: ['list', 'listpublishedwithmystats', 'findbyasgid']
 		studentController: ['changepassword']
 		submissionController: ['listmine', 'findminebysubid', 'submit', 'run']
 $.controllers.userController = $.utils.routerHelper.makeUserController $.stores.studentStore
