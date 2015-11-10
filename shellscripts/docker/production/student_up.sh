@@ -1,7 +1,7 @@
 script_dir=$(readlink -f $(dirname $0))
 default_container_name="codesubmitstudent"
 default_host_shared_dir=$(readlink -f "$script_dir/../../../")
-default_mapped_host_port=8001
+default_mapped_host_port=80
 default_argument="/host_shared/student/server/app.coffee"
 host_ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
