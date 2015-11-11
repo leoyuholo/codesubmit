@@ -67,7 +67,7 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 			return messageService.error $scope.assignmentListMsg, err.message if err
 
 			now = Date.now()
-			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sortAssignment
+			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sort
 
 	findAssignment = (asgId) ->
 		assignmentService.findByAsgId asgId, (err, data) ->

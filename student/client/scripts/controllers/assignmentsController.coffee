@@ -13,6 +13,6 @@ app.controller 'AssignmentsController', ($scope, assignmentService, messageServi
 			_.each data.assignments, (a) ->
 				a.completed = (a.scoreStats?.max || 0) == a.sandboxConfig?.testCaseNames?.length
 				return
-			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> !a.completed && a.hardDueDt >= now), (p) -> _.map p, assignmentService.sortAssignment
+			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> !a.completed && a.hardDueDt >= now), assignmentService.sort
 
 	listAssignments()

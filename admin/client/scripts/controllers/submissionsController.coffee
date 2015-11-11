@@ -7,7 +7,7 @@ app.controller 'SubmissionsController', ($scope, $routeParams, submissionService
 			return messageService.error $scope.assignmentListMsg, err.message if err
 
 			now = Date.now()
-			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sortAssignment
+			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sort
 
 	$scope.listSubmissions = (asgId) ->
 		submissionService.list asgId, (err, data) ->
