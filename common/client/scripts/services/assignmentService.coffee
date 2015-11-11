@@ -4,7 +4,6 @@ app.service 'assignmentService', (urlService) ->
 	self = {}
 
 	self.sort = (assignments) ->
-		console.log assignments
 		_.sortByOrder assignments, ['dueDt', 'name'], ['asc', 'asc']
 
 	self.list = (done) ->
