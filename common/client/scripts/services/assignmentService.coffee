@@ -3,6 +3,9 @@ app = angular.module 'codesubmit'
 app.service 'assignmentService', (urlService) ->
 	self = {}
 
+	self.sort = (assignments) ->
+		_.sortByOrder assignments, ['dueDt', 'name'], ['asc', 'asc']
+
 	self.list = (done) ->
 		urlService.get urlService.assignment.list(), done
 
