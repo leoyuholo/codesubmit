@@ -10,7 +10,7 @@ app.controller 'AssignmentsController', ($scope, assignmentService, messageServi
 			return messageService.error err.message if err
 
 			now = Date.now()
-			_.each data.assignments, (a) -> a.completed = a.scoreStats.max == a.sandboxConfig.testCaseNames.length
+			_.each data.assignments, (a) -> a.completed = (a.scoreStats?.max || 0) == a.sandboxConfig?.testCaseNames?.length
 			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> !a.completed && a.hardDueDt >= now), assignmentService.sortAssignment
 
 	listAssignments()
