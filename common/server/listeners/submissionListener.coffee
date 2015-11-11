@@ -11,7 +11,7 @@ module.exports = ($) ->
 	self.submissionRunning = (subId) ->
 		newSubmission =
 			subId: subId
-			status: 'runnning'
+			status: 'running'
 
 		$.stores.submissionStore.update newSubmission, _.noop
 	$.emitter.on 'submissionRunning', self.submissionRunning
