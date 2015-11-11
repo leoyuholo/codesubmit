@@ -30,5 +30,8 @@ script(type="text/ng-template", id="views/submission")
 									li(ng-if="result.status == 'evaluated'" ng-class="result.correct ? 'text-success' : 'text-danger'")
 										span.glyphicon(ng-class="result.correct ? 'glyphicon-ok' : 'glyphicon-remove'")
 										| {{result.message}}
+									li.text-danger(ng-if="result.status == 'error'")
+										span.glyphicon.glyphicon-remove
+										| {{result.message}}
 									li(ng-if="result.hint") (hint: {{result.hint}})
 					codesubmit-editor(language="assignment.sandboxConfig.language" read-only="true" ng-model="code")

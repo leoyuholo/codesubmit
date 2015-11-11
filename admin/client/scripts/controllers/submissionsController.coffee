@@ -8,6 +8,7 @@ app.controller 'SubmissionsController', ($scope, $routeParams, submissionService
 
 			now = Date.now()
 			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sort
+			$scope.assignment = _.find $scope.assignments, {asgId: $scope.asgId} if $scope.asgId
 
 	$scope.listSubmissions = (asgId) ->
 		submissionService.list asgId, (err, data) ->
@@ -17,6 +18,7 @@ app.controller 'SubmissionsController', ($scope, $routeParams, submissionService
 
 	$scope.assignments = []
 	$scope.assignmentListMsg = {}
+	$scope.assignment = {}
 	$scope.submissions = []
 	$scope.submissionListMsg = {}
 

@@ -31,6 +31,6 @@ script(type="text/ng-template", id="views/submissions")
 								td {{submission.email}}
 								td {{submission.submitDt.toString()}}
 								td {{submission.status}}
-								td {{submission.score == undefined ? 'N/A' : submission.score}} / {{assignment.testCaseNames.length}}
+								td {{submission.score == undefined ? 'N/A' : submission.score}} / {{assignment.sandboxConfig.testCaseNames.length}}
 								td
 									a.btn.btn-xs.btn-primary(ng-href="#/submission/{{submission.subId}}") View Details
