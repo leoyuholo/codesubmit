@@ -36,11 +36,13 @@ module.exports = ($) ->
 			if strictCompare then '' else '-bB'
 			fileAPath
 			fileBPath
+			'>'
+			'/dev/null'
 		].join ' '
 
 		childProcess.exec cmd, (err, stdout, stderr) ->
 			return $.utils.onError done, err if err && err.code != 1
-			done null, stdout == ''
+			done null, !err
 
 	self.readHint = (hintPath, done) ->
 		fse.readFile hintPath, 'utf8', (err, hint) ->
