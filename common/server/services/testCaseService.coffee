@@ -2,7 +2,7 @@ childProcess = require 'child_process'
 
 _ = require 'lodash'
 fse = require 'fs-extra'
-unzip = require 'node-unzip-2'
+unzip = require 'unzip'
 
 module.exports = ($) ->
 	self = {}
@@ -20,7 +20,8 @@ module.exports = ($) ->
 
 	self.extractTestCaseCached = (testCaseFileStorageKey, extractPath, done) ->
 		$.stores.storageStore.findByKey testCaseFileStorageKey, (err, fileInfo) ->
-			return done null if testCaseCache[testCaseFileStorageKey] && _.isEqual testCaseCache[testCaseFileStorageKey].uploadDate, fileInfo.uploadDate
+			return done null if testCaseCache[testCaseFileStorageKey] && _.isEqual testCaseCache[testCaseFileStorageKey].uploadDate, fileInfo?.uploadDate
+			return done new Error("Test case file not exist.") if !fileInfo
 
 			self.extractTestCase testCaseFileStorageKey, extractPath, (err) ->
 				return $.utils.onError done, err if err

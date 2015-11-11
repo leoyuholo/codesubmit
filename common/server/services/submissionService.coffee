@@ -88,42 +88,4 @@ module.exports = ($) ->
 
 				done null, submission
 
-	self.updateResult = (subId, testCaseName, runResult, done) ->
-		$.stores.submissionStore.updateResult subId, testCaseName, runResult, (err) ->
-			return $.utils.onError done, err if err
-
-			$.stores.mqStore.publish subId, runResult
-
-			done null
-
-	self.updateResultRunning = (subId, testCaseName, done) ->
-		runResult =
-			testCaseName: testCaseName
-			status: 'running'
-
-		$.stores.submissionStore.updateResult subId, runResult.testCaseName, runResult, (err) ->
-			return $.utils.onError done, err if err
-
-			$.stores.mqStore.publish subId, runResult
-
-			done null
-
-	self.updateEvaluated = (subId, runResults, done) ->
-		newSubmission =
-			subId: subId
-			status: 'evaluated'
-			evaluateDt: new Date()
-			results: runResults
-			score: _.filter(runResults, 'correct').length
-
-		async.series [
-			_.partial $.stores.submissionStore.update, newSubmission
-			_.partial self.updateScoreStats, subId
-		], (err) ->
-			return $.utils.onError done, err if err
-
-			$.stores.mqStore.publish subId, runResults
-
-			done null
-
 	return self

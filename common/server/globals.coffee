@@ -1,4 +1,5 @@
 path = require 'path'
+events = require 'events'
 
 _ = require 'lodash'
 express = require 'express'
@@ -13,6 +14,9 @@ requireAll = (dir, injections) ->
 			if _.isFunction exports then exports injections else exports
 
 module.exports = ($) ->
+
+	# emitters
+	$.emitter = new events.EventEmitter()
 
 	# express
 	$.express = express
@@ -36,6 +40,7 @@ module.exports = ($) ->
 		'services'
 		'setups'
 		'controllerTemplates'
+		'listeners'
 	].forEach (component) ->
 		$[component] = requireAll path.join(__dirname, component), $
 

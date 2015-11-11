@@ -11,7 +11,7 @@ module.exports = ($) ->
 				.on 'finish', () ->
 					done null
 
-	self.readStream = (gridfsKey, done) ->
+	self.readStream = (gridfsKey) ->
 		$.gridfs.createReadStream {filename: gridfsKey}
 
 	self.findByKey = (gridfsKey, done) ->

@@ -67,12 +67,14 @@ module.exports = ($) ->
 				return reject err if err
 				resolve result
 
-			if _.isString input
-				sandbox.stdin.write input, () -> sandbox.stdin.end()
-			else
+			if _.isFunction input?.pipe
 				input.pipe(sandbox.stdin)
 					.on('error', reject)
 					.on 'close', () -> sandbox.stdin.end()
+			else if _.isString input
+				sandbox.stdin.write input, () -> sandbox.stdin.end()
+			else
+				sandbox.stdin.end()
 		)
 
 		runWithInputPromise.then _.partial(done, null), done

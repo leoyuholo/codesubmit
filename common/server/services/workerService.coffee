@@ -1,12 +1,8 @@
-childProcess = require 'child_process'
 path = require 'path'
 
 _ = require 'lodash'
 async = require 'async'
 fse = require 'fs-extra'
-unzip = require 'node-unzip-2'
-q = require 'q'
-Promise = q.Promise
 
 module.exports = ($) ->
 	self = {}
@@ -15,6 +11,8 @@ module.exports = ($) ->
 		runResult = {}
 
 		runResult.testCaseName = if testCaseName then testCaseName else 'run'
+		runResult.status = result.status || 'evaluated'
+		runResult.errorMessage = result.errorMessage
 		if result.ok && result.matchExpected != undefined
 			runResult.correct = result.matchExpected
 			if runResult.correct
@@ -25,12 +23,11 @@ module.exports = ($) ->
 			runResult.message = result.message
 		runResult.hint = result.hint if !runResult.correct && result.hint
 		runResult.compileErrorMessage = result.compileErrorMessage if result.compileErrorMessage
-		runResult.memory = result.memory_usage if result.memory_usage
 		runResult.time = result.execute_time if result.execute_time
+		runResult.memory = result.memory_usage if result.memory_usage
 		runResult.input = result.input if result.input
 		runResult.output = result.output if result.output
 		runResult.expectedOutput = result.expectedOutput if result.expectedOutput
-		runResult.status = 'evaluated'
 
 		return runResult
 
@@ -53,7 +50,7 @@ module.exports = ($) ->
 				return $.utils.onError done, err if err
 
 				# Accepted
-				return done null, result if result.ok && result.matchExpected
+				return done null, makeRunResult result, testCaseName if result.ok && result.matchExpected
 
 				# Wrong Answer
 				$.services.testCaseService.readHint hintPath, (err, hint) ->
@@ -61,25 +58,26 @@ module.exports = ($) ->
 
 					result.hint = hint if hint
 
-					done null, result
+					done null, makeRunResult result, testCaseName
 
 		runRunTestCase = (testCaseName, done) ->
-			$.services.submissionService.updateResultRunning sandboxTask.submission.subId, testCaseName, (err) ->
-				runTestCase testCaseName, (err, result) ->
-					return $.utils.onError done, err if err
+			$.emitter.emit 'resultRunning', sandboxTask.submission.subId, testCaseName
+			runTestCase testCaseName, (err, runResult) ->
+				runResult = {testCaseName: testCaseName, status: 'error', message: 'Server Error', errorMessage: err.message} if err
+				$.emitter.emit 'resultEvaluated', sandboxTask.submission.subId, testCaseName, runResult
+				done null, runResult
 
-					runResult = makeRunResult result, testCaseName
-
-					$.services.submissionService.updateResult sandboxTask.submission.subId, testCaseName, runResult, (err) ->
-						return $.utils.onError done, err if err
-						done null, runResult
-
+		$.emitter.emit 'submissionRunning', sandboxTask.submission.subId
 		async.series [
 			_.partial $.services.testCaseService.extractTestCaseCached, sandboxTask.assignment.testCaseFileStorageKey, extractPath
 			_.partial async.mapSeries, sandboxTask.assignment.sandboxConfig.testCaseNames, runRunTestCase
-		], (err, results) ->
-			return $.utils.onError done, err if err
-			$.services.submissionService.updateEvaluated sandboxTask.submission.subId, results[1], done
+		], (err, [__, runResults]) ->
+			if err
+				runResults = _.map sandboxTask.assignment.sandboxConfig.testCaseNames, (testCaseName) -> {testCaseName: testCaseName, status: 'error', message: 'Server Error', errorMessage: err.message}
+				$.emitter.emit 'submissionError', sandboxTask.submission.subId, err.message, runResults
+			else
+				$.emitter.emit 'submissionEvaluated', sandboxTask.submission.subId, runResults
+			done null, runResults
 
 	processRun = (sandboxTask, done) ->
 		code = sandboxTask.submission.code
@@ -94,15 +92,13 @@ module.exports = ($) ->
 		async.series [
 			_.partial fse.outputFile, outPath, output
 			_.partial $.services.sandboxService.compileRunCompareOutputWithInputCode, outPath, code, input, testCaseRunPath, sandboxConfig
-		], (err, results) ->
-			return $.utils.onError done, err if err
+		], (err, [__, result]) ->
+			result = {status: 'error', message: 'Server Error', errorMessage: err.message} if err
 
-			result = results[1]
 			result.input = sandboxTask.submission.input
 			result.expectedOutput = sandboxTask.submission.output
-			runResult = makeRunResult results[1], 'run'
 
-			done null, runResult
+			done null, makeRunResult result, 'run'
 
 	processEval = (sandboxTask, done) ->
 		code = sandboxTask.submission.code
@@ -111,12 +107,11 @@ module.exports = ($) ->
 		sandboxConfig = sandboxTask.assignment.sandboxConfig
 
 		$.services.sandboxService.compileRunOutputWithInputCode code, input, sandboxrunPath, sandboxConfig, (err, result) ->
-			return $.utils.onError done, err if err
+			result = {status: 'error', message: 'Server Error', errorMessage: err.message} if err
 
 			result.input = sandboxTask.submission.input
-			runResult = makeRunResult result, 'run'
 
-			done null, runResult
+			done null, makeRunResult result, 'run'
 
 	dispatch = (sandboxTask, done) ->
 		return processSubmission sandboxTask, done if !sandboxTask.submission.type
@@ -136,8 +131,6 @@ module.exports = ($) ->
 
 			sandboxTask.assignment = assignment
 
-			dispatch sandboxTask, (err, runResult) ->
-				$.logger.log 'error', err if err
-				done null, runResult
+			dispatch sandboxTask, done
 
 	return self

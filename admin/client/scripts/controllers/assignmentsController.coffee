@@ -62,11 +62,15 @@ app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService
 
 			getTestCaseFileDetails $scope.assignment.testCaseFileStorageKey
 
+	sortAssignment = (assignments) ->
+		_.sortByOrder assignments, ['dueDt', 'name'], ['asc', 'asc']
+
 	listAssignments = () ->
 		assignmentService.list (err, data) ->
 			return messageService.error $scope.assignmentListMsg, err.message if err
 
-			$scope.assignments = data.assignments
+			now = Date.now()
+			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), sortAssignment
 
 	findAssignment = (asgId) ->
 		assignmentService.findByAsgId asgId, (err, data) ->

@@ -12,15 +12,17 @@ module.exports = ($) ->
 		submitDt: {type: Date, required: true}
 		code: {type: String, require: true}
 		status: {type: String, enum: status, default: 'pending'}
+		errorMessage: String
 		evaluateDt: Date
 		results: [
 			{
 				testCaseName: String
 				status: {type: String, enum: status, default: 'pending'}
+				errorMessage: String
 				correct: Boolean
 				message: String
-				compileErrorMessage: String
 				hint: String
+				compileErrorMessage: String
 				time: Number
 				memory: Number
 			}
@@ -35,8 +37,5 @@ module.exports = ($) ->
 
 	submissionSchema.static 'envelop', (doc) ->
 		_.pick doc, _.keys submission
-
-	submissionSchema.post 'save', (doc, done) ->
-		$.services.submissionService.updateScoreStats doc.subId, done
 
 	mongoose.model 'Submission', submissionSchema
