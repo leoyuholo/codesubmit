@@ -16,6 +16,12 @@ app.controller 'SubmissionController', ($scope, $routeParams, assignmentService,
 
 			$scope.assignment = data.assignment
 
+	reloadSubmission = () ->
+		if $scope.submission.status == 'pending'
+			submissionService.findMineBySubId $scope.submission.subId, (err, data) ->
+				$scope.submission.results = data.submission.results if data.submission?.results
+				setTimeout reloadSubmission, 1500
+
 	findSubmission = (subId) ->
 		submissionService.findMineBySubId subId, (err, data) ->
 			return messageService.error err.message if err
