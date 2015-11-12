@@ -21,7 +21,7 @@ module.exports = ($) ->
 	# express
 	$.express = express
 	$.app = express()
-	$.app.use bodyParser.json()
+	$.app.use bodyParser.json {limit: '1000kb'}
 	# $.app.use bodyParser.urlencoded {extended: true}
 
 	$.logger = new winston.Logger(
