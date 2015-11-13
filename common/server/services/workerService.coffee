@@ -8,11 +8,20 @@ module.exports = ($) ->
 	self = {}
 
 	makeRunResult = (result, testCaseName) ->
-		runResult = {}
+		runResult = _.pick result, [
+			'errorMessage'
+			'hint'
+			'compileErrorMessage'
+			'time'
+			'memory'
+			'input'
+			'output'
+			'expectedOutput'
+		]
 
 		runResult.testCaseName = if testCaseName then testCaseName else 'run'
 		runResult.status = result.status || 'evaluated'
-		runResult.errorMessage = result.errorMessage
+
 		if result.ok && result.matchExpected != undefined
 			runResult.correct = result.matchExpected
 			if runResult.correct
@@ -21,13 +30,6 @@ module.exports = ($) ->
 				runResult.message = 'Wrong Answer'
 		else
 			runResult.message = result.message
-		runResult.hint = result.hint if !runResult.correct && result.hint
-		runResult.compileErrorMessage = result.compileErrorMessage if result.compileErrorMessage
-		runResult.time = result.execute_time if result.execute_time
-		runResult.memory = result.memory_usage if result.memory_usage
-		runResult.input = result.input if result.input
-		runResult.output = result.output if result.output
-		runResult.expectedOutput = result.expectedOutput if result.expectedOutput
 
 		return runResult
 

@@ -6,6 +6,6 @@ config =
 	sessionName: 'codesubmitstudent'
 	redis:
 		db: 2
-	logfile: "student-#{Date.now()}.log"
+	logFile: "student-#{Date.now()}.log"
 
 module.exports = _.defaultsDeep config, require './commonConfig'
