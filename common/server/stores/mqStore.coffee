@@ -10,12 +10,15 @@ module.exports = ($) ->
 		sendToQueue $.config.rabbitmq.queues.submission, data, {persisten: true}
 
 	self.rpc = (data, done) ->
-		$.amqp.assertQueue '', {exclusive: true}, (err, replyQueue) ->
+		$.amqp.assertQueue '', {exclusive: true, autoDelete: true}, (err, replyQueue) ->
 			corr = $.utils.rng.generateUuid()
+			consumerTag = $.utils.rng.generateUuid()
 
 			$.amqp.consume replyQueue.queue, ( (msg) ->
-				done null, JSON.parse msg.content.toString() if msg.properties.correlationId == corr
-			), {noAck: true}
+				if msg.properties.correlationId == corr
+					$.amqp.cancel consumerTag, (err) ->
+						done null, JSON.parse msg.content.toString()
+			), {noAck: true, consumerTag: consumerTag}
 
 			sendToQueue $.config.rabbitmq.queues.submission, data, {correlationId: corr, replyTo: replyQueue.queue}
 
@@ -35,13 +38,14 @@ module.exports = ($) ->
 
 	self.subscribe = (key, listener) ->
 		$.amqp.assertQueue '', {exclusive: true}, (err, subscribeQueue) ->
+			consumerTag = $.utils.rng.generateUuid()
 			$.amqp.bindQueue subscribeQueue.queue, $.config.rabbitmq.queues.runResult, key
 
-			consumerTag = $.amqp.consume subscribeQueue.queue, ( (msg) ->
+			$.amqp.consume subscribeQueue.queue, ( (msg) ->
 				listener JSON.parse msg.content.toString(), consumerTag
-			), {noAck: true}
+			), {noAck: true, consumerTag: consumerTag}
 
-	self.cancelConsume = (consumerTag) ->
-		$.amqp.cancel consumerTag
+	self.cancelConsume = (consumerTag, done) ->
+		$.amqp.cancel consumerTag, done
 
 	return self
