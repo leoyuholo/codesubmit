@@ -34,12 +34,12 @@ app.controller 'codesubmitEditorController', ($scope) ->
 				$scope.ngModel = editor.getValue()
 				saveCodeThrottled()
 
-		$scope.aceOptions = _.defaults $scope.aceOptions || {}, defaultOptions
+		$scope.aceOptions = _.defaults _.cloneDeep($scope.editorOptions) || {}, defaultOptions
 
 	setLanguage = () ->
 		editor.getSession().setMode "ace/mode/#{if $scope.language == 'c' then 'c_cpp' else $scope.language}" if $scope.language
 
-	$scope.$watch 'aceOptions', setAceOptions
+	$scope.$watch 'editorOptions', setAceOptions
 	$scope.$watch 'language', setLanguage
 
 	setAceOptions()
