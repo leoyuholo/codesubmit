@@ -68,6 +68,7 @@ module.exports = ($) ->
 		], (err, [assignment, stats]) ->
 			return $.utils.onError done, err if err
 			return done new Error('Submission Limit Exceeded.') if stats.count >= assignment.submissionLimit
+			return done new Error('Due Date Over.') if Date.now() >= assignment.hardDueDt
 
 			submission =
 				subId: $.utils.rng.generateId()
