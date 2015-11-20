@@ -50,7 +50,7 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 
 			$scope.assignment = data.assignment
 
-			$scope.code = localStorage.getItem($scope.localStorageKey) || $scope.assignment?.codeTemplate || '// Enter your code here.\n'
+			$scope.code = localStorage.getItem($scope.codeLocalStorageKey) || $scope.assignment?.codeTemplate || '// Enter your code here.\n'
 
 			$scope.input = localStorage.getItem($scope.inputLocalStorageKey)
 			if $scope.input == undefined || $scope.input == null

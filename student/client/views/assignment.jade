@@ -63,7 +63,7 @@ script(type="text/ng-template", id="views/assignment")
 						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
 					.clearfix
 						.btn-toolbar.pull-right
-							button.btn.btn-default(type="button" ng-click="run()") Run
+							button.btn.btn-default(type="button" ng-click="run()" ng-disabled="assignmentRunMsg.successMessage == 'Running...'") Run
 							button.btn.btn-primary(type="button" ng-click="submit()") Submit
 					p.text-right
 						a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}") Submission History
