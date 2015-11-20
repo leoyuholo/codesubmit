@@ -33,7 +33,8 @@ module.exports = ($) ->
 	self.isEqualFile = (fileAPath, fileBPath, strictCompare, done) ->
 		cmd = [
 			'diff'
-			if strictCompare then '' else '-abB'
+			'-a'
+			if strictCompare then '' else '-bB'
 			fileAPath
 			fileBPath
 			'>'
