@@ -7,3 +7,5 @@
 		white-space: pre
 	.panel-heading .breadcrumb
 		padding: 0px
+	.ace-font
+		font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;

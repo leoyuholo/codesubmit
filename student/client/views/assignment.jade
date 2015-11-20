@@ -45,20 +45,19 @@ script(type="text/ng-template", id="views/assignment")
 							|  {{assignment.sandboxConfig.outputLimitKB}}
 					p
 						strong Input (for Run):
-						.help-block Reminder: Be aware of end of line characters ("\n" and "\r\n").
+						.help-block Reminder: Be aware of end of line characters ("\n" 
+							span.ace-font ¬
+							|  and "\r\n" 
+							span.ace-font ¤
+							| ).
 					.row
 						.col-md-4
-							codesubmit-editor.ace_editor-small(local-storage-key="inputLocalStorageKey" ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'clouds_midnight', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'terminal', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'chaos', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'chrome', showGutter: false}" ng-model="input")
-							//- codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'dawn', showGutter: false}" ng-model="input")
+							codesubmit-editor.ace_editor-small(local-storage-key="inputLocalStorageKey" ace-options="inputAceOptions" ng-model="input")
 							.text-right
 								a(href="javascript:void(0)" ng-click="input = assignment.sampleInput") reset
 					p
 						strong Write Code:
-					codesubmit-editor(local-storage-key="localStorageKey" language="assignment.sandboxConfig.language" ng-model="code")
+					codesubmit-editor(local-storage-key="codeLocalStorageKey" ace-options="codeAceOptions" language="assignment.sandboxConfig.language" ng-model="code")
 					p
 						.message-text.text-danger(ng-if="assignmentSubmitMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
 						.message-text.text-success(ng-if="assignmentSubmitMsg.successMessage") {{assignmentSubmitMsg.successMessage}}
@@ -86,10 +85,10 @@ script(type="text/ng-template", id="views/assignment")
 					.row
 						.col-md-4(ng-if="runResult.input != undefined")
 							strong Input:
-							codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.input")
+							codesubmit-editor.ace_editor-small(ace-options="inputAceOptions" read-only="true" ng-model="runResult.input")
 						.col-md-4(ng-if="runResult.output != undefined")
 							strong Your Output:
-							codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.output")
+							codesubmit-editor.ace_editor-small(ace-options="inputAceOptions" read-only="true" ng-model="runResult.output")
 						.col-md-4(ng-if="runResult.expectedOutput != undefined")
 							strong Expect Output:
-							codesubmit-editor.ace_editor-small(ace-options="{minLines: 6, showInvisibles: true, theme: 'twilight', showGutter: false}" read-only="true" ng-model="runResult.expectedOutput")
+							codesubmit-editor.ace_editor-small(ace-options="inputAceOptions" read-only="true" ng-model="runResult.expectedOutput")

@@ -8,8 +8,15 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 	$scope.assignmentRunMsg = {}
 	$scope.assignment = {}
 	$scope.runResult = {}
-	$scope.localStorageKey = "assignment/#{$scope.asgId}"
+	$scope.codeLocalStorageKey = "assignment/#{$scope.asgId}"
+	$scope.codeAceOptions =
+		maxLines: Infinity
 	$scope.inputLocalStorageKey = "input/#{$scope.asgId}"
+	$scope.inputAceOptions =
+		minLines: 6
+		showInvisibles: true
+		theme: 'twilight'
+		showGutter: false
 	$scope.code = ''
 	$scope.input = ''
 
