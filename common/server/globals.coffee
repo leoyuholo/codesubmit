@@ -27,7 +27,7 @@ module.exports = ($) ->
 	$.logger = new winston.Logger(
 		transports: [
 			new (winston.transports.Console)({level: 'verbose', colorize: true})
-			new (winston.transports.File)({filename: $.config.logFile})
+			new (winston.transports.File)({filename: path.join $.config.logDir, $.config.logFile})
 		]
 	)
 

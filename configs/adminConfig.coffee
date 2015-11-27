@@ -1,4 +1,5 @@
 _ = require 'lodash'
+moment = require 'moment'
 
 config =
 	port: 8000
@@ -6,6 +7,6 @@ config =
 	sessionName: 'codesubmitadmin'
 	redis:
 		db: 1
-	logFile: "admin-#{Date.now()}.log"
+	logFile: "admin-#{moment().format('YYYYMMDD_HHmmss')}.log"
 
 module.exports = _.defaultsDeep config, require './commonConfig'

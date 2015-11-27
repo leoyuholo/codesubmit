@@ -1,2 +1,5 @@
-npm install -g grunt-cli
-npm install -g coffee-script
+
+sudo apt-get install libkrb5-dev
+sudo npm install -g node-gyp \
+	grunt-cli \
+	coffee-script
