@@ -27,6 +27,7 @@ echo "host_ip": $host_ip
 echo "argument": $argument
 
 docker run  -i \
+			-u $(id -u):$(id -g) \
 			-e "host_ip="$host_ip \
 			-p $mapped_host_port:8001 \
 			-p 35727:35727 \

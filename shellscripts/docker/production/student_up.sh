@@ -27,6 +27,7 @@ echo "host_ip": $host_ip
 echo "argument": $argument
 
 docker run  -d \
+			-u $(id -u):$(id -g) \
 			-p $mapped_host_port:8001 \
 			-v $host_shared_dir:/host_shared \
 			--restart="always" \

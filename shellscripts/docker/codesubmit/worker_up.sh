@@ -34,6 +34,7 @@ else
 	echo "$sandboxrun docker image exists, skip pulling."
 fi
 docker run  -i \
+			-u $(id -u):$(id -g) \
 			-e "host_ip="$host_ip \
 			-p $mapped_host_port:8002 \
 			-v $host_shared_dir:/host_shared \
