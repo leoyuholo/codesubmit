@@ -1,4 +1,4 @@
-FROM node:5.0.0
+FROM node:5
 
 RUN npm install -g coffee-script
 

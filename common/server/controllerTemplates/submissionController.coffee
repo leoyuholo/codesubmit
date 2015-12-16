@@ -68,8 +68,6 @@ module.exports = ($) ->
 			$.services.submissionService.submit req.user, asgId, code, (err, submission) ->
 				return $.utils.onError done, err if err
 
-				console.log 'foo'
-
 				res.json
 					success: true
 					submission: submission

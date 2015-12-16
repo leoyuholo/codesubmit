@@ -1,11 +1,15 @@
 #codesubmit
-	background-color: #FFF
+	background-color #FFF
 	.shadowedBox
-		border-radius: 5px 5px
-		box-shadow: 2px 5px 12px #555
+		border-radius 5px 5px
+		box-shadow 2px 5px 12px #555
 	.message-text
-		white-space: pre
+		white-space pre
 	.panel-heading .breadcrumb
-		padding: 0px
+		padding 0px
 	.ace-font
-		font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
+		font-family Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace
+	#login-view
+		padding-top: 10em
+		.panel-body
+			padding-top: 1em

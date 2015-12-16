@@ -4,6 +4,8 @@ module.exports =
 	origin: "127.0.0.1"
 	port: 8080
 	logDir: path.join __dirname, '..', 'logs'
+	# must match up the volume mount of worker docker
+	fsNamespaceRoot: path.join '/', 'tmp', 'codesubmit'
 	sessionSecret: 'codeSubmit secret'
 	sessionName: 'codesubmit'
 	redis:

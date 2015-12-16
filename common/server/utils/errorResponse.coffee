@@ -1,3 +1,4 @@
+_ = require 'lodash'
 
 module.exports = ($) ->
 	return (err, req, res, done) ->

@@ -34,11 +34,10 @@ else
 	echo "$sandboxrun docker image exists, skip pulling."
 fi
 docker run  -i \
-			-u $(id -u):$(id -g) \
 			-e "host_ip="$host_ip \
 			-p $mapped_host_port:8002 \
 			-v $host_shared_dir:/host_shared \
-			-v /codesubmit/worker/:/codesubmit/worker/ \
+			-v /tmp/codesubmit/worker/:/tmp/codesubmit/worker/ \
 			-v /var/run/docker.sock:/var/run/docker.sock \
 			-v $(which docker):/bin/docker \
 			-v /usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/lib/x86_64-linux-gnu/libapparmor.so.1 \
