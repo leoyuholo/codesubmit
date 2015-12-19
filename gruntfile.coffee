@@ -9,8 +9,6 @@ module.exports = (grunt) ->
 	loadGruntTasks grunt
 	grunt.initConfig loadGruntConfigs grunt, options
 
-	grunt.loadNpmTasks 'grunt-contrib-jade'
-
 	grunt.registerTask 'livereload:admin', ['jade:admin', 'replace:admin', 'concurrent:admin']
 	grunt.registerTask 'livereload:student', ['jade:student', 'replace:student', 'concurrent:student']
 

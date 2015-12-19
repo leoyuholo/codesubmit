@@ -23,4 +23,5 @@ $.controllers.userController = $.utils.routerHelper.makeUserController $.stores.
 
 # routes
 $.app.use $.express.static path.join $.adminDir, 'public'
+$.app.use '/common', $.express.static path.join $.commonDir, 'public'
 $.app.use '/api', $.utils.routerHelper.makeApi()

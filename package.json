@@ -10,6 +10,7 @@
     "grunt-contrib-htmlmin": "^0.6.0",
     "grunt-contrib-jade": "^0.15.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-curl": "^2.2.0",
     "grunt-nodemon": "^0.4.0",
     "grunt-text-replace": "^0.4.0",
     "jstransformer-coffee-script": "^1.0.0",

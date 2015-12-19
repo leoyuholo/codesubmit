@@ -27,4 +27,10 @@ echo "container_name:" $container_name
 echo "mapped_host_port:" $mapped_host_port
 echo "host_ip": $host_ip
 echo "argument": $argument
-docker run -d -p $mapped_host_port:27017 -v $host_shared_dir:/data/db -v $host_shared_backup_dir:/backup --name $container_name ${USER}:$container_name $argument
+docker run -d \
+	-p $mapped_host_port:27017 \
+	-v $host_shared_dir:/data/db \
+	-v $host_shared_backup_dir:/backup \
+	--name $container_name \
+	${USER}:$container_name \
+	$argument

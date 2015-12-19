@@ -27,4 +27,10 @@ echo "mapped_host_management_port:" $mapped_host_management_port
 echo "host_ip": $host_ip
 echo "argument": $argument
 echo "default login": guest / guest
-docker run -d -p $mapped_host_port:5672 -p $mapped_host_management_port:15672 -v $host_shared_dir:/var/lib/rabbitmq --name $container_name ${USER}:$container_name $argument
+docker run -d \
+	-p $mapped_host_port:5672 \
+	-p $mapped_host_management_port:15672 \
+	-v $host_shared_dir:/var/lib/rabbitmq \
+	--name $container_name \
+	${USER}:$container_name \
+	$argument

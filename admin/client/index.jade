@@ -4,25 +4,14 @@ html(ng-app="codesubmit")
 		meta(charset="utf-8")
 		title codeSubmit
 		meta(name="Description", content="a web base code judge system")
-		meta(http-equiv="X-UA-Compatible", content="IE=edge")
-		meta(name="viewport", content="width=device-width")
-		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		<!--[if lt IE 9]>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
+		meta(name="viewport", content="width=device-width, initial-scale=1")
 
-		link(href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css", rel="stylesheet")
+		include ../../common/client/lib/ie.jade
+		include ../../common/client/lib/css.jade
 
 		include ../../common/client/stylesheets/stylesheets.jade
 
-		script(src="//cdn.jsdelivr.net/ace/1.2.1/min/ace.js")
-		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js")
-		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.min.js")
-		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-cookies.min.js")
-		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-sanitize.min.js")
-		script(src="//cdn.rawgit.com/angular-ui/ui-ace/bower/ui-ace.min.js")
+		include ../../common/client/lib/headjs.jade
 
 		include scripts/scripts.jade
 		include ../../common/client/scripts/scripts.jade
@@ -34,11 +23,5 @@ html(ng-app="codesubmit")
 		include views/views.jade
 		include ../../common/client/views/views.jade
 
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js")
-		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js")
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js")
-		script(src="https://cdn.rawgit.com/RickStrahl/json.date-extensions/master/json.date-extensions.min.js")
-		script JSON.useDateParser();
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js")
-		script(src="https://cdn.rawgit.com/Hypercubed/angular-marked/1b0a4ef682cbdece294db8225db8e81a775acc6b/angular-marked.min.js")
+		include ../../common/client/lib/bottomjs.jade
+		include ../../common/client/lib/browserupdate.jade
