@@ -19,18 +19,26 @@ script(type="text/ng-template", id="views/submissions")
 								|  Select an assignment on left
 							strong(ng-if="asgId") Submissions
 					p(ng-if="!submissions.length") No submissions yet.
-					table.table(ng-if="asgId")
+					table.table(ng-if="asgId" st-table="displayedSubmissions" st-safe-src="submissions")
 						thead
 							tr
-								th Email
-								th Date
-								th Status
-								th Score
+								th(st-sort="email") Email
+								th(st-sort="submitDt") Date
+								th(st-sort="status") Status
+								th(st-sort="score") Score
 								th Actions
-							tr(ng-repeat="submission in submissions")
+							tr
+								th(colspan="100")
+									input.input-sm.form-control(st-search placeholder="filter" type="search")
+						tbody
+							tr(ng-repeat="submission in displayedSubmissions")
 								td {{submission.email}}
 								td {{submission.submitDt.toString()}}
 								td {{submission.status}}
 								td {{submission.score == undefined ? 'N/A' : submission.score}} / {{assignment.sandboxConfig.testCaseNames.length}}
 								td
 									a.btn.btn-xs.btn-primary(ng-href="#/submission/{{submission.subId}}") View Details
+						tfoot
+							tr
+								td.text-center(colspan="100")
+									div(st-pagination="" st-items-by-page="30" st-displayed-pages="")

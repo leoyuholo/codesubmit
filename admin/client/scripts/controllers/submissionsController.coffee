@@ -19,6 +19,7 @@ app.controller 'SubmissionsController', ($scope, $routeParams, submissionService
 	$scope.assignments = []
 	$scope.assignmentListMsg = {}
 	$scope.assignment = {}
+	$scope.displayedSubmissions = []
 	$scope.submissions = []
 	$scope.submissionListMsg = {}
 
