@@ -1,6 +1,11 @@
 
 module.exports = (grunt, options) ->
 	config =
+		all:
+			tasks: ['concurrent:admin', 'concurrent:student', 'nodemon:worker']
+			options:
+				logConcurrentOutput: true
+				limit: 10
 		admin:
 			tasks: ['nodemon:admin', 'watch:admin', 'watch:adminReload']
 			options:
