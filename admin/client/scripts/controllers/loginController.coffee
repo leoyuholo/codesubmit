@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'LoginController' ,($scope, userService, messageService, redirectService) ->
+app.controller 'loginController' ,($scope, userService, messageService, redirectService) ->
 
 	$scope.submitLogin = (email, password) ->
 		messageService.clear()

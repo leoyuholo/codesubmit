@@ -1,6 +1,15 @@
 app = angular.module 'codesubmit'
 
-app.controller 'StudentsController', ($scope, studentService, messageService) ->
+app.controller 'studentsController', ($scope, $uibModal, studentService, messageService) ->
+
+	$scope.openImport = () ->
+		options =
+			templateUrl: 'views/importStudents'
+			controller: 'importStudentsController'
+			animation: false
+			size: 'lg'
+
+		$uibModal.open options
 
 	defaultStudent =
 		username: ''

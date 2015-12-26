@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'AssignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService, urlService) ->
+app.controller 'assignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService, urlService) ->
 
 	editor = {}
 

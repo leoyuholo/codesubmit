@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'AssignmentController', ($scope, $routeParams, assignmentService, redirectService, submissionService, messageService) ->
+app.controller 'assignmentController', ($scope, $routeParams, assignmentService, redirectService, submissionService, messageService) ->
 
 	$scope.asgId = $routeParams.asgid
 	$scope.assignmentDetailsMsg = {}
@@ -8,20 +8,22 @@ app.controller 'AssignmentController', ($scope, $routeParams, assignmentService,
 	$scope.assignmentRunMsg = {}
 	$scope.assignment = {}
 	$scope.runResult = {}
+
+	$scope.code = ''
 	$scope.codeLocalStorageKey = "assignment/#{$scope.asgId}"
 	$scope.codeAceOptions =
 		maxLines: Infinity
+
+	$scope.input = ''
 	$scope.inputLocalStorageKey = "input/#{$scope.asgId}"
 	$scope.inputAceOptions =
 		minLines: 6
 		showInvisibles: true
 		theme: 'twilight'
 		showGutter: false
-	$scope.code = ''
-	$scope.input = ''
 
 	$scope.submit = () ->
-		submit() if confirm 'Click cancel to improve your code.'
+		submit() if confirm 'Click ok to submit your code.'
 
 	$scope.run = () ->
 		input = $scope.input

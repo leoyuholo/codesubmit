@@ -13,12 +13,15 @@ script(type="text/ng-template", id="views/submissions")
 			.panel.panel-default.shadowedBox
 				.panel-body
 					p
-						h2
-							strong(ng-if="!asgId")
-								span.glyphicon.glyphicon-hand-left
-								|  Select an assignment on left
-							strong(ng-if="asgId") Submissions
-					p(ng-if="!submissions.length") No submissions yet.
+						h2(ng-if="asgId")
+							strong Submissions
+						h2(ng-if="!asgId")
+							strong Submission statistics
+						.text-right
+							a(ng-href="#/submissions")
+								span.glyphicon.glyphicon-export
+								|  Export scores
+					p(ng-if="asgId && !submissions.length") No submissions yet.
 					table.table(ng-if="asgId" st-table="displayedSubmissions" st-safe-src="submissions")
 						thead
 							tr

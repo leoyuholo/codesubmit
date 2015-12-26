@@ -1,0 +1,8 @@
+script(type="text/ng-template", id="views/importStudents")
+	.modal-header
+		h4.modal-title Import Students
+	.modal-body
+		codesubmit-editor(local-storage-key="importDataLocalStorageKey" editor-options="importDataAceOptions" language="text" ng-model="importData")
+		p.help-block Supported formats: .csv
+		.text-right
+			button.btn.btn-success(type="button" ng-click="importStudents(importData)") Import

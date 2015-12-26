@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'SubmissionController', ($scope, $routeParams, assignmentService, submissionService, messageService) ->
+app.controller 'submissionController', ($scope, $routeParams, assignmentService, submissionService, messageService) ->
 
 	$scope.asgId = $routeParams.asgid
 	$scope.asgName = $routeParams.asgname

@@ -17,7 +17,7 @@ script(type="text/ng-template", id="views/students")
 								th Email
 								th Active
 								th Remarks
-								th Actions
+								th Action
 						tbody
 							tr(ng-repeat="student in students")
 								td {{student.username}}
@@ -36,7 +36,9 @@ script(type="text/ng-template", id="views/students")
 						h2 Add New Students
 						.message-text.text-danger(ng-if="studentCreateMsg.errorMessage") {{studentCreateMsg.errorMessage}}
 						.message-text.text-success(ng-if="studentCreateMsg.successMessage") {{studentCreateMsg.successMessage}}
-						button.pull-right.btn.btn-success(type="button" data-toggle="modal" data-target="#importStudent-modal" ng-click="") Import
+						button.pull-right.btn.btn-default(type="button" ng-click="openImport()")
+							span.glyphicon.glyphicon-import
+							|  Import
 						.modal.fade#importStudent-modal
 							.modal-dialog
 								.modal-content
@@ -54,7 +56,7 @@ script(type="text/ng-template", id="views/students")
 								th Username
 								th Email
 								th Remarks
-								th Actions
+								th Action
 						tbody
 							tr(ng-repeat="student in newStudents")
 								td
@@ -69,4 +71,6 @@ script(type="text/ng-template", id="views/students")
 								td
 									button.btn.btn-xs(type="button" ng-disabled="student.status" ng-class="student.status == 'Adding' ? 'btn-warning' : 'btn-success'" ng-click="createStudent(student)") {{student.status || 'Add'}}
 					p.text-right
-						button.btn.btn-success(type="button" ng-click="addEmptyStudent()") Add More
+						button.btn.btn-success(type="button" ng-click="addEmptyStudent()")
+							span.glyphicon.glyphicon-plus
+							|  Add More

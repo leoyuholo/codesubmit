@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'AdminsController', ($scope, adminService, messageService) ->
+app.controller 'adminsController', ($scope, adminService, messageService) ->
 
 	defaultAdmin =
 		username: ''

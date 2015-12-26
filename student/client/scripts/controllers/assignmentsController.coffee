@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'AssignmentsController', ($scope, assignmentService, messageService) ->
+app.controller 'assignmentsController', ($scope, assignmentService, messageService) ->
 
 	$scope.now = new Date()
 	$scope.assignments = []

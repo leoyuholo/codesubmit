@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'SettingsController', ($scope, $location, studentService, messageService) ->
+app.controller 'settingsController', ($scope, $location, studentService, messageService) ->
 
 	defaultForm =
 		oldPassword: ''
