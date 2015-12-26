@@ -39,17 +39,6 @@ script(type="text/ng-template", id="views/students")
 						button.pull-right.btn.btn-default(type="button" ng-click="openImport()")
 							span.glyphicon.glyphicon-import
 							|  Import
-						.modal.fade#importStudent-modal
-							.modal-dialog
-								.modal-content
-									.modal-header
-										h4.modal-title Import Students
-									.modal-body
-										form
-											.form-group
-												textarea.form-control(rows="10" columns="10" ng-model="studentImportText")
-												p.help-block Supported formats: .csv
-											button.btn.btn-primary(type="button" ng-click="importStudents(studentImportText)") Import
 					table.table
 						thead
 							tr
