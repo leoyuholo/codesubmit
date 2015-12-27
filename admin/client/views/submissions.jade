@@ -16,11 +16,11 @@ script(type="text/ng-template", id="views/submissions")
 						h2(ng-if="asgId")
 							strong Submissions
 						h2(ng-if="!asgId")
-							strong Submission statistics
+							strong Submission Statistics
 						.text-right
-							a(ng-href="#/submissions")
+							button.pull-right.btn.btn-default(type="button" ng-click="openExport()")
 								span.glyphicon.glyphicon-export
-								|  Export scores
+								|  Export Scores
 					p(ng-if="asgId && !submissions.length") No submissions yet.
 					table.table(ng-if="asgId" st-table="displayedSubmissions" st-safe-src="submissions")
 						thead

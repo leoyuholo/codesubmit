@@ -25,6 +25,9 @@ module.exports = ($) ->
 
 					done null
 
+	self.listScoreStats = (done) ->
+		$.services.statsService.findByTags {key: 'submission.score'}, done
+
 	self.findScoreStatsByEmail = (email, done) ->
 		$.services.statsService.findByTags {key: 'submission.score', email: email}, (err, statses) ->
 			return $.utils.onError done, err if err

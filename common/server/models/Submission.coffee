@@ -35,7 +35,8 @@ module.exports = ($) ->
 	submissionSchema.index {asgId: 1}
 	submissionSchema.index {email: 1}
 
+	attrKeys = _.keys submission
 	submissionSchema.static 'envelop', (doc) ->
-		_.pick doc, _.keys submission
+		_.pick doc, attrKeys
 
 	mongoose.model 'Submission', submissionSchema

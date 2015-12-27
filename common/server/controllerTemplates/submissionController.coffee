@@ -2,6 +2,15 @@
 module.exports = ($) ->
 	self = {}
 
+	self.listScoreStats = () ->
+		$.express.Router().get '/listscorestats', (req, res, done) ->
+			$.services.submissionService.listScoreStats (err, stats) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					stats: stats
+
 	self.list = () ->
 		$.express.Router().get '/list/:asgId', (req, res, done) ->
 			asgId = req.params.asgId

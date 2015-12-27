@@ -1,6 +1,15 @@
 app = angular.module 'codesubmit'
 
-app.controller 'submissionsController', ($scope, $routeParams, submissionService, assignmentService, messageService) ->
+app.controller 'submissionsController', ($scope, $routeParams, $uibModal, submissionService, assignmentService, messageService) ->
+
+	$scope.openExport = () ->
+		options =
+			templateUrl: 'views/exportSubmissions'
+			controller: 'exportSubmissionsController'
+			animation: false
+			size: 'lg'
+
+		$uibModal.open options
 
 	$scope.listAssignments = () ->
 		assignmentService.list (err, data) ->

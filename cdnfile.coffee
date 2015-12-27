@@ -24,4 +24,7 @@ module.exports = [
     'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/fonts/glyphicons-halflings-regular.woff'
     'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/fonts/glyphicons-halflings-regular.woff2'
     'https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.6/smart-table.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.5/clipboard.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/async/1.5.0/async.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js'
 ]

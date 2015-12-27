@@ -33,6 +33,7 @@ app.service 'urlService', ($http) ->
 			update: () -> "#{apiPrefix}/assignment/update"
 			remove: () -> "#{apiPrefix}/assignment/remove"
 		submission:
+			listScoreStats: () -> "#{apiPrefix}/submission/listscorestats"
 			list: (asgId) -> "#{apiPrefix}/submission/list/#{asgId}"
 			listMine: (asgId) -> "#{apiPrefix}/submission/listmine/#{asgId}"
 			findBySubId: (subId) -> "#{apiPrefix}/submission/findbysubid/#{subId}"

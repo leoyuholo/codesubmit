@@ -14,7 +14,8 @@ module.exports = ($) ->
 	StatsSchema.index {statsId: 1}, {unique: 1}
 	StatsSchema.index {tags: 1}
 
+	attrKeys = _.keys stats
 	StatsSchema.static 'envelop', (doc) ->
-		_.pick doc, _.keys stats
+		_.pick doc, attrKeys
 
 	mongoose.model 'Stats', StatsSchema

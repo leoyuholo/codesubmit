@@ -13,7 +13,8 @@ module.exports = ($) ->
 
 	studentSchema.index {email: 1}, {unique: true}
 
+	attrKeys = _.without(_.keys(student), 'password')
 	studentSchema.static 'envelop', (doc) ->
-		_.pick doc, _.keys student
+		_.pick doc, attrKeys
 
 	mongoose.model 'Student', studentSchema

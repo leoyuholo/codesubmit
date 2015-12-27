@@ -3,6 +3,9 @@ app = angular.module 'codesubmit'
 app.service 'submissionService', (urlService) ->
 	self = {}
 
+	self.listScoreStats = (done) ->
+		urlService.get urlService.submission.listScoreStats(), done
+
 	self.list = (asgId, done) ->
 		urlService.get urlService.submission.list(asgId), done
 

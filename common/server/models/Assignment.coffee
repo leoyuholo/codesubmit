@@ -35,7 +35,8 @@ module.exports = ($) ->
 
 	assignmentSchema.index {asgId: 1}, {unique: true}
 
+	attrKeys = _.keys assignment
 	assignmentSchema.static 'envelop', (doc) ->
-		_.pick doc, _.keys assignment
+		_.pick doc, attrKeys
 
 	mongoose.model 'Assignment', assignmentSchema

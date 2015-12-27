@@ -13,7 +13,8 @@ module.exports = ($) ->
 
 	adminSchema.index {email: 1}, {unique: true}
 
+	attrKeys = _.without _.keys(admin), 'password'
 	adminSchema.static 'envelop', (doc) ->
-		_.pick doc, _.keys admin
+		_.pick doc, attrKeys
 
 	mongoose.model 'Admin', adminSchema
