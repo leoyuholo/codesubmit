@@ -8,6 +8,11 @@ module.exports =
 	fsNamespaceRoot: path.join '/', 'tmp', 'codesubmit'
 	sessionSecret: 'codeSubmit secret'
 	sessionName: 'codesubmit'
+	email:
+		service: 'gmail'
+		auth:
+			user: 'codesubmit'
+			pass: 'secret'
 	redis:
 		host: process.env.host_ip || 'localhost'
 		port: 6379

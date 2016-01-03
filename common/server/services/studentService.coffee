@@ -17,13 +17,17 @@ module.exports = ($) ->
 			done null, $.models.Student.envelop student
 
 	self.create = (student, done) ->
-		student.password = $.utils.rng.generatePw()
+		plainPw = $.utils.rng.generatePw()
+		# TODO: hash password
+		student.password = plainPw
 
 		$.stores.studentStore.create student, (err) ->
 			return $.utils.onError done, err if err
 
-			# send email
-			done null
+			emailSubject = $.services.emailService.makeNewUserSubject student
+			emailText = $.services.emailService.makeNewUserText student, plainPw
+
+			$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
 	self.deactivate = (email, done) ->
 		$.stores.studentStore.findByEmail email, (err, student) ->
@@ -43,12 +47,16 @@ module.exports = ($) ->
 		$.stores.studentStore.findByEmail email, (err, student) ->
 			return $.utils.onError done, err if err
 
-			student.password = $.utils.rng.generatePw()
+			plainPw = $.utils.rng.generatePw()
+			# TODO: hash plainPw
+			student.password = plainPw
 			$.stores.studentStore.update student, (err) ->
 				return $.utils.onError done, err if err
 
-				# send email
-				done null
+				emailSubject = $.services.emailService.makeResetPwSubject student
+				emailText = $.services.emailService.makeResetPwText student, plainPw
+
+				$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
 	self.changePassword = (student, oldPassword, newPassword, done) ->
 		return $.utils.onError done, new Error('Old password incorrect.') if student.password != oldPassword

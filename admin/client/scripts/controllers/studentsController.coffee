@@ -47,7 +47,7 @@ app.controller 'studentsController', ($scope, $uibModal, studentService, message
 	$scope.resetPassword = (student) ->
 		studentService.resetPassword student, (err) ->
 			return messageService.error $scope.studentListMsg, err.message if err
-			messageService.success $scope.studentListMsg, 'Password reseted.'
+			messageService.success $scope.studentListMsg, 'Password reset.'
 
 	$scope.createStudent = (student) ->
 		student.status = 'Adding'

@@ -38,7 +38,7 @@ app.controller 'adminsController', ($scope, adminService, messageService) ->
 	$scope.resetPassword = (admin) ->
 		adminService.resetPassword admin, (err) ->
 			return messageService.error $scope.adminListMsg, err.message if err
-			messageService.success $scope.adminListMsg, 'Password reseted.'
+			messageService.success $scope.adminListMsg, 'Password reset.'
 
 	$scope.createAdmin = (admin) ->
 		admin.status = 'Adding'

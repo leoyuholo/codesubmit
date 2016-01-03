@@ -16,13 +16,17 @@ module.exports = ($) ->
 			done null, $.models.Student.envelop admin
 
 	self.create = (admin, done) ->
-		admin.password = $.utils.rng.generatePw()
+		plainPw = $.utils.rng.generatePw()
+		# TODO: hash plainPw
+		admin.password = plainPw
 
 		$.stores.adminStore.create admin, (err) ->
 			return $.utils.onError done, err if err
 
-			# TODO: send email
-			done null, admin
+			emailSubject = $.services.emailService.makeNewUserSubject admin
+			emailText = $.services.emailService.makeNewUserText admin, plainPw
+
+			$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
 	self.deactivate = (email, done) ->
 		$.stores.adminStore.findByEmail email, (err, admin) ->
@@ -42,12 +46,16 @@ module.exports = ($) ->
 		$.stores.adminStore.findByEmail email, (err, admin) ->
 			return $.utils.onError done, err if err
 
-			admin.password = $.utils.rng.generatePw()
+			plainPw = $.utils.rng.generatePw()
+			# TODO: hash plainPw
+			admin.password = plainPw
 			$.stores.adminStore.update admin, (err) ->
 				return $.utils.onError done, err if err
 
-				# TODO: send email
-				done null
+				emailSubject = $.services.emailService.makeResetPwSubject admin
+				emailText = $.services.emailService.makeResetPwText admin, plainPw
+
+				$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
 	self.changePassword = (admin, oldPassword, newPassword, done) ->
 		return $.utils.onError done, new Error('Old password incorrect.') if admin.password != oldPassword
