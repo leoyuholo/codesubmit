@@ -3,6 +3,9 @@ path = require 'path'
 
 module.exports = (grunt, options) ->
 	config =
+		options:
+			execMap:
+				coffee: 'node_modules/.bin/coffee'
 		admin:
 			script: 'admin/server/app.coffee'
 			options:
