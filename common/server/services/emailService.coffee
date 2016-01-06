@@ -1,18 +1,24 @@
 _ = require 'lodash'
 nodemailer = require 'nodemailer'
+xoauth2 = require 'xoauth2'
 
 module.exports = ($) ->
 	self = {}
 
+	generator = xoauth2.createXOAuth2Generator
+		user: $.config.email.auth.user
+		clientId: $.config.email.auth.clientId
+		clientSecret: $.config.email.auth.clientSecret
+		refreshToken: $.config.email.auth.refreshToken
+
 	transporter = nodemailer.createTransport
 		service: $.config.email.service
 		auth:
-			user: $.config.email.auth.user
-			pass: $.config.email.auth.pass
+			xoauth2: generator
 
 	self.sendEmail = (to, subject, text, done) ->
 		mail =
-			to: 'yhlo@cse.cuhk.edu.hk' || to
+			to: to
 			subject: subject
 			text: text
 

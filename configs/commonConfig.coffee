@@ -11,8 +11,10 @@ module.exports =
 	email:
 		service: 'gmail'
 		auth:
-			user: 'codesubmit'
-			pass: 'secret'
+			user: 'codesubmit@gmail.com'
+			clientId: 'xxxxxx.apps.googleusercontent.com'
+			clientSecret: 'xxxxxx'
+			refreshToken: 'xxxxxx'
 	redis:
 		host: process.env.host_ip || 'localhost'
 		port: 6379
