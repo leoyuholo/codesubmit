@@ -1,20 +1,22 @@
+#!/bin/bash
+
 script_dir=$(readlink -f $(dirname $0))
-default_container_name="codesubmitworker"
-default_host_shared_dir=$(readlink -f "$script_dir/../../../")
-default_mapped_host_port=8002
-default_argument="/host_shared/worker/server/app.coffee"
 host_ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+
+container_name="codesubmitworker"
+worker_dir=/tmp/codesubmit/worker/
+host_shared_dir=$(readlink -f "$script_dir/../../../")
+argument="/host_shared/worker/server/app.coffee"
+
+mkdir -p $worker_dir
 
 if [ "$1" == "--help" ]
 then
-	echo "usage: $0 host_shared_dir container_name mapped_host_port argument"
+	echo "usage: $0 master_ip"
 	exit
 fi
 
-host_shared_dir=$([ "$1" == "" ] && echo $default_host_shared_dir || echo $(readlink -f $1))
-container_name=$([ "$2" == "" ] && echo $default_container_name || echo "$2")
-mapped_host_port=$([ "$3" == "" ] && echo $default_mapped_host_port || echo "$3")
-argument=$([ "$4" == "" ] && echo $default_argument || echo "$4")
+master_ip=$([ "$1" == "" ] && echo $host_ip || echo "$1")
 
 docker build -t ${USER}:$container_name $script_dir
 docker kill $container_name
@@ -24,6 +26,7 @@ echo "shared_dir:" $host_shared_dir
 echo "container_name:" $container_name
 echo "mapped_host_port:" $mapped_host_port
 echo "host_ip": $host_ip
+echo "master_ip": $master_ip
 echo "argument": $argument
 
 sandboxrun=tomlau10/sandbox-run
@@ -33,11 +36,12 @@ if [ -z "$(docker images -a | grep $sandboxrun)" ]; then
 else
 	echo "$sandboxrun docker image exists, skip pulling."
 fi
+
 docker run  -d \
-			-u $(id -u):$(id -g) \
-			-p $mapped_host_port:8002 \
+			-u $(id -u):$(getent group docker | cut -d: -f3) \
+			-e "host_ip="$master_ip \
 			-v $host_shared_dir:/host_shared \
-			-v /codesubmit/worker/:/codesubmit/worker/ \
+			-v $worker_dir:$worker_dir \
 			-v /var/run/docker.sock:/var/run/docker.sock \
 			-v $(which docker):/bin/docker \
 			-v /usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/lib/x86_64-linux-gnu/libapparmor.so.1 \

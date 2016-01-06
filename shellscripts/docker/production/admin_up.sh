@@ -1,20 +1,15 @@
+#!/bin/bash
+
 script_dir=$(readlink -f $(dirname $0))
-default_container_name="codesubmitadmin"
-default_host_shared_dir=$(readlink -f "$script_dir/../../../")
-default_mapped_host_port=8000
-default_argument="/host_shared/admin/server/app.coffee"
 host_ip=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
-if [ "$1" == "--help" ]
-then
-	echo "usage: $0 host_shared_dir container_name mapped_host_port argument"
-	exit
-fi
+container_name="codesubmitadmin"
+worker_dir=/tmp/codesubmit/worker/
+host_shared_dir=$(readlink -f "$script_dir/../../../")
+mapped_host_port=8000
+argument="/host_shared/admin/server/app.coffee"
 
-host_shared_dir=$([ "$1" == "" ] && echo $default_host_shared_dir || echo $(readlink -f $1))
-container_name=$([ "$2" == "" ] && echo $default_container_name || echo "$2")
-mapped_host_port=$([ "$3" == "" ] && echo $default_mapped_host_port || echo "$3")
-argument=$([ "$4" == "" ] && echo $default_argument || echo "$4")
+mkdir -p $worker_dir
 
 docker build -t ${USER}:$container_name $script_dir
 docker kill $container_name
@@ -27,8 +22,9 @@ echo "host_ip": $host_ip
 echo "argument": $argument
 
 docker run  -d \
-			-u $(id -u):$(id -g) \
-			-p $mapped_host_port:8000 \
+			-u $(id -u):$(getent group docker | cut -d: -f3) \
+			-e "host_ip="$host_ip \
+			-p 8000:8000 \
 			-v $host_shared_dir:/host_shared \
 			--restart="always" \
 			--name $container_name \
