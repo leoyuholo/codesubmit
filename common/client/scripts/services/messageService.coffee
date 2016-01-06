@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.service 'messageService', ($rootScope, userService) ->
+app.service 'messageService', ($rootScope, userService, redirectService) ->
 	self = {}
 
 	self.clear = (target) ->
@@ -13,8 +13,7 @@ app.service 'messageService', ($rootScope, userService) ->
 			errorMessage = target
 			target = $rootScope
 
-		console.log 'error', errorMessage
-		userService.logout() if errorMessage == 'Unauthorized access.'
+		userService.logout redirectService.redirectToHome if errorMessage == 'Unauthorized access.'
 
 		self.clear target
 		target.errorMessage = errorMessage
@@ -23,8 +22,6 @@ app.service 'messageService', ($rootScope, userService) ->
 		if _.isString target
 			successMessage = target
 			target = $rootScope
-
-		console.log 'success', successMessage
 
 		self.clear target
 		target.successMessage = successMessage
