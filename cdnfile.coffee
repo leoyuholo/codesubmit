@@ -27,4 +27,5 @@ module.exports = [
     'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.5/clipboard.min.js'
     'https://cdnjs.cloudflare.com/ajax/libs/async/1.5.0/async.min.js'
     'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha512.js'
 ]

@@ -12,11 +12,13 @@ startServer = (done) ->
 	$.app.listen $.config.port, done
 
 injectRootUser = (done) ->
-	$.stores.adminStore.findByEmail 'leo@cse.cuhk.edu.hk', (err, admin) ->
-		return console.log err if err
+	$.stores.adminStore.findByEmail $.config.rootUser.email, (err, admin) ->
+		return $.utils.onError done, err if err
 		return done null if admin
-		$.stores.adminStore.create {email: 'leo@cse.cuhk.edu.hk', username: 'leo', password: 'leo'}, (err) ->
-			return console.log err if err
+
+		$.services.adminService.create {email: $.config.rootUser.email, username: 'root', remarks: 'root'}, (err) ->
+			return $.utils.onError done, err if err
+
 			done null
 
 async.series [
@@ -24,5 +26,5 @@ async.series [
 	startServer
 	injectRootUser
 ], (err) ->
-	return console.log 'error starting up codeSubmit admin', err if err
-	console.log 'codeSubmit admin listen on port', $.config.port
+	return $.logger.log 'error', "error starting up codesubmit admin #{err.message}" if err
+	$.logger.log 'info', "codeSubmit admin listen on port #{$.config.port}"

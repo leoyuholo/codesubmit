@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.service 'adminService', (urlService) ->
+app.service 'adminService', (urlService, userService) ->
 	self = {}
 
 	self.list = (done) ->
@@ -43,9 +43,12 @@ app.service 'adminService', (urlService) ->
 		return done new Error('Old password is empty') if !oldPassword
 		return done new Error('New password is empty') if !newPassword
 
+		passwordInvalidMessage = userService.testPassword newPassword
+		return done new Error(passwordInvalidMessage) if passwordInvalidMessage
+
 		payload =
-			oldPassword: oldPassword
-			newPassword: newPassword
+			oldPassword: userService.hashPw oldPassword
+			newPassword: userService.hashPw newPassword
 
 		urlService.post urlService.admin.changePassword(), payload, done
 

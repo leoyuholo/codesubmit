@@ -77,10 +77,13 @@ module.exports = ($) ->
 			localStrategyOptions, (email, password, done) ->
 				userStore.findByEmail email, (err, user) ->
 					return $.utils.onError done, err if err
-
 					return done null, false if !user
-					return done null, false if user.password != password
-					done null, user
+
+					$.utils.rng.verifyPw user.password, user.salt, password, (err, valid) ->
+						return $.utils.onError done, err if err
+						return done null, false if !valid
+
+						done null, user
 		)
 
 		RedisStore = connectRedis session

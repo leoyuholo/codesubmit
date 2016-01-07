@@ -18,16 +18,20 @@ module.exports = ($) ->
 
 	self.create = (student, done) ->
 		plainPw = $.utils.rng.generatePw()
-		# TODO: hash password
-		student.password = plainPw
 
-		$.stores.studentStore.create student, (err) ->
+		$.utils.rng.hashPlainPw student.email, plainPw, (err, hash, salt) ->
 			return $.utils.onError done, err if err
 
-			emailSubject = $.services.emailService.makeNewUserSubject student
-			emailText = $.services.emailService.makeNewUserText student, plainPw
+			student.password = hash
+			student.salt = salt
 
-			$.services.emailService.sendEmail student.email, emailSubject, emailText, done
+			$.stores.studentStore.create student, (err) ->
+				return $.utils.onError done, err if err
+
+				emailSubject = $.services.emailService.makeNewUserSubject student
+				emailText = $.services.emailService.makeNewUserText student, plainPw
+
+				$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
 	self.deactivate = (email, done) ->
 		$.stores.studentStore.findByEmail email, (err, student) ->
@@ -48,22 +52,33 @@ module.exports = ($) ->
 			return $.utils.onError done, err if err
 
 			plainPw = $.utils.rng.generatePw()
-			# TODO: hash plainPw
-			student.password = plainPw
-			$.stores.studentStore.update student, (err) ->
+
+			$.utils.rng.hashPlainPw student.email, plainPw, (err, hash, salt) ->
 				return $.utils.onError done, err if err
 
-				emailSubject = $.services.emailService.makeResetPwSubject student
-				emailText = $.services.emailService.makeResetPwText student, plainPw
+				student.password = hash
+				student.salt = salt
 
-				$.services.emailService.sendEmail student.email, emailSubject, emailText, done
+				$.stores.studentStore.update student, (err) ->
+					return $.utils.onError done, err if err
+
+					emailSubject = $.services.emailService.makeResetPwSubject student
+					emailText = $.services.emailService.makeResetPwText student, plainPw
+
+					$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
 	self.changePassword = (student, oldPassword, newPassword, done) ->
-		return $.utils.onError done, new Error('Old password incorrect.') if student.password != oldPassword
+		$.utils.rng.verifyPw student.password, student.salt, oldPassword, (err, valid) ->
+			return $.utils.onError done, err if err
+			return $.utils.onError done, new Error('Old password incorrect.') if !valid
 
-		# TODO: hash newPassword
-		student.password = newPassword
-		$.stores.studentStore.update student, done
+			$.utils.rng.secureHashPw newPassword, (err, hash, salt) ->
+				return $.utils.onError done, err if err
+
+				student.password = hash
+				student.salt = salt
+
+				$.stores.studentStore.update student, done
 
 	self.importByCsv = (csv, done) ->
 		return $.utils.onError done, 'Not yet implemented.'

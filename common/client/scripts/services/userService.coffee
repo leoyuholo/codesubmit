@@ -17,7 +17,17 @@ app.service 'userService', ($rootScope, urlService) ->
 		localStorage.removeItem 'user'
 		delete $rootScope.user
 
+	self.hashPw = (password) ->
+		shaObj = new jsSHA('SHA-512', 'TEXT')
+		# TODO: make life harder
+		# shaObj.update password + $rootScope.user.email + window.location.hostname
+		shaObj.update password + $rootScope.user.email
+		shaObj.getHash 'HEX'
+
 	self.login = (email, password, done) ->
+
+		password = self.hashPw email, password
+
 		payload =
 			email: email
 			password: password
@@ -34,5 +44,10 @@ app.service 'userService', ($rootScope, urlService) ->
 
 			clearUser()
 			done null
+
+	self.testPassword = (password) ->
+		return 'Password too short.' if password.length < 8
+		return 'Only a-zA-Z0-9!()-._`~@ allowed.' if !/^[a-zA-Z0-9!()-._`~@]+$/.test password
+		''
 
 	return self

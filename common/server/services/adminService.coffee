@@ -17,16 +17,20 @@ module.exports = ($) ->
 
 	self.create = (admin, done) ->
 		plainPw = $.utils.rng.generatePw()
-		# TODO: hash plainPw
-		admin.password = plainPw
 
-		$.stores.adminStore.create admin, (err) ->
+		$.utils.rng.hashPlainPw admin.email, plainPw, (err, hash, salt) ->
 			return $.utils.onError done, err if err
 
-			emailSubject = $.services.emailService.makeNewUserSubject admin
-			emailText = $.services.emailService.makeNewUserText admin, plainPw
+			admin.password = hash
+			admin.salt = salt
 
-			$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
+			$.stores.adminStore.create admin, (err) ->
+				return $.utils.onError done, err if err
+
+				emailSubject = $.services.emailService.makeNewUserSubject admin
+				emailText = $.services.emailService.makeNewUserText admin, plainPw
+
+				$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
 	self.deactivate = (email, done) ->
 		$.stores.adminStore.findByEmail email, (err, admin) ->
@@ -47,20 +51,32 @@ module.exports = ($) ->
 			return $.utils.onError done, err if err
 
 			plainPw = $.utils.rng.generatePw()
-			# TODO: hash plainPw
-			admin.password = plainPw
-			$.stores.adminStore.update admin, (err) ->
+
+			$.utils.rng.hashPlainPw admin.email, plainPw, (err, hash, salt) ->
 				return $.utils.onError done, err if err
 
-				emailSubject = $.services.emailService.makeResetPwSubject admin
-				emailText = $.services.emailService.makeResetPwText admin, plainPw
+				admin.password = hash
+				admin.salt = salt
 
-				$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
+				$.stores.adminStore.update admin, (err) ->
+					return $.utils.onError done, err if err
+
+					emailSubject = $.services.emailService.makeResetPwSubject admin
+					emailText = $.services.emailService.makeResetPwText admin, plainPw
+
+					$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
 	self.changePassword = (admin, oldPassword, newPassword, done) ->
-		return $.utils.onError done, new Error('Old password incorrect.') if admin.password != oldPassword
+		$.utils.rng.verifyPw admin.password, admin.salt, oldPassword, (err, valid) ->
+			return $.utils.onError done, err if err
+			return $.utils.onError done, new Error('Old password incorrect.') if !valid
 
-		admin.password = newPassword
-		$.stores.adminStore.update admin, done
+			$.utils.rng.secureHashPw newPassword, (err, hash, salt) ->
+				return $.utils.onError done, err if err
+
+				admin.password = hash
+				admin.salt = salt
+
+				$.stores.adminStore.update admin, done
 
 	return self

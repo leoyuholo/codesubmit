@@ -20,5 +20,5 @@ async.series [
 	registerWorker
 	startServer
 ], (err) ->
-	return console.log 'error starting up codeSubmit worker', err if err
-	console.log 'codeSubmit worker listen on port', $.config.port
+	return $.logger.log 'error', "error starting up codesubmit worker #{err.message}" if err
+	$.logger.log 'info', "codeSubmit worker listen on port #{$.config.port}"

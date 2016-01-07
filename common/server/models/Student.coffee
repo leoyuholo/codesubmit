@@ -5,7 +5,8 @@ module.exports = ($) ->
 	student =
 		email: {type: String, required: true, match: /.+@.+/}
 		username: {type: String, required: true, match: /\w+/}
-		password: {type: String, required: true, match: /[\w]+/}
+		password: {type: String, required: true}
+		salt: {type: String, required: true}
 		active: {type: Boolean, default: true}
 		remarks: String
 

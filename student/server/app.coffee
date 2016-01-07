@@ -15,5 +15,5 @@ async.series [
 	runSetups
 	startServer
 ], (err) ->
-	return console.log 'error starting up codeSubmit student', err if err
-	console.log 'codeSubmit student listen on port', $.config.port
+	return $.logger.log 'error', "error starting up codesubmit student #{err.message}" if err
+	$.logger.log 'info', "codeSubmit student listen on port #{$.config.port}"

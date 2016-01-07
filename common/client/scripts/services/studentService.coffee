@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.service 'studentService', ($http, $rootScope, urlService) ->
+app.service 'studentService', (urlService, userService) ->
 	self = {}
 
 	self.list = (done) ->
@@ -49,9 +49,12 @@ app.service 'studentService', ($http, $rootScope, urlService) ->
 		return done new Error('Old password is empty') if !oldPassword
 		return done new Error('New password is empty') if !newPassword
 
+		passwordInvalidMessage = userService.testPassword newPassword
+		return done new Error(passwordInvalidMessage) if passwordInvalidMessage
+
 		payload =
-			oldPassword: oldPassword
-			newPassword: newPassword
+			oldPassword: userService.hashPw oldPassword
+			newPassword: userService.hashPw newPassword
 
 		urlService.post urlService.student.changePassword(), payload, done
 
