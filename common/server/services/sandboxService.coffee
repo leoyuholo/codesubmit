@@ -55,7 +55,13 @@ module.exports = ($) ->
 		return childProcess.exec makeRunCmd(sandboxrunPath, sandboxConfig), {timeout: sandboxConfig.commandTimeoutMs}, (err, stdout, stderr) ->
 			return $.utils.onError done, err if err
 
-			result = JSON.parse stdout
+			stdout = stdout.split('\x00').join('').split('\x0a').join('')
+
+			try
+				result = JSON.parse stdout
+			catch err
+				return $.utils.onError done, new Error('Sandbox error.')
+
 			result.message = result.result[0]
 			result.ok = result.message == 'OK'
 
