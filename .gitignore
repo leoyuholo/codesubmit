@@ -3,3 +3,6 @@ node_modules
 admin/public
 student/public
 common/public
+logs/admin*.log
+logs/student*.log
+logs/worker*.log
