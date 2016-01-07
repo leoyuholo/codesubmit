@@ -52,9 +52,11 @@ app.service 'studentService', (urlService, userService) ->
 		passwordInvalidMessage = userService.testPassword newPassword
 		return done new Error(passwordInvalidMessage) if passwordInvalidMessage
 
+		user = userService.getUser()
+
 		payload =
-			oldPassword: userService.hashPw oldPassword
-			newPassword: userService.hashPw newPassword
+			oldPassword: userService.hashPw user.email, oldPassword
+			newPassword: userService.hashPw user.email, newPassword
 
 		urlService.post urlService.student.changePassword(), payload, done
 

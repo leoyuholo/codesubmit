@@ -5,7 +5,6 @@ module.exports =
 	port: 8080
 	rootUser:
 		email: 'codesubmit@gmail.com'
-		username: 'codesubmit'
 	logDir: path.join __dirname, '..', 'logs'
 	# must match up the volume mount of worker docker
 	fsNamespaceRoot: path.join '/', 'tmp', 'codesubmit'

@@ -17,25 +17,23 @@ app.service 'userService', ($rootScope, urlService) ->
 		localStorage.removeItem 'user'
 		delete $rootScope.user
 
-	self.hashPw = (password) ->
+	self.hashPw = (email, password) ->
 		shaObj = new jsSHA('SHA-512', 'TEXT')
 		# TODO: make life harder
-		# shaObj.update password + $rootScope.user.email + window.location.hostname
-		shaObj.update password + $rootScope.user.email
+		# shaObj.update password + email + window.location.hostname
+		shaObj.update password + email
 		shaObj.getHash 'HEX'
 
 	self.login = (email, password, done) ->
-
-		password = self.hashPw email, password
-
 		payload =
 			email: email
-			password: password
+			password: self.hashPw email, password
 
 		urlService.post urlService.user.login(), payload, (err, data) ->
 			return done err if err
 
 			setUser data.user
+
 			done null, data
 
 	self.logout = (done) ->
@@ -43,6 +41,7 @@ app.service 'userService', ($rootScope, urlService) ->
 			return done err if err
 
 			clearUser()
+
 			done null
 
 	self.testPassword = (password) ->
