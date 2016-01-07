@@ -31,7 +31,7 @@ echo "argument": $argument
 
 sandboxrun=tomlau10/sandbox-run
 if [ -z "$(docker images -a | grep $sandboxrun)" ]; then
-	echo "$sandboxrun docker image exists, pulling..."
+	echo "$sandboxrun docker image does not exist, pulling..."
 	docker pull $sandboxrun
 else
 	echo "$sandboxrun docker image exists, skip pulling."
