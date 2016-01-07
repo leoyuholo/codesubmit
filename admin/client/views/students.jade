@@ -27,8 +27,8 @@ script(type="text/ng-template", id="views/students")
 									span.glyphicon.glyphicon-remove.text-danger(ng-if="!student.active")
 								td {{student.remarks}}
 								td
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="student.active" ng-click="deactivate(student, $index)") Deactivate
-									button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!student.active" ng-click="activate(student, $index)") Activate
+									//- button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="student.active" ng-click="deactivate(student, $index)") Deactivate
+									//- button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!student.active" ng-click="activate(student, $index)") Activate
 									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(student, $index)") Reset Password
 			.panel.panel-default.shadowedBox
 				.panel-body

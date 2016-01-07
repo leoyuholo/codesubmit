@@ -27,8 +27,8 @@ script(type="text/ng-template", id="views/admins")
 									span.glyphicon.glyphicon-remove.text-danger(ng-if="!admin.active")
 								td {{admin.remarks}}
 								td
-									button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="admin.active" ng-click="deactivate(admin, $index)") Deactivate
-									button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!admin.active" ng-click="activate(admin, $index)") Activate
+									//- button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="admin.active" ng-click="deactivate(admin, $index)") Deactivate
+									//- button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!admin.active" ng-click="activate(admin, $index)") Activate
 									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(admin, $index)") Reset Password
 			.panel.panel-default.shadowedBox
 				.panel-body
