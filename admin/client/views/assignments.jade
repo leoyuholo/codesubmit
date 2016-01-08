@@ -31,7 +31,7 @@ script(type="text/ng-template", id="views/assignments")
 									label(for="assignmentName-input") Assignment Name:
 									input.form-control#assignmentName-input(type="text" placeholder="Warm up exercise # 1" ng-model="assignment.name")
 								.form-group
-									label(for="assignmentStartDate-input") Start Datetime (MM/DD/YYYY hh:mm):
+									label(for="assignmentStartDate-input") Start Datetime:
 									input.form-control#assignmentStartDate-input(type="datetime-local" ng-model="assignment.startDt")
 									p.help-block Same timezone as your current time: {{now.toString()}}
 								.form-group
