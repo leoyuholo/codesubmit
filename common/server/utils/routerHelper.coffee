@@ -110,10 +110,10 @@ module.exports = ($) ->
 		router.post '/login', (req, res, done) ->
 			passport.authenticate('local', (err, user, info) ->
 				return $.utils.onError done, err if err
-				return $.utils.onError done, new Error 'Incorrect email or password.' if !user
+				return done new Error 'Incorrect email or password.' if !user
 
 				req.logIn user, (err) ->
-					return $.utils.onError done, new Error 'Login error.' if err
+					return $.utils.onError done, _.set(new Error('Login error.'), 'debugInfo', {errorMessage: err.message, email: user.email}) if err
 
 					res.json
 						success: true

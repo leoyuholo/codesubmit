@@ -17,6 +17,7 @@ module.exports = ($) ->
 			'--security-opt', 'apparmor:unconfined'
 			'--entrypoint', 'sh'
 			'-v', sandboxrunPath + ':/vol/'
+			'-u', '$(id -u):$(id -g)'
 			'tomlau10/sandbox-run'
 			'-c', "'#{sandboxConfig.compileCommand}'"
 		].join ' '
@@ -55,12 +56,14 @@ module.exports = ($) ->
 		return childProcess.exec makeRunCmd(sandboxrunPath, sandboxConfig), {timeout: sandboxConfig.commandTimeoutMs}, (err, stdout, stderr) ->
 			return $.utils.onError done, err if err
 
-			stdout = stdout.split('\x00').join('').split('\x0a').join('')
-
 			try
-				result = JSON.parse stdout
+				result = JSON.parse "#{stdout}"
 			catch err
-				return $.utils.onError done, new Error('Sandbox error.')
+				debugInfo =
+					errorMessage: err.message
+					stdout: stdout
+					stderr: stderr
+				return $.utils.onError done, _.set new Error('Sandbox error.'), 'debugInfo', debugInfo
 
 			result.message = result.result[0]
 			result.ok = result.message == 'OK'
