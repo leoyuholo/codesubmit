@@ -39,7 +39,7 @@ fi
 
 docker run  -d \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
-			-e "host_ip="$master_ip \
+			-e "HOST_IP="$master_ip \
 			-v $host_shared_dir:/host_shared \
 			-v $worker_dir:$worker_dir \
 			-v /var/run/docker.sock:/var/run/docker.sock \

@@ -31,7 +31,7 @@ echo "argument": $argument
 
 docker run  -d \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
-			-e "host_ip="$master_ip \
+			-e "HOST_IP="$master_ip \
 			-p $mapped_host_port:8001 \
 			-v $host_shared_dir:/host_shared \
 			--restart="always" \

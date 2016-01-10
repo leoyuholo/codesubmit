@@ -33,7 +33,10 @@ echo "argument": $argument
 
 docker run  -i \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
-			-e "host_ip="$host_ip \
+			-e "HOST_IP="$host_ip \
+			--link redis:redis \
+			--link mongodb:mongodb \
+			--link rabbitmq:rabbitmq \
 			-p 8000:8000 \
 			-p 8001:8001 \
 			-p 35728:35728 \

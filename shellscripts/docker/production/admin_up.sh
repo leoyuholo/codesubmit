@@ -11,6 +11,14 @@ argument="/host_shared/admin/server/app.coffee"
 
 mkdir -p $worker_dir
 
+if [ "$1" == "--help" ]
+then
+	echo "usage: $0 master_ip"
+	exit
+fi
+
+master_ip=$([ "$1" == "" ] && echo $host_ip || echo "$1")
+
 docker build -t ${USER}:$container_name $script_dir
 docker kill $container_name
 docker rm $container_name
@@ -23,7 +31,7 @@ echo "argument": $argument
 
 docker run  -d \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
-			-e "host_ip="$host_ip \
+			-e "HOST_IP="$master_ip \
 			-p 8000:8000 \
 			-v $host_shared_dir:/host_shared \
 			--restart="always" \

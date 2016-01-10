@@ -18,15 +18,15 @@ module.exports =
 			clientSecret: 'xxxxxx'
 			refreshToken: 'xxxxxx'
 	redis:
-		host: process.env.host_ip || 'localhost'
-		port: 6379
+		host: process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost'
+		port: process.env.REDIS_PORT_6379_TCP_PORT || 6379
 	mongodb:
-		host: process.env.host_ip || 'localhost'
-		port: 27017
+		host: process.env.MONGODB_PORT_27017_TCP_ADDR || 'localhost'
+		port: process.env.MONGODB_PORT_27017_TCP_PORT || 27017
 		db: 'codesubmit'
 	rabbitmq:
-		host: process.env.host_ip || 'localhost'
-		port: 5672
+		host: process.env.RABBITMQ_PORT_5672_TCP_ADDR || 'localhost'
+		port: process.env.RABBITMQ_PORT_5672_TCP_PORT || 5672
 		queues:
 			submission: 'submission'
 			runResult: 'runResult'
