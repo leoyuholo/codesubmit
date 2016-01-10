@@ -8,7 +8,7 @@ $.studentDir = path.join $.serverDir, '../'
 $.rootDir = path.join $.studentDir, '../'
 $.commonDir = path.join $.rootDir, 'common'
 $.publicDir = path.join $.studentDir, 'public'
-$.commonPublicDir = path.join $.studentDir, 'public'
+$.commonPublicDir = path.join $.commonDir, 'public'
 
 # configs
 $.config = require path.join $.rootDir, 'configs', 'studentConfig'

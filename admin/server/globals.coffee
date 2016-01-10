@@ -8,7 +8,7 @@ $.adminDir = path.join $.serverDir, '../'
 $.rootDir = path.join $.adminDir, '../'
 $.commonDir = path.join $.rootDir, 'common'
 $.publicDir = path.join $.adminDir, 'public'
-$.commonPublicDir = path.join $.adminDir, 'public'
+$.commonPublicDir = path.join $.commonDir, 'public'
 
 # configs
 $.config = require path.join $.rootDir, 'configs', 'adminConfig'
