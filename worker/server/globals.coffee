@@ -13,6 +13,10 @@ $.commonDir = path.join $.rootDir, 'common'
 # configs
 $.config = require path.join $.rootDir, 'configs', 'workerConfig'
 
+# env
+$.env =
+	worker: true
+
 # init common components
 $ = require(path.join $.commonDir, 'server', 'globals')($)
 # init controllers

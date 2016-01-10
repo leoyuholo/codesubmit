@@ -47,6 +47,7 @@ module.exports = ($) ->
 				done null, hash, salt
 
 	self.hashPlainPw = (email, password, done) ->
+		$.logger.log 'info', "Password for #{email} is [#{password}]" if $.env.development
 		self.secureHashPw self.hashPw(email, password), done
 
 	self.verifyPw = (hash, salt, against, done) ->

@@ -2,6 +2,7 @@ path = require 'path'
 events = require 'events'
 
 _ = require 'lodash'
+async = require 'async'
 express = require 'express'
 bodyParser = require 'body-parser'
 winston = require 'winston'
@@ -24,6 +25,11 @@ module.exports = ($) ->
 	$.app.use bodyParser.json {limit: '1000kb'}
 	# $.app.use bodyParser.urlencoded {extended: true}
 
+	# env
+	$.env = $.env || {}
+	$.env.development = $.app.get('env') == 'development'
+	$.env.production = $.app.get('env') == 'production'
+
 	$.logger = new winston.Logger(
 		transports: [
 			new (winston.transports.Console)({level: 'verbose', colorize: true})
@@ -45,5 +51,20 @@ module.exports = ($) ->
 		$[component] = requireAll path.join(__dirname, component), $
 
 	$.utils.requireAll = requireAll
+
+	# methods
+	$.run = {}
+	$.run.setup = (done) ->
+		process.nextTick () ->
+			async.eachSeries $.setups, ( (setup, done) ->
+				setup.run done
+			), done
+	$.run.server = (done) ->
+		$.app.listen $.config.port, (err) ->
+			return $.utils.onError done, err if err
+
+			$.emitter.emit 'serverStarted'
+
+			done null
 
 	return $

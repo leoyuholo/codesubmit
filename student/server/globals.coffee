@@ -7,9 +7,15 @@ $.serverDir = __dirname
 $.studentDir = path.join $.serverDir, '../'
 $.rootDir = path.join $.studentDir, '../'
 $.commonDir = path.join $.rootDir, 'common'
+$.publicDir = path.join $.studentDir, 'public'
+$.commonPublicDir = path.join $.studentDir, 'public'
 
 # configs
 $.config = require path.join $.rootDir, 'configs', 'studentConfig'
+
+# env
+$.env =
+	student: true
 
 # init common components
 $ = require(path.join $.commonDir, 'server', 'globals')($)
@@ -22,6 +28,6 @@ $.controllers = $.utils.routerHelper.makeControllers
 $.controllers.userController = $.utils.routerHelper.makeUserController $.stores.studentStore
 
 # routes
-$.app.use $.express.static path.join $.studentDir, 'public'
-$.app.use '/common', $.express.static path.join $.commonDir, 'public'
+$.app.use $.express.static $.publicDir
+$.app.use '/common', $.express.static $.commonPublicDir
 $.app.use '/api', $.utils.routerHelper.makeApi()

@@ -11,10 +11,16 @@ module.exports = ($) ->
 		clientSecret: $.config.email.auth.clientSecret
 		refreshToken: $.config.email.auth.refreshToken
 
-	transporter = nodemailer.createTransport
-		service: $.config.email.service
-		auth:
-			xoauth2: generator
+	if $.env.development
+		transporter =
+			sendMail: (mail, done) ->
+				$.logger.log 'info', "Simulating sendMail %j", mail, {}
+				done null
+	else
+		transporter = nodemailer.createTransport
+			service: $.config.email.service
+			auth:
+				xoauth2: generator
 
 	self.sendEmail = (to, subject, text, done) ->
 		mail =

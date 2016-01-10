@@ -2,15 +2,6 @@ async = require 'async'
 
 $ = require './globals'
 
-runSetups = (done) ->
-	process.nextTick () ->
-		async.eachSeries $.setups, ( (setup, done) ->
-			setup.run done
-		), done
-
-startServer = (done) ->
-	$.app.listen $.config.port, done
-
 injectRootUser = (done) ->
 	$.stores.adminStore.findByEmail $.config.rootUser.email, (err, admin) ->
 		return $.utils.onError done, err if err
@@ -22,8 +13,8 @@ injectRootUser = (done) ->
 			done null
 
 async.series [
-	runSetups
-	startServer
+	$.run.setup
+	$.run.server
 	injectRootUser
 ], (err) ->
 	return $.logger.log 'error', "error starting up codesubmit admin #{err.message}" if err
