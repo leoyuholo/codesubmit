@@ -27,8 +27,6 @@ module.exports = ($) ->
 
 				res.json
 					success: true
-					admin:
-						username: admin.username
 
 	self.deactivate = () ->
 		$.express.Router().post '/deactivate', (req, res, done) ->

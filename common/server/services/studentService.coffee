@@ -28,8 +28,8 @@ module.exports = ($) ->
 			$.stores.studentStore.create student, (err) ->
 				return $.utils.onError done, err if err
 
-				emailSubject = $.services.emailService.makeNewUserSubject student
-				emailText = $.services.emailService.makeNewUserText student, plainPw
+				emailSubject = $.services.emailService.makeNewStudentSubject student
+				emailText = $.services.emailService.makeNewStudentText student, plainPw
 
 				$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
@@ -62,8 +62,8 @@ module.exports = ($) ->
 				$.stores.studentStore.update student, (err) ->
 					return $.utils.onError done, err if err
 
-					emailSubject = $.services.emailService.makeResetPwSubject student
-					emailText = $.services.emailService.makeResetPwText student, plainPw
+					emailSubject = $.services.emailService.makeStudentResetPwSubject student
+					emailText = $.services.emailService.makeStudentResetPwText student, plainPw
 
 					$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 

@@ -30,16 +30,50 @@ module.exports = ($) ->
 
 		transporter.sendMail mail, done
 
-	self.makeResetPwSubject = (user) ->
-		"[codeSubmit] Password Reset "
+	self.makeAdminResetPwSubject = (admin) ->
+		"[codeSubmit] Password Reset"
 
-	self.makeResetPwText = (user, plainPw) ->
-		"#{user.username},\n\nYour password is reset to #{plainPw}\n\nPlease log in and change it.\n\ncodeSubmit"
+	self.makeAdminResetPwText = (admin, plainPw) ->
+		"""
+		#{admin.username},\n\n
+		Your password for codesubmit of ENGG1110 is reset to #{plainPw}\n\n
+		Please log in #{$.config.origin.admin} and change it.\n\n
+		codeSubmit
+		"""
 
-	self.makeNewUserSubject = (user) ->
+	self.makeStudentResetPwSubject = (student) ->
+		"[codeSubmit] Password Reset"
+
+	self.makeStudentResetPwText = (student, plainPw) ->
+		"""
+		#{student.username},\n\n
+		Your password for codesubmit of ENGG1110 is reset to #{plainPw}\n\n
+		Please log in #{$.config.origin.student} and change it.\n\n
+		codeSubmit
+		"""
+
+	self.makeNewAdminSubject = (admin) ->
 		"[codeSubmit] Welcome to codeSubmit!"
 
-	self.makeNewUserText = (user, plainPw) ->
-		"#{user.username},\n\nYour password is #{plainPw}\n\nPlease log in and change it.\n\ncodeSubmit"
+	self.makeNewAdminText = (admin, plainPw) ->
+		"""
+		#{admin.username},\n\n
+		Your password is #{plainPw}\n\n
+		Please log in #{$.config.origin.admin} and change it.\n\n
+		codeSubmit
+		"""
+
+	self.makeNewStudentSubject = (student) ->
+		"[codeSubmit] Welcome to codeSubmit!"
+
+	self.makeNewStudentText = (student, plainPw) ->
+		"""
+		#{student.username},\n\n
+		Welcome to codeSubmit of ENGG1110! codeSubmit is the place you write code and submit code for the assignments of ENGG1110.\n\n
+		Take the password shown below and try it out. See you in the class!\n\n
+		Your password is #{plainPw}\n\n
+		Please log in #{$.config.origin.student} and change it.\n\n
+		codeSubmit
+		"""
 
 	return self

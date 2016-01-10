@@ -1,7 +1,9 @@
 path = require 'path'
 
 module.exports =
-	origin: "127.0.0.1"
+	origin:
+		admin: process.env.ADMIN_ORIGIN || "http://code.submit:8000"
+		student: process.env.STUDENT_ORIGIN || "http://code.submit"
 	port: 8080
 	rootUser:
 		email: 'codesubmit@gmail.com'

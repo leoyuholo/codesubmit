@@ -27,8 +27,8 @@ module.exports = ($) ->
 			$.stores.adminStore.create admin, (err) ->
 				return $.utils.onError done, err if err
 
-				emailSubject = $.services.emailService.makeNewUserSubject admin
-				emailText = $.services.emailService.makeNewUserText admin, plainPw
+				emailSubject = $.services.emailService.makeNewAdminSubject admin
+				emailText = $.services.emailService.makeNewAdminText admin, plainPw
 
 				$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
@@ -61,8 +61,8 @@ module.exports = ($) ->
 				$.stores.adminStore.update admin, (err) ->
 					return $.utils.onError done, err if err
 
-					emailSubject = $.services.emailService.makeResetPwSubject admin
-					emailText = $.services.emailService.makeResetPwText admin, plainPw
+					emailSubject = $.services.emailService.makeAdminResetPwSubject admin
+					emailText = $.services.emailService.makeAdminResetPwText admin, plainPw
 
 					$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
