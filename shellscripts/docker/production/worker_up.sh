@@ -38,6 +38,7 @@ else
 fi
 
 docker run  -d \
+			-e NODE_ENV=production \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
 			-e "HOST_IP="$master_ip \
 			-v $host_shared_dir:/host_shared \

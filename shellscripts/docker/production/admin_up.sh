@@ -30,6 +30,7 @@ echo "host_ip": $host_ip
 echo "argument": $argument
 
 docker run  -d \
+			-e NODE_ENV=production \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
 			-e "HOST_IP="$master_ip \
 			-p 8000:8000 \
