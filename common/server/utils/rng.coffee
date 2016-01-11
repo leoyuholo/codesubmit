@@ -31,7 +31,7 @@ module.exports = ($) ->
 			done null, salt.toString 'hex'
 
 	self.secureHashPwWithSalt = (password, salt, done) ->
-		crypto.pbkdf2 password, new Buffer(salt, 'hex'), 100000, 512, 'sha512', (err, hash) ->
+		crypto.pbkdf2 password, new Buffer(salt, 'hex'), 1000, 512, 'sha512', (err, hash) ->
 			return $.utils.onError done, err if err
 
 			done null, hash.toString 'hex'

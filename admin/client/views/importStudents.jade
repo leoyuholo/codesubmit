@@ -2,7 +2,24 @@ script(type="text/ng-template", id="views/importStudents")
 	.modal-header
 		h4.modal-title Import Students
 	.modal-body
+		.message-text.text-danger(ng-if="importDataMsg.errorMessage") {{importDataMsg.errorMessage}}
+		.message-text.text-success(ng-if="importDataMsg.successMessage") {{importDataMsg.successMessage}}
 		codesubmit-editor(local-storage-key="importDataLocalStorageKey" editor-options="importDataAceOptions" language="text" ng-model="importData")
-		p.help-block Supported formats: .csv
+		p.help-block
+			| Supported formats: .csv
+			br
+			| Field names are: 'username', 'email', 'remarks'
+		p
+			| Example:
+			codesubmit-editor(editor-options="csvExampleAceOptions" read-only="true" language="text" ng-model="csvExample")
 		.text-right
 			button.btn.btn-success(type="button" ng-click="importStudents(importData)") Import
+		p(ng-if="progress.total > 0")
+			| Progress:
+			uib-progress.progress-striped.active(max="progress.total" animate="false")
+				uib-bar(value="progress.success" type="success" ng-hide="progress.success < 1")
+					span.text-nowrap {{progress.success}} / {{progress.total}}
+				uib-bar(value="progress.fail" type="warning" ng-hide="progress.fail < 1")
+					span.text-nowrap {{progress.fail}} / {{progress.total}}
+			| Log:
+			textarea.form-control.text-nowrap(scroll-glue="'glued'" rows="10" readonly ng-model="log") {{log}}

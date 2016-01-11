@@ -8,6 +8,7 @@ module.exports = [
 	'https://cdn.rawgit.com/angular-ui/ui-ace/36844ff7c0e0d9445bc8e31514d7f0f59cb8b048/ui-ace.min.js'
 	'https://cdn.rawgit.com/Hypercubed/angular-marked/1b0a4ef682cbdece294db8225db8e81a775acc6b/angular-marked.min.js'
 	'https://cdn.rawgit.com/RickStrahl/json.date-extensions/eab6ebf5a6ee61c7f8c2c2af71d978dbf7fdf22c/json.date-extensions.min.js'
+	'https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/b4ad761347193962f8f44fd28bcee947c4adb812/src/scrollglue.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/mode-markdown.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/mode-c_cpp.js'

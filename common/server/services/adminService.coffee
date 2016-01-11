@@ -16,21 +16,25 @@ module.exports = ($) ->
 			done null, $.models.Student.envelop admin
 
 	self.create = (admin, done) ->
-		plainPw = $.utils.rng.generatePw()
-
-		$.utils.rng.hashPlainPw admin.email, plainPw, (err, hash, salt) ->
+		$.stores.adminStore.findByEmail admin.email, (err, existingAdmin) ->
 			return $.utils.onError done, err if err
+			return $.utils.onError done, new Error("Admin with email: [#{admin.email}] already exists.") if existingAdmin
 
-			admin.password = hash
-			admin.salt = salt
+			plainPw = $.utils.rng.generatePw()
 
-			$.stores.adminStore.create admin, (err) ->
+			$.utils.rng.hashPlainPw admin.email, plainPw, (err, hash, salt) ->
 				return $.utils.onError done, err if err
 
-				emailSubject = $.services.emailService.makeNewAdminSubject admin
-				emailText = $.services.emailService.makeNewAdminText admin, plainPw
+				admin.password = hash
+				admin.salt = salt
 
-				$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
+				$.stores.adminStore.create admin, (err) ->
+					return $.utils.onError done, err if err
+
+					emailSubject = $.services.emailService.makeNewAdminSubject admin
+					emailText = $.services.emailService.makeNewAdminText admin, plainPw
+
+					$.services.emailService.sendEmail admin.email, emailSubject, emailText, done
 
 	self.deactivate = (email, done) ->
 		$.stores.adminStore.findByEmail email, (err, admin) ->

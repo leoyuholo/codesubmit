@@ -1,4 +1,4 @@
-app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'ui.ace', 'hc.marked', 'smart-table']
+app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'ui.ace', 'hc.marked', 'smart-table', 'luegg.directives']
 
 app.config ($routeProvider, markedProvider) ->
 	$routeProvider

@@ -17,21 +17,25 @@ module.exports = ($) ->
 			done null, $.models.Student.envelop student
 
 	self.create = (student, done) ->
-		plainPw = $.utils.rng.generatePw()
-
-		$.utils.rng.hashPlainPw student.email, plainPw, (err, hash, salt) ->
+		$.stores.studentStore.findByEmail student.email, (err, existingStudent) ->
 			return $.utils.onError done, err if err
+			return $.utils.onError done, new Error("Student with email: [#{student.email}] already exists.") if existingStudent
 
-			student.password = hash
-			student.salt = salt
+			plainPw = $.utils.rng.generatePw()
 
-			$.stores.studentStore.create student, (err) ->
+			$.utils.rng.hashPlainPw student.email, plainPw, (err, hash, salt) ->
 				return $.utils.onError done, err if err
 
-				emailSubject = $.services.emailService.makeNewStudentSubject student
-				emailText = $.services.emailService.makeNewStudentText student, plainPw
+				student.password = hash
+				student.salt = salt
 
-				$.services.emailService.sendEmail student.email, emailSubject, emailText, done
+				$.stores.studentStore.create student, (err) ->
+					return $.utils.onError done, err if err
+
+					emailSubject = $.services.emailService.makeNewStudentSubject student
+					emailText = $.services.emailService.makeNewStudentText student, plainPw
+
+					$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
 	self.deactivate = (email, done) ->
 		$.stores.studentStore.findByEmail email, (err, student) ->

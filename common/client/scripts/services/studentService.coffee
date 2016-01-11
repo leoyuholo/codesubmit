@@ -10,6 +10,9 @@ app.service 'studentService', (urlService, userService) ->
 		urlService.get urlService.student.findByEmail(email), done
 
 	self.create = (student, done) ->
+		return done new Error('Missing username') if !student.username
+		return done new Error('Invalid email') if !student.email || !/.+@.+/.test student.email
+
 		payload =
 			student:
 				username: student.username
