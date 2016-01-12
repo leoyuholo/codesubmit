@@ -75,7 +75,7 @@ script(type="text/ng-template", id="views/assignment")
 						|  {{runResult.message}}
 					p(ng-if="runResult.compileErrorMessage")
 						strong Error Message:
-						|  {{runResult.compileErrorMessage}}
+						pre(ng-show="runResult.compileErrorMessage") {{runResult.compileErrorMessage}}
 					p(ng-if="runResult.memory")
 						strong Memory (B):
 						|  {{runResult.memory}}
