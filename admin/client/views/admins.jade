@@ -15,16 +15,16 @@ script(type="text/ng-template", id="views/admins")
 							tr
 								th Username
 								th Email
-								th Active
+								//- th Active
 								th Remarks
 								th Actions
 						tbody
 							tr(ng-repeat="admin in admins")
 								td {{admin.username}}
 								td {{admin.email}}
-								td
-									span.glyphicon.glyphicon-ok.text-success(ng-if="admin.active")
-									span.glyphicon.glyphicon-remove.text-danger(ng-if="!admin.active")
+								//- td
+								//- 	span.glyphicon.glyphicon-ok.text-success(ng-if="admin.active")
+								//- 	span.glyphicon.glyphicon-remove.text-danger(ng-if="!admin.active")
 								td {{admin.remarks}}
 								td
 									//- button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="admin.active" ng-click="deactivate(admin, $index)") Deactivate
