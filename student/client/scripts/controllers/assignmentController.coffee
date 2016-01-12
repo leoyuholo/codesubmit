@@ -52,6 +52,9 @@ app.controller 'assignmentController', ($scope, $routeParams, assignmentService,
 
 			$scope.assignment = data.assignment
 
+			$scope.assignment.overdue = new Date() > $scope.assignment.dueDt
+			$scope.assignment.hardoverdue = new Date() > $scope.assignment.hardDueDt
+
 			$scope.code = localStorage.getItem($scope.codeLocalStorageKey) || $scope.assignment?.codeTemplate || '// Enter your code here.\n'
 
 			$scope.input = localStorage.getItem($scope.inputLocalStorageKey)

@@ -27,4 +27,4 @@ script(type="text/ng-template", id="views/assignments")
 							li(ng-if="assignment.hardDueDt > now")
 								a.btn.btn-primary(ng-href="#/assignment/{{assignment.asgId}}/{{assignment.name}}") Write Code
 							li(ng-if="assignment.hardDueDt <= now")
-								a.btn.btn-primary(disabled) Due Date Over
+								a.btn.btn-primary(ng-href="#/assignment/{{assignment.asgId}}/{{assignment.name}}") View Details
