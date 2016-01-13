@@ -10,16 +10,19 @@ script(type="text/ng-template", id="views/admins")
 						.message-text.text-success(ng-if="adminListMsg.successMessage") {{adminListMsg.successMessage}}
 						button.pull-right.btn.btn-default(type="button" ng-disabled="adminListMsg.refreshing" ng-click="listAdmins()")
 							span.glyphicon.glyphicon-refresh
-					table.table
+					table.table(st-table="displayedAdmins" st-safe-src="admins")
 						thead
 							tr
-								th Username
-								th Email
+								th(st-sort="username") Username
+								th(st-sort="email") Email
 								//- th Active
-								th Remarks
-								th Actions
+								th(st-sort="remarks") Remarks
+								th Action
+							tr
+								th(colspan="100")
+									input.input-sm.form-control(st-search placeholder="filter" type="search")
 						tbody
-							tr(ng-repeat="admin in admins")
+							tr(ng-repeat="admin in displayedAdmins")
 								td {{admin.username}}
 								td {{admin.email}}
 								//- td
@@ -30,6 +33,10 @@ script(type="text/ng-template", id="views/admins")
 									//- button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="admin.active" ng-click="deactivate(admin, $index)") Deactivate
 									//- button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!admin.active" ng-click="activate(admin, $index)") Activate
 									button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(admin, $index)") Reset Password
+						tfoot
+							tr
+								td.text-center(colspan="100")
+									div(st-pagination="" st-items-by-page="30" st-displayed-pages="20")
 			.panel.panel-default.shadowedBox
 				.panel-body
 					p

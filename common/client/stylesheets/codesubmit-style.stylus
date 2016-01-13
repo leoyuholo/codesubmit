@@ -14,6 +14,8 @@
 		.panel-body
 			padding-top: 1em
 .st-sort-ascent:after
-	content '\25B2'
+	content '\21BF'
 .st-sort-descent:after
-	content '\25BC'
+	content '\21C2'
+[st-sort]:not(.st-sort-ascent):not(.st-sort-descent):after
+	content '\21C5'

@@ -10,16 +10,19 @@ script(type="text/ng-template", id="views/students")
 						.message-text.text-success(ng-if="studentListMsg.successMessage") {{studentListMsg.successMessage}}
 						button.pull-right.btn.btn-default(type="button" ng-disabled="studentListMsg.refreshing" ng-click="listStudents()")
 							span.glyphicon.glyphicon-refresh
-					table.table
+					table.table(st-table="displayedStudents" st-safe-src="students")
 						thead
 							tr
-								th Username
-								th Email
+								th(st-sort="username") Username
+								th(st-sort="email") Email
 								//- th Active
-								th Remarks
+								th(st-sort="remarks") Remarks
 								th Action
+							tr
+								th(colspan="100")
+									input.input-sm.form-control(st-search placeholder="filter" type="search")
 						tbody
-							tr(ng-repeat="student in students")
+							tr(ng-repeat="student in displayedStudents")
 								td {{student.username}}
 								td {{student.email}}
 								//- td
@@ -31,6 +34,10 @@ script(type="text/ng-template", id="views/students")
 									//- button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!student.active" ng-click="activate(student, $index)") Activate
 									//- button.control-group.btn.btn-xs.btn-warning(type="button" ng-click="resetPassword(student, $index)") Reset Password
 									a.btn.btn-xs.btn-primary(ng-href="#/submissions//{{student.email}}") View Submissions
+						tfoot
+							tr
+								td.text-center(colspan="100")
+									div(st-pagination="" st-items-by-page="30" st-displayed-pages="20")
 			.panel.panel-default.shadowedBox
 				.panel-body
 					p
