@@ -25,6 +25,12 @@ app.controller 'submissionsController', ($scope, $routeParams, $uibModal, submis
 
 			$scope.submissions = data.submissions
 
+	$scope.listSubmissionsByEmail = (asgId, email) ->
+		submissionService.listByEmail asgId, email, (err, data) ->
+			return messageService.error $scope.submissionListMsg, err.message if err
+
+			$scope.submissions = data.submissions
+
 	$scope.assignments = []
 	$scope.assignmentListMsg = {}
 	$scope.assignment = {}
@@ -34,4 +40,9 @@ app.controller 'submissionsController', ($scope, $routeParams, $uibModal, submis
 
 	$scope.listAssignments()
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
-	$scope.listSubmissions $scope.asgId if $scope.asgId
+	$scope.email = $routeParams.email if $routeParams.email
+	if $scope.asgId
+		if $scope.email
+			$scope.listSubmissionsByEmail $scope.asgId, $scope.email
+		else
+			$scope.listSubmissions $scope.asgId

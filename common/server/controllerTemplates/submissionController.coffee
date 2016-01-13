@@ -11,6 +11,18 @@ module.exports = ($) ->
 					success: true
 					stats: stats
 
+	self.listByEmail = () ->
+		$.express.Router().get '/list/:asgId/:email', (req, res, done) ->
+			asgId = req.params.asgId
+			email = req.params.email
+
+			$.services.submissionService.list {asgId: asgId, email: email}, (err, submissions) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					submissions: submissions
+
 	self.list = () ->
 		$.express.Router().get '/list/:asgId', (req, res, done) ->
 			asgId = req.params.asgId
@@ -25,8 +37,9 @@ module.exports = ($) ->
 	self.listmine = () ->
 		$.express.Router().get '/listmine/:asgId', (req, res, done) ->
 			asgId = req.params.asgId
+			email = req.user.email
 
-			$.services.submissionService.list {asgId: asgId, email: req.user.email}, (err, submissions) ->
+			$.services.submissionService.list {asgId: asgId, email: email}, (err, submissions) ->
 				return $.utils.onError done, err if err
 
 				res.json
@@ -47,8 +60,9 @@ module.exports = ($) ->
 	self.findminebysubid = () ->
 		$.express.Router().get '/findminebysubid/:subId', (req, res, done) ->
 			subId = req.params.subId
+			email = req.user.email
 
-			$.services.submissionService.findBySubId {subId: subId, email: req.user.email}, (err, submission) ->
+			$.services.submissionService.findBySubId {subId: subId, email: email}, (err, submission) ->
 				return $.utils.onError done, err if err
 
 				res.json

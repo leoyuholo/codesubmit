@@ -8,13 +8,14 @@ script(type="text/ng-template", id="views/submissions")
 						h3
 							strong Assignment List
 				.list-group
-					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/submissions/{{assignment.asgId}}") {{assignment.name}}
+					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/submissions/{{assignment.asgId}}/{{email}}") {{assignment.name}}
 		.col-md-9
 			.panel.panel-default.shadowedBox
 				.panel-body
 					p
 						h2(ng-if="asgId")
 							strong Submissions
+							small(ng-if="email")  of {{email}}
 						h2(ng-if="!asgId")
 							strong Submission Statistics
 							.text-right

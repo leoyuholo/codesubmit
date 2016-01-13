@@ -9,6 +9,9 @@ app.service 'submissionService', (urlService) ->
 	self.list = (asgId, done) ->
 		urlService.get urlService.submission.list(asgId), done
 
+	self.listByEmail = (asgId, email, done) ->
+		urlService.get urlService.submission.listByEmail(asgId, email), done
+
 	self.listMine = (asgId, done) ->
 		urlService.get urlService.submission.listMine(asgId), done
 
