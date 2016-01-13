@@ -18,10 +18,14 @@ script(type="text/ng-template", id="views/submissions")
 							small(ng-if="email")  of {{email}}
 						h2(ng-if="!asgId")
 							strong Submission Statistics
-							.text-right
-								button.pull-right.btn.btn-default(type="button" ng-click="openExport()")
-									span.glyphicon.glyphicon-export
-									|  Export Scores
+							small(ng-if="email")  of {{email}}
+						.text-right(ng-if="showExport")
+							button.pull-right.btn.btn-default(type="button" ng-click="openExport()")
+								span.glyphicon.glyphicon-export
+								|  Export Scores
+						div(ng-if="showHint")
+							span.glyphicon.glyphicon-hand-left
+							|  Select an assignment on left.
 					p(ng-if="asgId && !submissions.length") No submissions yet.
 					table.table(ng-if="asgId" st-table="displayedSubmissions" st-safe-src="submissions")
 						thead

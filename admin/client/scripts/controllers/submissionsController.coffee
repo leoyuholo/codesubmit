@@ -41,8 +41,14 @@ app.controller 'submissionsController', ($scope, $routeParams, $uibModal, submis
 	$scope.listAssignments()
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 	$scope.email = $routeParams.email if $routeParams.email
-	if $scope.asgId
-		if $scope.email
+
+	if $scope.email
+		if $scope.asgId
 			$scope.listSubmissionsByEmail $scope.asgId, $scope.email
 		else
+			$scope.showHint = true
+	else
+		if $scope.asgId
 			$scope.listSubmissions $scope.asgId
+		else
+			$scope.showExport = true
