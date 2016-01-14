@@ -9,26 +9,8 @@ module.exports = ($) ->
 			return $.utils.onError done, err if err
 			done null, assignments.map $.models.Assignment.envelop
 
-	self.listWithMyStats = (email, done) ->
+	self.listPublished = (done) ->
 		self.list (err, assignments) ->
-			return $.utils.onError done, err if err
-
-			$.services.submissionService.findScoreStatsByEmail email, (err, statses) ->
-				return $.utils.onError done, err if err
-
-				statses = _.indexBy statses, (stats) -> stats.tags.asgId
-
-				_.each assignments, (assignment) ->
-					stats = statses[assignment.asgId]
-					if stats
-						assignment.scoreStats = {}
-						assignment.scoreStats.max = stats.max
-						assignment.scoreStats.count = stats.count
-
-				done null, assignments
-
-	self.listPublishedWithMyStats = (email, done) ->
-		self.listWithMyStats email, (err, assignments) ->
 			return $.utils.onError done, err if err
 			now = Date.now()
 			done null, _.filter assignments, (asg) -> asg.startDt < now

@@ -27,13 +27,14 @@ app.service 'urlService', ($http) ->
 			changePassword: () -> "#{apiPrefix}/student/changepassword"
 		assignment:
 			list: () -> "#{apiPrefix}/assignment/list"
-			listPublishedWithMyStats: () -> "#{apiPrefix}/assignment/listpublishedwithmystats"
+			listPublished: () -> "#{apiPrefix}/assignment/listpublished"
 			findByAsgId: (asgId) -> "#{apiPrefix}/assignment/findbyasgid/#{asgId}"
 			create: () -> "#{apiPrefix}/assignment/create"
 			update: () -> "#{apiPrefix}/assignment/update"
 			remove: () -> "#{apiPrefix}/assignment/remove"
 		submission:
 			listScoreStats: () -> "#{apiPrefix}/submission/listscorestats"
+			listMyScoreStats: () -> "#{apiPrefix}/submission/listmyscorestats"
 			list: (asgId) -> "#{apiPrefix}/submission/list/#{asgId}"
 			listByEmail: (asgId, email) -> "#{apiPrefix}/submission/list/#{asgId}/#{email}"
 			listMine: (asgId) -> "#{apiPrefix}/submission/listmine/#{asgId}"

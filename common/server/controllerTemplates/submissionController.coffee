@@ -2,7 +2,7 @@
 module.exports = ($) ->
 	self = {}
 
-	self.listScoreStats = () ->
+	self.listscorestats = () ->
 		$.express.Router().get '/listscorestats', (req, res, done) ->
 			$.services.submissionService.listScoreStats (err, stats) ->
 				return $.utils.onError done, err if err
@@ -11,7 +11,18 @@ module.exports = ($) ->
 					success: true
 					stats: stats
 
-	self.listByEmail = () ->
+	self.listmyscorestats = () ->
+		$.express.Router().get '/listmyscorestats', (req, res, done) ->
+			email = req.user.email
+
+			$.services.submissionService.findScoreStatsByEmail email, (err, stats) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					stats: stats
+
+	self.listbyemail = () ->
 		$.express.Router().get '/list/:asgId/:email', (req, res, done) ->
 			asgId = req.params.asgId
 			email = req.params.email
