@@ -8,23 +8,44 @@ script(type="text/ng-template", id="views/assignments")
 						ol.breadcrumb
 							li Assignments
 					.message-text.text-danger(ng-if="errorMessage") {{errorMessage}}
-					p(ng-if="!assignments.length") No assignments yet.
-				ul.list-group(ng-if="assignments.length")
-					li.list-group-item(ng-repeat="assignment in assignments")
-						h3 {{assignment.name}}
+					p(ng-if="!ongoingAssignments.length") No ongoing assignments yet.
+				ul.list-group(ng-if="ongoingAssignments.length")
+					li.list-group-item(ng-repeat="asg in ongoingAssignments" ng-class="{'list-group-item-success': asg.completed, 'list-group-item-danger': asg.overdue}")
+						h3 {{asg.name}}
 						ul.list-inline
 							li
 								strong Due
-								|  {{assignment.dueDt.toString()}}
+								|  {{asg.dueDt.toString()}}
 							li
-								a(ng-href="#/submissions/{{assignment.asgId}}/{{assignment.name}}")
+								a(ng-href="#/submissions/{{asg.asgId}}/{{asg.name}}")
 									strong Submissions
-									|  {{assignment.scoreStats.count || 0}} / {{assignment.submissionLimit}}
+									|  {{asg.scoreStats.count || 0}} / {{asg.submissionLimit}}
 							li
 								strong Score
-								|  {{assignment.scoreStats.max || 0}} / {{assignment.sandboxConfig.testCaseNames.length}}
-								span.text-success.glyphicon.glyphicon-ok(ng-if="assignment.scoreStats.max == assignment.sandboxConfig.testCaseNames.length")
-							li(ng-if="assignment.hardDueDt > now")
-								a.btn.btn-primary(ng-href="#/assignment/{{assignment.asgId}}/{{assignment.name}}") Write Code
-							li(ng-if="assignment.hardDueDt <= now")
-								a.btn.btn-primary(ng-href="#/assignment/{{assignment.asgId}}/{{assignment.name}}") View Details
+								|  {{asg.scoreStats.max || 0}} / {{asg.sandboxConfig.testCaseNames.length}}
+								span.text-success.glyphicon.glyphicon-ok(ng-if="asg.completed")
+							li
+								a.btn.btn-primary(ng-href="#/asg/{{asg.asgId}}/{{asg.name}}") Write Code
+		.col-md-12.col-sm-12(ng-if="archivedAssignments.length")
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					h2
+						ol.breadcrumb
+							li Archived
+				ul.list-group
+					li.list-group-item(ng-repeat="asg in archivedAssignments" ng-class="{'list-group-item-success': asg.completed}")
+						h3 {{asg.name}}
+						ul.list-inline
+							li
+								strong Due
+								|  {{asg.dueDt.toString()}}
+							li
+								a(ng-href="#/submissions/{{asg.asgId}}/{{asg.name}}")
+									strong Submissions
+									|  {{asg.scoreStats.count || 0}} / {{asg.submissionLimit}}
+							li
+								strong Score
+								|  {{asg.scoreStats.max || 0}} / {{asg.sandboxConfig.testCaseNames.length}}
+								span.text-success.glyphicon.glyphicon-ok(ng-if="asg.completed")
+							li
+								a.btn.btn-primary(ng-href="#/asg/{{asg.asgId}}/{{asg.name}}") View Details
