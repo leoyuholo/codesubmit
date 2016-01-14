@@ -7,13 +7,15 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 	newDate = new Date()
 	newDate.setMilliseconds 0
 	newDate.setSeconds 0
-	newDate.setDate newDate.getDate() + 14
+
+	newDueDate = new Date(newDate)
+	newDueDate.setDate newDueDate.getDate() + 14
 
 	defaultAssignment =
 		name: ''
-		startDt: new Date(1970, 0, 2)
-		dueDt: newDate
-		hardDueDt: new Date(2038, 0, 18)
+		startDt: newDate
+		dueDt: newDueDate
+		hardDueDt: newDueDate
 		submissionLimit: 100
 		penalty: 0
 
