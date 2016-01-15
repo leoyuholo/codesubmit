@@ -25,7 +25,7 @@ script(type="text/ng-template", id="views/assignments")
 								|  {{asg.scoreStats.max || 0}} / {{asg.sandboxConfig.testCaseNames.length}}
 								span.text-success.glyphicon.glyphicon-ok(ng-if="asg.completed")
 							li
-								a.btn.btn-primary(ng-href="#/asg/{{asg.asgId}}/{{asg.name}}") Write Code
+								a.btn.btn-primary(ng-href="#/assignment/{{asg.asgId}}/{{asg.name}}") Write Code
 		.col-md-12.col-sm-12(ng-if="archivedAssignments.length")
 			.panel.panel-default.shadowedBox
 				.panel-heading
@@ -48,4 +48,4 @@ script(type="text/ng-template", id="views/assignments")
 								|  {{asg.scoreStats.max || 0}} / {{asg.sandboxConfig.testCaseNames.length}}
 								span.text-success.glyphicon.glyphicon-ok(ng-if="asg.completed")
 							li
-								a.btn.btn-primary(ng-href="#/asg/{{asg.asgId}}/{{asg.name}}") View Details
+								a.btn.btn-primary(ng-href="#/assignment/{{asg.asgId}}/{{asg.name}}") View Details
