@@ -10,8 +10,8 @@ script(type="text/ng-template", id="views/assignment")
 								a(ng-href="#/assignments") Assignments
 							li {{assignment.name}}
 				.panel-body
-					.alert.alert-warning(ng-if="assignment.overdue && !assignment.hardoverdue") Deadline of this assignment is passed. You can still submit your work with penalty.
-					.alert.alert-danger(ng-if="assignment.hardoverdue") Deadline of this assignment is passed.
+					.alert.alert-warning(ng-if="assignment.overdue && !assignment.hardoverdue") Deadline of this assignment has passed. You can still submit your work with penalty.
+					.alert.alert-danger(ng-if="assignment.hardoverdue") Deadline of this assignment has passed.
 					.message-text.text-danger(ng-if="assignmentDetailMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
 					div(marked="assignment.description")
 					p
