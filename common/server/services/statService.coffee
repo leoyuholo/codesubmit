@@ -3,7 +3,7 @@ _ = require 'lodash'
 module.exports = ($) ->
 	self = {}
 
-	makeStatsId = (tags) ->
+	makeStatId = (tags) ->
 		tags.sort().join '/'
 
 	makeTags = (tags) ->
@@ -15,20 +15,20 @@ module.exports = ($) ->
 		_.zipObject _.invoke tags, 'split', ':'
 
 	self.findByTags = (tags, done) ->
-		$.stores.statsStore.findByTags makeTags(tags), (err, statses) ->
+		$.stores.statStore.findByTags makeTags(tags), (err, stats) ->
 			return $.utils.onError done, err if err
 
-			done null, _.map _.map(statses, $.models.Stats.envelop), (stats) ->
-				stats.tags = resolveTags stats.tags
-				return stats
+			done null, _.map _.map(stats, $.models.Stat.envelop), (stat) ->
+				stat.tags = resolveTags stat.tags
+				return stat
 
-	self.update = (stats, done) ->
-		stats.tags = makeTags stats.tags
-		stats.statsId = makeStatsId stats.tags
+	self.update = (stat, done) ->
+		stat.tags = makeTags stat.tags
+		stat.statId = makeStatId stat.tags
 
-		$.stores.statsStore.upsert stats, (err) ->
+		$.stores.statStore.upsert stat, (err) ->
 			return $.utils.onError done, err if err
 
-			done null, stats
+			done null, stat
 
 	return self

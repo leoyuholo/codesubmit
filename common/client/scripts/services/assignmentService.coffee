@@ -16,16 +16,16 @@ app.service 'assignmentService', (urlService) ->
 		], (err, [assignmentsData, statsData]) ->
 			return done err if err
 
-			[assignments, statses] = [assignmentsData.assignments, statsData.stats]
+			[assignments, stats] = [assignmentsData.assignments, statsData.stats]
 
-			statses = _.indexBy statses, (stats) -> stats.tags.asgId
+			stats = _.indexBy stats, (stat) -> stat.tags.asgId
 
 			_.each assignments, (assignment) ->
-				stats = statses[assignment.asgId]
-				if stats
+				stat = stats[assignment.asgId]
+				if stat
 					assignment.scoreStats = {}
-					assignment.scoreStats.max = stats.max
-					assignment.scoreStats.count = stats.count
+					assignment.scoreStats.max = stat.max
+					assignment.scoreStats.count = stat.count
 
 			done null, {success: true, assignments: assignments}
 

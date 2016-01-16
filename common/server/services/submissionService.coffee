@@ -20,22 +20,22 @@ module.exports = ($) ->
 					count: submissions.length
 					updateDt: new Date()
 
-				$.services.statsService.update stats, (err) ->
+				$.services.statService.update stats, (err) ->
 					return $.utils.onError done, err if err
 
 					done null
 
 	self.listScoreStats = (done) ->
-		$.services.statsService.findByTags {key: 'submission.score'}, (err, statses) ->
+		$.services.statService.findByTags {key: 'submission.score'}, (err, stats) ->
 			return $.utils.onError done, err if err
 
-			done null, _.map statses, $.models.Stats.envelop
+			done null, _.map stats, $.models.Stat.envelop
 
 	self.findScoreStatsByEmail = (email, done) ->
-		$.services.statsService.findByTags {key: 'submission.score', email: email}, (err, statses) ->
+		$.services.statService.findByTags {key: 'submission.score', email: email}, (err, stats) ->
 			return $.utils.onError done, err if err
 
-			done null, _.map statses, $.models.Stats.envelop
+			done null, _.map stats, $.models.Stat.envelop
 
 	self.list = (condition, done) ->
 		condition = {asgId: condition} if _.isString condition
@@ -70,7 +70,7 @@ module.exports = ($) ->
 	self.submit = (student, asgId, code, done) ->
 		async.parallel [
 			_.partial $.services.assignmentService.findByAsgId, asgId
-			_.partial $.services.statsService.findByTags, {key: 'submission.score', asgId: asgId, email: student.email}
+			_.partial $.services.statService.findByTags, {key: 'submission.score', asgId: asgId, email: student.email}
 		], (err, [assignment, stats]) ->
 			return $.utils.onError done, err if err
 			return done new Error('Submission Limit Exceeded.') if stats.count >= assignment.submissionLimit

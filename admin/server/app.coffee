@@ -18,4 +18,4 @@ async.series [
 	injectRootUser
 ], (err) ->
 	return $.logger.log 'error', "error starting up codesubmit admin #{err.message}" if err
-	$.logger.log 'info', "codeSubmit admin listen on port #{$.config.port}"
+	$.logger.log 'info', "[#{$.app.get('env')}]codeSubmit admin listen on port #{$.config.port}"
