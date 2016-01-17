@@ -8,26 +8,22 @@ script(type="text/ng-template", id="views/submissions")
 						h3
 							strong Assignment List
 				.list-group
-					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/submissions/{{assignment.asgId}}/{{email}}") {{assignment.name}}
+					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/submissions/{{assignment.asgId}}{{email ? '/' + email : ''}}") {{assignment.name}}
 		.col-md-9
 			.panel.panel-default.shadowedBox
-				.panel-body
-					p
-						h2(ng-if="asgId")
-							strong Submissions
-							small(ng-if="email")  of {{email}}
-						h2(ng-if="!asgId")
-							strong Submission Statistics
-							small(ng-if="email")  of {{email}}
-						.text-right(ng-if="showExport")
-							button.pull-right.btn.btn-default(type="button" ng-click="openExport()")
-								span.glyphicon.glyphicon-export
-								|  Export Scores
-						div(ng-if="showHint")
-							span.glyphicon.glyphicon-hand-left
-							|  Select an assignment on left.
-					p(ng-if="asgId && !submissions.length") No submissions yet.
-					table.table(ng-if="asgId" st-table="displayedSubmissions" st-safe-src="submissions")
+				.panel-body(ng-if="showStats")
+					h2
+						strong Submission Statistics
+					.text-right
+						button.pull-right.btn.btn-default(type="button" ng-click="openExport()")
+							span.glyphicon.glyphicon-export
+							|  Export Scores
+				.panel-body(ng-if="!showStats")
+					h2
+						strong Submissions
+						small(ng-if="email")  from {{email}}
+					p(ng-if="!showStats && !submissions.length") No submissions yet.
+					table.table(ng-if="submissions.length" st-table="displayedSubmissions" st-safe-src="submissions")
 						thead
 							tr
 								th(st-sort="email") Email
@@ -43,7 +39,7 @@ script(type="text/ng-template", id="views/submissions")
 								td {{submission.email}}
 								td {{submission.submitDt.toString()}}
 								td {{submission.status}}
-								td {{submission.score == undefined ? 'N/A' : submission.score}} / {{assignment.sandboxConfig.testCaseNames.length}}
+								td {{submission.score == undefined ? 'N/A' : submission.score + '/' + submission.results.length}}
 								td
 									a.btn.btn-xs.btn-primary(ng-href="#/submission/{{submission.subId}}") View Details
 						tfoot

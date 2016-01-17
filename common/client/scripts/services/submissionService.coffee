@@ -6,14 +6,17 @@ app.service 'submissionService', (urlService) ->
 	self.listScoreStats = (done) ->
 		urlService.get urlService.submission.listScoreStats(), done
 
-	self.list = (asgId, done) ->
-		urlService.get urlService.submission.list(asgId), done
+	self.listByAsgId = (asgId, done) ->
+		urlService.get urlService.submission.listByAsgId(asgId), done
 
-	self.listByEmail = (asgId, email, done) ->
-		urlService.get urlService.submission.listByEmail(asgId, email), done
+	self.listByEmail = (email, done) ->
+		urlService.get urlService.submission.listByEmail(email), done
 
-	self.listMine = (asgId, done) ->
-		urlService.get urlService.submission.listMine(asgId), done
+	self.listByAsgIdAndEmail = (asgId, email, done) ->
+		urlService.get urlService.submission.listByAsgIdAndEmail(asgId, email), done
+
+	self.listMineByAsgId = (asgId, done) ->
+		urlService.get urlService.submission.listMineByAsgId(asgId), done
 
 	self.findBySubId = (subId, done) ->
 		urlService.get urlService.submission.findBySubId(subId), done

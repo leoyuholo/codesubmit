@@ -19,14 +19,12 @@ app.controller 'submissionsController', ($scope, $routeParams, $uibModal, submis
 			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sort
 			$scope.assignment = _.find $scope.assignments, {asgId: $scope.asgId} if $scope.asgId
 
-	$scope.listSubmissions = (asgId) ->
-		submissionService.list asgId, (err, data) ->
-			return messageService.error $scope.submissionListMsg, err.message if err
+	$scope.listSubmissions = (asgId, email) ->
+		list = _.partial submissionService.listByEmail, email if email
+		list = _.partial submissionService.listByAsgId, asgId if asgId
+		list = _.partial submissionService.listByAsgIdAndEmail, asgId, email if asgId && email
 
-			$scope.submissions = data.submissions
-
-	$scope.listSubmissionsByEmail = (asgId, email) ->
-		submissionService.listByEmail asgId, email, (err, data) ->
+		list (err, data) ->
 			return messageService.error $scope.submissionListMsg, err.message if err
 
 			$scope.submissions = data.submissions
@@ -42,13 +40,4 @@ app.controller 'submissionsController', ($scope, $routeParams, $uibModal, submis
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 	$scope.email = $routeParams.email if $routeParams.email
 
-	if $scope.email
-		if $scope.asgId
-			$scope.listSubmissionsByEmail $scope.asgId, $scope.email
-		else
-			$scope.showHint = true
-	else
-		if $scope.asgId
-			$scope.listSubmissions $scope.asgId
-		else
-			$scope.showExport = true
+	if $scope.asgId || $scope.email then $scope.listSubmissions($scope.asgId, $scope.email) else $scope.showStats = true

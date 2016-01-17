@@ -22,8 +22,30 @@ module.exports = ($) ->
 					success: true
 					stats: stats
 
+	self.listbyasgid = () ->
+		$.express.Router().get '/listbyasgid/:asgId', (req, res, done) ->
+			asgId = req.params.asgId
+
+			$.services.submissionService.list asgId, (err, submissions) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					submissions: submissions
+
 	self.listbyemail = () ->
-		$.express.Router().get '/list/:asgId/:email', (req, res, done) ->
+		$.express.Router().get '/listbyemail/:email', (req, res, done) ->
+			email = req.params.email
+
+			$.services.submissionService.list {email: email}, (err, submissions) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					submissions: submissions
+
+	self.listbyasgidandemail = () ->
+		$.express.Router().get '/listbyasgidandemail/:asgId/:email', (req, res, done) ->
 			asgId = req.params.asgId
 			email = req.params.email
 
@@ -34,19 +56,8 @@ module.exports = ($) ->
 					success: true
 					submissions: submissions
 
-	self.list = () ->
-		$.express.Router().get '/list/:asgId', (req, res, done) ->
-			asgId = req.params.asgId
-
-			$.services.submissionService.list asgId, (err, submissions) ->
-				return $.utils.onError done, err if err
-
-				res.json
-					success: true
-					submissions: submissions
-
-	self.listmine = () ->
-		$.express.Router().get '/listmine/:asgId', (req, res, done) ->
+	self.listminebyasgid = () ->
+		$.express.Router().get '/listminebyasgid/:asgId', (req, res, done) ->
 			asgId = req.params.asgId
 			email = req.user.email
 

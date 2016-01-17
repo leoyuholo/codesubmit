@@ -35,9 +35,10 @@ app.service 'urlService', ($http) ->
 		submission:
 			listScoreStats: () -> "#{apiPrefix}/submission/listscorestats"
 			listMyScoreStats: () -> "#{apiPrefix}/submission/listmyscorestats"
-			list: (asgId) -> "#{apiPrefix}/submission/list/#{asgId}"
-			listByEmail: (asgId, email) -> "#{apiPrefix}/submission/list/#{asgId}/#{email}"
-			listMine: (asgId) -> "#{apiPrefix}/submission/listmine/#{asgId}"
+			listByAsgId: (asgId) -> "#{apiPrefix}/submission/listbyasgid/#{asgId}"
+			listByEmail: (email) -> "#{apiPrefix}/submission/listbyemail/#{email}"
+			listByAsgIdAndEmail: (asgId, email) -> "#{apiPrefix}/submission/listbyasgidandemail/#{asgId}/#{email}"
+			listMineByAsgId: (asgId) -> "#{apiPrefix}/submission/listminebyasgid/#{asgId}"
 			findBySubId: (subId) -> "#{apiPrefix}/submission/findbysubid/#{subId}"
 			findMineBySubId: (subId) -> "#{apiPrefix}/submission/findminebysubid/#{subId}"
 			run: (asgId) -> "#{apiPrefix}/submission/run/#{asgId}"
@@ -60,8 +61,12 @@ app.service 'urlService', ($http) ->
 		), (res) ->
 			done new Error("#{res.data} status: #{res.status}")
 
-	self.get = (url, done) ->
-		$http.get(url).then ( (res) ->
+	self.get = (url, options, done) ->
+		if _.isFunction options
+			done = options
+			options = null
+
+		$http.get(url, options).then ( (res) ->
 			if res.data.success
 				done null, res.data
 			else

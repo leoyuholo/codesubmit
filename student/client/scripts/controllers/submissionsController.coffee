@@ -7,7 +7,7 @@ app.controller 'submissionsController', ($scope, $routeParams, submissionService
 	$scope.submissions = []
 
 	listSubmissions = (asgId) ->
-		submissionService.listMine asgId, (err, data) ->
+		submissionService.listMineByAsgId asgId, (err, data) ->
 			return messageService.error err.message if err
 
 			$scope.submissions = _.sortByOrder data.submissions, 'submitDt', 'desc'
