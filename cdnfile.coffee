@@ -14,7 +14,7 @@ module.exports = [
 	'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/mode-c_cpp.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-twilight.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js'
-	'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js'
+	'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js'
 	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css'

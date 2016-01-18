@@ -3,32 +3,36 @@ app = angular.module 'codesubmit', ['ngRoute', 'ngCookies', 'ngSanitize', 'ui.bo
 app.config ($routeProvider, markedProvider) ->
 	$routeProvider
 	.when('/', {
-		controller: 'loginController',
+		controller: 'loginController'
 		templateUrl: 'views/login'
 	})
 	.when('/settings', {
-		controller: 'settingsController',
+		controller: 'settingsController'
 		templateUrl: 'views/settings'
 	})
 	.when('/students', {
-		controller: 'studentsController',
+		controller: 'studentsController'
 		templateUrl: 'views/students'
 	})
 	.when('/admins', {
-		controller: 'adminsController',
+		controller: 'adminsController'
 		templateUrl: 'views/admins'
 	})
 	.when('/assignments/:asgid?', {
-		controller: 'assignmentsController',
+		controller: 'assignmentsController'
 		templateUrl: 'views/assignments'
 	})
 	.when('/submissions/:asgid?/:email?', {
-		controller: 'submissionsController',
+		controller: 'submissionsController'
 		templateUrl: 'views/submissions'
 	})
 	.when('/submission/:subid?', {
-		controller: 'submissionController',
+		controller: 'submissionController'
 		templateUrl: 'views/submission'
+	})
+	.when('/statistics/:asgid?', {
+		controller: 'statisticsController'
+		templateUrl: 'views/statistics'
 	})
 	.otherwise({
 		redirectTo: '/'

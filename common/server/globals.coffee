@@ -5,6 +5,7 @@ _ = require 'lodash'
 async = require 'async'
 express = require 'express'
 bodyParser = require 'body-parser'
+compression = require 'compression'
 winston = require 'winston'
 _requireAll = require 'require-all'
 requireAll = (dir, injections) ->
@@ -24,6 +25,7 @@ module.exports = ($) ->
 	$.app = express()
 	$.app.use bodyParser.json {limit: '1000kb'}
 	# $.app.use bodyParser.urlencoded {extended: true}
+	$.app.use compression()
 
 	# env
 	$.env = $.env || {}

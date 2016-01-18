@@ -1,0 +1,72 @@
+script(type="text/ng-template", id="views/statistics")
+	div(codesubmit-header)
+	.container#statistics-view
+		.col-md-3
+			.panel.panel-default.shadowedBox
+				.panel-heading
+					p
+						h3
+							strong Assignment List
+						.message-text.text-danger(ng-if="assignmentListMsg.errorMessage") {{assignmentListMsg.errorMessage}}
+						.message-text.text-success(ng-if="assignmentListMsg.successMessage") {{assignmentListMsg.successMessage}}
+				.list-group
+					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/statistics/{{assignment.asgId}}") {{assignment.name}}
+		.col-md-9
+			.panel.panel-default.shadowedBox
+				.panel-body
+					h2
+						strong Submission Statistics
+					.message-text.text-danger(ng-if="statsListMsg.errorMessage") {{statsListMsg.errorMessage}}
+					.message-text.text-success(ng-if="statsListMsg.successMessage") {{statsListMsg.successMessage}}
+					table.table(ng-if="submissionStats.length" st-table="displayedStats" st-safe-src="submissionStats")
+						thead
+							tr
+								th(st-sort="username") Username
+								th(st-sort="email") Email
+								th(st-sort="remarks") Remarks
+								th(st-sort="updateDt") Last Submit
+								th(st-sort="count") No. of Attempts
+								th(st-sort="max") Score
+								th Actions
+							tr
+								th(colspan="100")
+									input.input-sm.form-control(st-search placeholder="filter" type="search")
+						tbody
+							tr(ng-repeat="stat in displayedStats")
+								td {{stat.student.username}}
+								td {{stat.student.email}}
+								td {{stat.student.remarks}}
+								td {{stat.updateDt ? stat.updateDt.toString() : 'N/A'}}
+								td {{stat.count}}
+								td {{stat.max}} / {{stat.assignment.sandboxConfig.testCaseNames.length}}
+								td
+									a.btn.btn-xs.btn-primary(ng-href="#/submissions/{{stat.tags.asgId}}/{{stat.tags.email}}") View Details
+						tfoot
+							tr
+								td.text-center(colspan="100")
+									div(st-pagination="" st-items-by-page="30" st-displayed-pages="20")
+					table.table(ng-if="assignmentStats.length" st-table="displayedStats" st-safe-src="assignmentStats")
+						thead
+							tr
+								th(st-sort="name") Name
+								th(st-sort="startDt") Start Date
+								th(st-sort="dueDt") Due Date
+								th(st-sort="count") No. of Attempted Students
+								th(st-sort="max") Highest Score
+								th Actions
+							tr
+								th(colspan="100")
+									input.input-sm.form-control(st-search placeholder="filter" type="search")
+						tbody
+							tr(ng-repeat="stat in displayedStats")
+								td {{stat.assignment.name}}
+								td {{stat.assignment.startDt.toString()}}
+								td {{stat.assignment.dueDt.toString()}}
+								td {{stat.count}} / {{students.length}}
+								td {{stat.max}} / {{stat.assignment.sandboxConfig.testCaseNames.length}}
+								td
+									a.btn.btn-xs.btn-primary(ng-href="#/statistics/{{stat.assignment.asgId}}") View Details
+						tfoot
+							tr
+								td.text-center(colspan="100")
+									div(st-pagination="" st-items-by-page="30" st-displayed-pages="20")

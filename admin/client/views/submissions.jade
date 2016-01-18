@@ -7,6 +7,8 @@ script(type="text/ng-template", id="views/submissions")
 					p
 						h3
 							strong Assignment List
+						.message-text.text-danger(ng-if="assignmentListMsg.errorMessage") {{assignmentListMsg.errorMessage}}
+						.message-text.text-success(ng-if="assignmentListMsg.successMessage") {{assignmentListMsg.successMessage}}
 				.list-group
 					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/submissions/{{assignment.asgId}}{{email ? '/' + email : ''}}") {{assignment.name}}
 		.col-md-9
