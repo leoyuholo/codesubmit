@@ -13,6 +13,7 @@ app.controller 'codesubmitEditorController', ($scope) ->
 		editor = _editor
 
 		editor.$blockScrolling = Infinity
+		editor.setAutoScrollEditorIntoView true
 
 		editor.setOptions
 			minLines: $scope.aceOptions?.minLines || 20
