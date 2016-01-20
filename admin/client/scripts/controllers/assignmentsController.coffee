@@ -52,15 +52,27 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 	$scope.deleteAssignment = (assignment) ->
 		deleteAssignment assignment if confirm "Click OK to delete assignment [#{assignment.name}] Assignment Id:[#{assignment.asgId}]."
 
+	updateTestCaseNames = (asgId, testCaseFile, done) ->
+		storageService.readZipFolderNames testCaseFile, (err, testCaseNames) ->
+			return done err if err
+			assignmentService.updateTestCaseNames asgId, testCaseNames, (err, data) ->
+				return done err if err
+				done null, testCaseNames
+
 	$scope.uploadTestCaseFile = () ->
 		testCaseFile = document.getElementById('testCase-input').files?[0]
 
 		return messageService.error $scope.testCaseMsg, 'No file chosen.' if !testCaseFile
 		return messageService.error $scope.testCaseMsg, "Test cases [#{testCaseFile.type || 'no type'}] file type is not supported" if -1 == testCaseFile.type?.indexOf?('zip')
 
-		storageService.post $scope.assignment.testCaseFileStorageKey, testCaseFile, (err) ->
+		async.parallel [
+			_.partial updateTestCaseNames, $scope.assignment.asgId, testCaseFile
+			_.partial storageService.post, $scope.assignment.testCaseFileStorageKey, testCaseFile
+		], (err, [testCaseNames, __]) ->
 			return messageService.error $scope.testCaseMsg, err.message if err
 			messageService.success $scope.testCaseMsg, 'Test cases uploaded.'
+
+			$scope.assignment.sandboxConfig.testCaseNames = testCaseNames
 
 			getTestCaseFileDetails $scope.assignment.testCaseFileStorageKey
 

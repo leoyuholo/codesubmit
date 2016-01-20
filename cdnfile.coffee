@@ -29,4 +29,5 @@ module.exports = [
     'https://cdnjs.cloudflare.com/ajax/libs/async/1.5.0/async.min.js'
     'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js'
     'https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha512.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js'
 ]

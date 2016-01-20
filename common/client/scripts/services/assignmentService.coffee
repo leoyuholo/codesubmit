@@ -44,6 +44,14 @@ app.service 'assignmentService', (urlService) ->
 
 		urlService.post urlService.assignment.update(), payload, done
 
+	self.updateTestCaseNames = (asgId, testCaseNames, done) ->
+		payload =
+			assignment:
+				asgId: asgId
+				'sandboxConfig.testCaseNames': testCaseNames
+
+		urlService.post urlService.assignment.update(), payload, done
+
 	self.remove = (assignment, done) ->
 		payload=
 			assignment: assignment

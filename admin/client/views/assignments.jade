@@ -100,8 +100,8 @@ script(type="text/ng-template", id="views/assignments")
 									input.form-control#assignmentExecutableFilename-input(type="text" ng-model="assignment.sandboxConfig.executableFilename")
 								.form-group
 									label(for="assignmenttestCaseNames-input") Test Case Names:
-									input.form-control#assignmenttestCaseNames-input(type="text" placeholder="e.g. case1, case2, case3, bonus1" ng-model="assignment.sandboxConfig.testCaseNames")
-									p.help-block case sensitive and should match folder names in testcases.zip
+									input.form-control#assignmenttestCaseNames-input(type="text" placeholder="e.g. case1, case2, case3, bonus1" ng-model="assignment.sandboxConfig.testCaseNames" disabled)
+									p.help-block Test case names will be detected after uploading test cases.
 								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
 								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
 								button.btn.btn-primary(type="submit" ng-click="updateAssignment(assignment)") Update
