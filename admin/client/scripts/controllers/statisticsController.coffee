@@ -23,6 +23,7 @@ app.controller 'statisticsController', ($scope, $routeParams, $uibModal, submiss
 
 			$scope.assignmentStats = data.stats
 			$scope.students = data.students
+			$scope.assignments = data.assignments
 
 	$scope.listStatsByAsgId = (asgId) ->
 		submissionService.listSubmissionStatsByAsgId asgId, (err, data) ->
@@ -36,12 +37,14 @@ app.controller 'statisticsController', ($scope, $routeParams, $uibModal, submiss
 	$scope.assignmentListMsg = {}
 	$scope.assignment = {}
 
-	$scope.listAssignments()
-
 	$scope.statsListMsg = {}
 	$scope.submissionStats = []
 	$scope.assignmentStats = []
 
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 
-	if $scope.asgId then $scope.listStatsByAsgId $scope.asgId else $scope.listStats()
+	if $scope.asgId
+		$scope.listAssignments()
+		$scope.listStatsByAsgId $scope.asgId
+	else
+		$scope.listStats()

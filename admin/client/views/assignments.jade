@@ -9,11 +9,13 @@ script(type="text/ng-template", id="views/assignments")
 							strong Assignment List
 						.message-text.text-danger(ng-if="assignmentListMsg.errorMessage") {{assignmentListMsg.errorMessage}}
 						.message-text.text-success(ng-if="assignmentListMsg.successMessage") {{assignmentListMsg.successMessage}}
-				.list-group
-					a.list-group-item(ng-repeat="assignment in assignments" ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/assignments/{{assignment.asgId}}") {{assignment.name}}
+				.list-group(ng-init="itemsPerPage = 20;currentPage = 1")
+					a.list-group-item(ng-repeat="assignment in assignments.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage)" iterms-per-page ng-class="assignment.asgId == asgId ? 'list-group-item-info' : ''" ng-href="#/assignments/{{assignment.asgId}}") {{assignment.name}}
 					a.list-group-item.list-group-item-success(ng-href="#/assignments")
 						span.glyphicon.glyphicon-plus
 						|  Create New
+			.text-center
+				uib-pagination.pagination-sm(boundary-links="true" direction-links="false" boundary-link-numbers="true" max-size="5" total-items="assignments.length" ng-model="currentPage" items-per-page="itemsPerPage" previous-text="‹" next-text="›" first-text="«" last-text="»")
 		.col-md-9
 			uib-tabset
 				uib-tab(heading="General")
