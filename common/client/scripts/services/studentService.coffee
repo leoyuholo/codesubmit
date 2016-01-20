@@ -21,6 +21,12 @@ app.service 'studentService', (urlService, userService) ->
 
 		urlService.post urlService.student.create(), payload, done
 
+	self.update = (student, done) ->
+		payload =
+			student: student
+
+		urlService.post urlService.student.update(), payload, done
+
 	self.deactivate = (student, done) ->
 		payload =
 			student:

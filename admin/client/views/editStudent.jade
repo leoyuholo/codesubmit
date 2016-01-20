@@ -1,0 +1,18 @@
+script(type="text/ng-template", id="views/editStudent")
+	.modal-header
+		h4.modal-title Edit Student
+	.modal-body
+		form
+			.form-group
+				label(for="studentEmail-input") Email:
+				input.form-control#studentEmail-input(type="text" ng-model="student.email" disabled)
+			.form-group
+				label(for="studentUsername-input") Username:
+				input.form-control#studentUsername-input(type="text" ng-model="student.username")
+			.form-group
+				label(for="studentRemarks-input") Remarks:
+				input.form-control#studentRemarks-input(type="text" ng-model="student.remarks")
+			.message-text.text-danger(ng-if="editStudentMsg.errorMessage") {{editStudentMsg.errorMessage}}
+			.message-text.text-success(ng-if="editStudentMsg.successMessage") {{editStudentMsg.successMessage}}
+			.btn-toolbar
+				button.btn.btn-primary(type="submit" ng-click="updateStudent()") Update

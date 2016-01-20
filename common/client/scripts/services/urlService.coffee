@@ -20,6 +20,7 @@ app.service 'urlService', ($http) ->
 			list: () -> "#{apiPrefix}/student/list"
 			findByEmail: (email) -> "#{apiPrefix}/student/findbyemail/#{email}"
 			create: () -> "#{apiPrefix}/student/create"
+			update: () -> "#{apiPrefix}/student/update"
 			deactivate: () -> "#{apiPrefix}/student/deactivate"
 			activate: () -> "#{apiPrefix}/student/activate"
 			resetPassword: () -> "#{apiPrefix}/student/resetpassword"

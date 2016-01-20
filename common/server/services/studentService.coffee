@@ -37,6 +37,15 @@ module.exports = ($) ->
 
 					$.services.emailService.sendEmail student.email, emailSubject, emailText, done
 
+	self.update = (newStudent, done) ->
+		self.findByEmail newStudent.email, (err, student) ->
+			return $.utils.onError done, err if err
+
+			student.username = newStudent.username
+			student.remarks = newStudent.remarks
+
+			$.stores.studentStore.update student, done
+
 	self.deactivate = (email, done) ->
 		$.stores.studentStore.findByEmail email, (err, student) ->
 			return $.utils.onError done, err if err

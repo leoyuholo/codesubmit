@@ -28,6 +28,14 @@ module.exports = ($) ->
 				res.json
 					success: true
 
+	self.update = () ->
+		$.express.Router().post '/update', (req, res, done) ->
+			$.services.studentService.update req.body.student, (err, student) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+
 	self.deactivate = () ->
 		$.express.Router().post '/deactivate', (req, res, done) ->
 			$.services.studentService.deactivate req.body.student.email, (err) ->

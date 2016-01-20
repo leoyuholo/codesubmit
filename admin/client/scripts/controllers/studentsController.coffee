@@ -13,6 +13,17 @@ app.controller 'studentsController', ($scope, $routeParams, $uibModal, studentSe
 
 		$uibModal.open options
 
+	$scope.openEditStudent = (student) ->
+		options =
+			templateUrl: 'views/editStudent'
+			controller: 'editStudentController'
+			animation: false
+			size: 'md'
+			resolve:
+				student: () -> student
+
+		$uibModal.open options
+
 	defaultStudent =
 		username: ''
 		email: ''
