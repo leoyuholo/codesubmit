@@ -20,10 +20,10 @@ docker rm $container_name
 
 sandboxrun=tomlau10/sandbox-run
 if [ -z "$(docker images -a | grep $sandboxrun)" ]; then
-    echo "$sandboxrun docker image exists, pulling..."
-    docker pull $sandboxrun
+	echo "$sandboxrun docker image exists, pulling..."
+	docker pull $sandboxrun
 else
-    echo "$sandboxrun docker image exists, skip pulling."
+	echo "$sandboxrun docker image exists, skip pulling."
 fi
 
 echo "shared_dir:" $host_shared_dir
