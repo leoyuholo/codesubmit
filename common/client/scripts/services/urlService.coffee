@@ -35,6 +35,7 @@ app.service 'urlService', ($http) ->
 		submission:
 			listScoreStats: () -> "#{apiPrefix}/submission/listscorestats"
 			listScoreStatsByAsgId: (asgId) -> "#{apiPrefix}/submission/listscorestatsbyasgid/#{asgId}"
+			listScoreStatsByEmail: (email) -> "#{apiPrefix}/submission/listscorestatsbyemail/#{email}"
 			listMyScoreStats: () -> "#{apiPrefix}/submission/listmyscorestats"
 			listByAsgId: (asgId) -> "#{apiPrefix}/submission/listbyasgid/#{asgId}"
 			listByEmail: (email) -> "#{apiPrefix}/submission/listbyemail/#{email}"

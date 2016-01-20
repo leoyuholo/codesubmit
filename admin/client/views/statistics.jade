@@ -18,6 +18,10 @@ script(type="text/ng-template", id="views/statistics")
 						strong Submission Statistics
 					.message-text.text-danger(ng-if="statsListMsg.errorMessage") {{statsListMsg.errorMessage}}
 					.message-text.text-success(ng-if="statsListMsg.successMessage") {{statsListMsg.successMessage}}
+					.text-right(ng-if="!asgId")
+						button.pull-right.btn.btn-default(type="button" ng-click="openExport()")
+							span.glyphicon.glyphicon-export
+							|  Export Scores
 					table.table(ng-if="submissionStats.length" st-table="displayedStats" st-safe-src="submissionStats")
 						thead
 							tr
@@ -40,7 +44,7 @@ script(type="text/ng-template", id="views/statistics")
 								td {{stat.count}} / {{stat.assignment.submissionLimit}}
 								td {{stat.max}} / {{stat.assignment.sandboxConfig.testCaseNames.length}}
 								td
-									a.btn.btn-xs.btn-primary(ng-href="#/submissions/{{stat.assignment.asgId}}/{{stat.student.email}}") View Details
+									a.btn.btn-xs.btn-primary(ng-href="#/submissions/{{stat.student.email}}/{{stat.assignment.asgId}}") View Details
 						tfoot
 							tr
 								td.text-center(colspan="100")

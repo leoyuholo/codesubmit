@@ -22,7 +22,7 @@ app.config ($routeProvider, markedProvider) ->
 		controller: 'assignmentsController'
 		templateUrl: 'views/assignments'
 	})
-	.when('/submissions/:asgid?/:email?', {
+	.when('/submissions/:email/:asgid?', {
 		controller: 'submissionsController'
 		templateUrl: 'views/submissions'
 	})

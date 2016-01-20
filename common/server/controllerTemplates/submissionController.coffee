@@ -13,6 +13,17 @@ module.exports = ($) ->
 					success: true
 					stats: stats
 
+	self.listscorestatsbyemail = () ->
+		$.express.Router().get '/listscorestatsbyemail/:email', (req, res, done) ->
+			email = req.params.email
+
+			$.services.submissionService.listScoreStatsByEmail email, (err, stats) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					stats: stats
+
 	self.listscorestats = () ->
 		$.express.Router().get '/listscorestats', (req, res, done) ->
 			$.services.submissionService.listScoreStats (err, stats) ->

@@ -34,7 +34,7 @@ script(type="text/ng-template", id="views/students")
 										//- button.control-group.btn.btn-xs.btn-warning(type="button" ng-if="student.active" ng-click="deactivate(student, $index)") Deactivate
 										//- button.control-group.btn.btn-xs.btn-success(type="button" ng-if="!student.active" ng-click="activate(student, $index)") Activate
 										button.control-group.btn.btn-xs.btn-warning(ng-if="showResetPw" type="button" ng-click="resetPassword(student, $index)") Reset Password
-										a.btn.btn-xs.btn-primary(ng-href="#/submissions//{{student.email}}") View Submissions
+										a.btn.btn-xs.btn-primary(ng-href="#/submissions/{{student.email}}") View Submissions
 						tfoot
 							tr
 								td.text-center(colspan="100")

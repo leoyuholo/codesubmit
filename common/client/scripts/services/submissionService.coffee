@@ -49,6 +49,25 @@ app.service 'submissionService', (urlService) ->
 
 			done null, {success: true, stats: stats, assignment: assignment, students: students}
 
+	self.listSubmissionStatsByEmail = (email, done) ->
+		async.parallel [
+			_.partial urlService.get, urlService.assignment.list()
+			_.partial urlService.get, urlService.submission.listScoreStatsByEmail(email)
+		], (err, [assignmentData, statsData]) ->
+			return done err if err
+
+			[assignments, stats] = [assignmentData.assignments, statsData.stats]
+
+			stats = _.indexBy stats, (stat) -> stat.tags.asgId
+
+			stats = _.map assignments, (asg) ->
+				stat = stats[asg.asgId]
+				stat = {max: 0, count: 0, updateDt: null} if !stat
+				stat.assignment = asg
+				return stat
+
+			done null, {success: true, stats: stats, assignments: assignments}
+
 	self.listScoreStats = (done) ->
 		urlService.get urlService.submission.listScoreStats(), done
 
