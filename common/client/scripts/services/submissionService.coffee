@@ -28,6 +28,26 @@ app.service 'submissionService', (urlService) ->
 
 			done null, {success: true, stats: stats, assignments: assignments, students: students}
 
+	self.listSubmissionStats = (done) ->
+		async.parallel [
+			_.partial urlService.get, urlService.assignment.list()
+			_.partial urlService.get, urlService.student.list()
+			_.partial urlService.get, urlService.submission.listScoreStats()
+		], (err, [assignmentsData, studentsData, statsData]) ->
+			return done err if err
+
+			[assignments, students, stats] = [assignmentsData.assignments, studentsData.students, statsData.stats]
+
+			statsByEmail = _.groupBy stats, (stat) -> stat.tags.email
+			assignmentsByAsgId = _.indexBy assignments, (asg) -> asg.asgId
+
+			_.each students, (student) ->
+				student.stats = statsByEmail[student.email]
+				_.each student.stats, (stat) ->
+					stat.assignment = assignmentsByAsgId[stat.tags.asgId]
+
+			done null, {success: true, stats: stats, students: students, assignments: assignments}
+
 	self.listSubmissionStatsByAsgId = (asgId, done) ->
 		async.parallel [
 			_.partial urlService.get, urlService.assignment.findByAsgId(asgId)
@@ -70,9 +90,6 @@ app.service 'submissionService', (urlService) ->
 
 	self.findMyScoreStatsByAsgId = (asgId, done) ->
 		urlService.get urlService.submission.findMyScoreStatsByAsgId(asgId), done
-
-	self.listScoreStats = (done) ->
-		urlService.get urlService.submission.listScoreStats(), done
 
 	self.listByAsgId = (asgId, done) ->
 		urlService.get urlService.submission.listByAsgId(asgId), done

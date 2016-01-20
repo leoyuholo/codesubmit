@@ -14,7 +14,7 @@ module.exports = ($) ->
 
 	studentSchema.index {email: 1}, {unique: true}
 
-	attrKeys = _.without(_.keys(student), 'password')
+	attrKeys = _.without(_.keys(student), 'password', 'salt')
 	studentSchema.static 'envelop', (doc) ->
 		_.pick doc, attrKeys
 

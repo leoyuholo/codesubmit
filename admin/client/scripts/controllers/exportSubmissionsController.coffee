@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'exportSubmissionsController', ($scope, submissionService, assignmentService, studentService, messageService) ->
+app.controller 'exportSubmissionsController', ($scope, submissionService, messageService) ->
 
 	$scope.exportDataMsg = {}
 
@@ -10,35 +10,23 @@ app.controller 'exportSubmissionsController', ($scope, submissionService, assign
 
 	$scope.exportData = ''
 
-	constructStats = (stats, assignments, students) ->
-		assignmentByAsgId = _.indexBy assignments, 'asgId'
-		studentByEmail = _.indexBy students, 'email'
-
-		_.map _.groupBy(stats, 'tags.email'), (stats, email) ->
-			record = _.reduce stats, ((result, stat) ->
-				assignment = assignmentByAsgId[stat.tags.asgId]
-				result[assignment.name] = stat.max
-				return result
-			), {}
-
-			student = studentByEmail[email]
-
-			record.email = student.email
-			record.username = student.username
-			record.remarks = student.remarks
-
-			return record
-
 	listScoreStats = () ->
-		async.parallel [
-			submissionService.listScoreStats
-			assignmentService.list
-			studentService.list
-		], (err, [statsData, assignmentsData, studentsData]) ->
+		submissionService.listSubmissionStats (err, data) ->
 			return messageService.error $scope.exportDataMsg, err.message if err
 
+			records = _.map data.students, (student) ->
+				record =
+					email: student.email
+					username: student.username
+					remarks: student.remarks
+
+				_.each student.stats, (stat) ->
+					record[stat.assignment.name] = stat.max
+
+				return record
+
 			$scope.exportData = Papa.unparse
-				fields: ['email', 'username', 'remarks'].concat _.pluck(assignmentsData.assignments, 'name').sort()
-				data: constructStats statsData.stats, assignmentsData.assignments, studentsData.students
+				fields: ['email', 'username', 'remarks'].concat _.pluck(data.assignments, 'name').sort()
+				data: records
 
 	listScoreStats()
