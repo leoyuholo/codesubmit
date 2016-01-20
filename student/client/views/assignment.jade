@@ -57,8 +57,13 @@ script(type="text/ng-template", id="views/assignment")
 							codesubmit-editor.ace_editor-small(local-storage-key="inputLocalStorageKey" editor-options="inputAceOptions" ng-model="input")
 							.text-right
 								a(href="javascript:void(0)" ng-click="input = assignment.sampleInput") reset
-					p
-						strong Write Code:
+					.row
+						p
+							.col-sm-6
+								strong Write Code:
+							.col-sm-6
+								.text-right
+									a(ng-href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts" target="_blank") Editor Hotkeys
 					codesubmit-editor(local-storage-key="codeLocalStorageKey" editor-options="codeAceOptions" language="assignment.sandboxConfig.language" ng-model="code")
 					p
 						.message-text.text-danger(ng-if="assignmentSubmitMsg.errorMessage") {{assignmentSubmitMsg.errorMessage}}
