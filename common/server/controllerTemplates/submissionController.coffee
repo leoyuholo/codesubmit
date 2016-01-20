@@ -33,6 +33,18 @@ module.exports = ($) ->
 					success: true
 					stats: stats
 
+	self.findmyscorestatsbyasgid = () ->
+		$.express.Router().get '/findmyscorestatsbyasgid/:asgId', (req, res, done) ->
+			asgId = req.params.asgId
+			email = req.user.email
+
+			$.services.submissionService.findScoreStatsByAsgIdAndEmail asgId, email, (err, stat) ->
+				return $.utils.onError done, err if err
+
+				res.json
+					success: true
+					stat: stat
+
 	self.listmyscorestats = () ->
 		$.express.Router().get '/listmyscorestats', (req, res, done) ->
 			email = req.user.email

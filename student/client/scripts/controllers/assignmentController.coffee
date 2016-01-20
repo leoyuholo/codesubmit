@@ -7,6 +7,7 @@ app.controller 'assignmentController', ($scope, $routeParams, assignmentService,
 	$scope.assignmentSubmitMsg = {}
 	$scope.assignmentRunMsg = {}
 	$scope.assignment = {}
+	$scope.stat = {}
 	$scope.runResult = {}
 
 	$scope.code = ''
@@ -61,4 +62,11 @@ app.controller 'assignmentController', ($scope, $routeParams, assignmentService,
 			if $scope.input == undefined || $scope.input == null
 				$scope.input = $scope.assignment?.sampleInput
 
+	findScoreStat = (asgId) ->
+		submissionService.findMyScoreStatsByAsgId asgId, (err, data) ->
+			return messageService.error $scope.assignmentDetailsMsg, err.message if err
+
+			$scope.stat = data.stat
+
 	findAssignment $scope.asgId
+	findScoreStat $scope.asgId

@@ -25,6 +25,12 @@ module.exports = ($) ->
 
 					done null
 
+	self.findScoreStatsByAsgIdAndEmail = (asgId, email, done) ->
+		$.services.statService.findByTags {key: 'submission.score', asgId: asgId, email: email}, (err, stats) ->
+			return $.utils.onError done, err if err
+
+			done null, (_.map stats, $.models.Stat.envelop)[0]
+
 	self.listScoreStatsByAsgId = (asgId, done) ->
 		$.services.statService.findByTags {key: 'submission.score', asgId: asgId}, (err, stats) ->
 			return $.utils.onError done, err if err

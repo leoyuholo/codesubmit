@@ -68,6 +68,9 @@ app.service 'submissionService', (urlService) ->
 
 			done null, {success: true, stats: stats, assignments: assignments}
 
+	self.findMyScoreStatsByAsgId = (asgId, done) ->
+		urlService.get urlService.submission.findMyScoreStatsByAsgId(asgId), done
+
 	self.listScoreStats = (done) ->
 		urlService.get urlService.submission.listScoreStats(), done
 
