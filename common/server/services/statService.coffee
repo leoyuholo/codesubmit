@@ -24,7 +24,7 @@ module.exports = ($) ->
 
 	self.update = (stat, done) ->
 		stat.tags = makeTags stat.tags
-		stat.statId = makeStatId stat.tags
+		stat.statsId = makeStatId stat.tags
 
 		$.stores.statStore.upsert stat, (err) ->
 			return $.utils.onError done, err if err

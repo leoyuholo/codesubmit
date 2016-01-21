@@ -3,7 +3,7 @@ mongoose = require 'mongoose'
 
 module.exports = ($) ->
 	stat =
-		statId: String
+		statsId: String
 		tags: [String]
 		max: {type: Number, default: 0}
 		count: {type: Number, default: 0}
@@ -11,7 +11,7 @@ module.exports = ($) ->
 
 	StatSchema = new mongoose.Schema(stat)
 
-	StatSchema.index {statId: 1}, {unique: 1}
+	StatSchema.index {statsId: 1}, {unique: 1}
 	StatSchema.index {tags: 1}
 
 	attrKeys = _.keys stat
