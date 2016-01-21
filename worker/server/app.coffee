@@ -12,4 +12,4 @@ async.series [
 	$.run.server
 ], (err) ->
 	return $.logger.log 'error', "error starting up codesubmit worker #{err.message}" if err
-	$.logger.log 'info', "codeSubmit worker listen on port #{$.config.port}"
+	$.logger.log 'info', "[#{$.app.get('env')}]codeSubmit worker listen on port #{$.config.port}"
