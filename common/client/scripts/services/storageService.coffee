@@ -10,7 +10,7 @@ app.service 'storageService', (urlService) ->
 		reader.onload = (event) ->
 			zip = new JSZip(event.target.result)
 
-			folderNames = _.filter _.keys(zip.files), _.bind RegExp().test, /[^\/]+\/$/
+			folderNames = _.filter _.keys(zip.files), _.bind RegExp().test, /^[^\/]+\/$/
 
 			folderNames = _.map folderNames, (name) -> name.replace /\/$/, ''
 
