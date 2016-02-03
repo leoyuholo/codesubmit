@@ -15,7 +15,7 @@ module.exports = ($) ->
 		Assignment.create assignment, done
 
 	self.update = (assignment, done) ->
-		Assignment.update {asgId: assignment.asgId}, assignment, done
+		Assignment.update {asgId: assignment.asgId}, assignment, {runValidators: true}, done
 
 	self.removeByAsgId = (asgId, done) ->
 		Assignment.findOneAndRemove {asgId: asgId}, done

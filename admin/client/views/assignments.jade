@@ -25,7 +25,9 @@ script(type="text/ng-template", id="views/assignments")
 							p
 								h2
 									strong {{assignment.asgId ? 'Assignment Details' : 'New Assignment'}}
-							form
+							//- {{forms.generalForm.$valid}}
+							//- {{forms.generalForm.$error}}
+							form(name="forms.generalForm")
 								.form-group(ng-if="assignment.asgId")
 									label(for="assignmentAsgId-input") Assignment ID:
 									input.form-control#assignmentAsgId-input(type="text" disabled ng-model="assignment.asgId")
@@ -44,10 +46,10 @@ script(type="text/ng-template", id="views/assignments")
 									input.form-control#assignmentHardDueDate-input(type="datetime-local" ng-model="assignment.hardDueDt")
 								.form-group
 									label(for="assignmentSubmissionLimit-input") Submission Limit:
-									input.form-control#assignmentSubmissionLimit-input(type="number" min="1" max="1000" ng-model="assignment.submissionLimit")
+									input.form-control#assignmentSubmissionLimit-input(type="number" min="1" max="1000" step="1" pattern="[0-9]+" ng-model="assignment.submissionLimit")
 								.form-group
 									label(for="assignmentPenalty-input") Late Submission Penalty (%):
-									input.form-control#assignmentPenalty-input(type="number" min="0" max="100" ng-model="assignment.penalty")
+									input.form-control#assignmentPenalty-input(type="number" min="0" max="100" step="1" pattern="[0-9]+" ng-model="assignment.penalty")
 								p(ng-if="!assignment.asgId").help-block Remember to fill in configs after create.
 								.message-text.text-danger(ng-if="assignmentDetailsMsg.errorMessage") {{assignmentDetailsMsg.errorMessage}}
 								.message-text.text-success(ng-if="assignmentDetailsMsg.successMessage") {{assignmentDetailsMsg.successMessage}}
@@ -63,22 +65,24 @@ script(type="text/ng-template", id="views/assignments")
 							p
 								h2
 									strong Sandbox Config
-							form
+							//- {{forms.sandboxConfigForm.$valid}}
+							//- {{forms.sandboxConfigForm.$error}}
+							form(name="forms.sandboxConfigForm")
 								.form-group
 									label(for="assignmentCommandTimeoutMs-input") Command Timeout (Milliseconds):
-									input.form-control#assignmentCommandTimeoutMs-input(type="number" min="0" max="4200000" ng-model="assignment.sandboxConfig.commandTimeoutMs")
+									input.form-control#assignmentCommandTimeoutMs-input(type="number" min="0" max="4200000" step="1" pattern="[0-9]+" ng-model="assignment.sandboxConfig.commandTimeoutMs")
 								.form-group
 									label(for="assignmentTimeLimitS-input") Time Limit (Seconds):
-									input.form-control#assignmentTimeLimitS-input(type="number" min="0" max="36000" ng-model="assignment.sandboxConfig.timeLimitS")
+									input.form-control#assignmentTimeLimitS-input(type="number" min="0" max="36000" step="1" pattern="[0-9]+" ng-model="assignment.sandboxConfig.timeLimitS")
 								.form-group
 									label(for="assignmentMemoryLimitMB-input") Memory Limit (MB):
-									input.form-control#assignmentMemoryLimitMB-input(type="number" min="0" max="1024" ng-model="assignment.sandboxConfig.memoryLimitMB")
+									input.form-control#assignmentMemoryLimitMB-input(type="number" min="0" max="1024" step="1" pattern="[0-9]+" ng-model="assignment.sandboxConfig.memoryLimitMB")
 								.form-group
 									label(for="assignmentoutputLimitKB-input") Output Limit (KB):
-									input.form-control#assignmentoutputLimitKB-input(type="number" min="0" max="102400" ng-model="assignment.sandboxConfig.outputLimitKB")
+									input.form-control#assignmentoutputLimitKB-input(type="number" min="0" max="102400" step="1" pattern="[0-9]+" ng-model="assignment.sandboxConfig.outputLimitKB")
 								.form-group
 									label(for="assignmentErrorToleranceLevel-input") Error Tolerance Level (0, 1, 2):
-									input.form-control#assignmentErrorToleranceLevel-input(type="number" min="0" max="2" ng-model="assignment.sandboxConfig.errorToleranceLevel")
+									input.form-control#assignmentErrorToleranceLevel-input(type="number" min="0" max="2" step="1" pattern="[0-9]+" ng-model="assignment.sandboxConfig.errorToleranceLevel")
 								.form-group
 									label(for="assignmentStrictCompare-input") Strict Compare:
 									input#assignmentStrictCompare-input(type="checkbox" ng-model="assignment.sandboxConfig.strictCompare")

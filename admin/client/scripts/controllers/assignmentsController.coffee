@@ -28,8 +28,10 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 	$scope.testCaseFileDetails = null
 	$scope.testCaseMsg = {}
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
+	$scope.forms = {}
 
 	$scope.createAssignment = (assignment) ->
+		
 		assignmentService.create assignment, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment created.'
@@ -37,6 +39,7 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 			redirectService.redirectTo 'assignments', data.assignment.asgId
 
 	$scope.updateAssignment = (assignment) ->
+		return messageService.error $scope.assignmentDetailsMsg, 'Invalid form.' if !$scope.forms.generalForm.$valid || !$scope.forms.sandboxConfigForm.$valid
 		assignment.sandboxConfig.testCaseNames = _.invoke assignment.sandboxConfig.testCaseNames.split(','), 'trim' if _.isString assignment.sandboxConfig?.testCaseNames
 
 		assignmentService.update assignment, (err, data) ->
