@@ -44,7 +44,7 @@ module.exports = ($) ->
 			hintPath = path.join extractPath, testCaseName, 'hint'
 
 			code = sandboxTask.submission.code
-			input = fse.createReadStream inPath
+			input = {filePath: inPath}
 			testCaseRunPath = path.join sandboxrunPath, testCaseName
 			sandboxConfig = sandboxTask.assignment.sandboxConfig
 
@@ -116,20 +116,31 @@ module.exports = ($) ->
 			done null, makeRunResult result, 'run'
 
 	dispatch = (sandboxTask, done) ->
-		return processSubmission sandboxTask, done if !sandboxTask.submission.type
-
 		switch sandboxTask.submission.type
 			when 'run'
 				processRun sandboxTask, done
 			when 'eval'
 				processEval sandboxTask, done
+			else
+				processSubmission sandboxTask, done
+
+	handleError = (submission, err, done) ->
+		if submission.type == 'run' || submission.type == 'eval'
+			return done null, makeRunResult {status: 'error', message: 'Server Error', errorMessage: err.message}
+		else
+			runResults = [{status: 'error', message: 'Server Error', errorMessage: 'Missing asgId.'}]
+			$.emitter.emit 'submissionError', submission.subId, 'Server Error', runResults if submission.subId
+			return done null, runResults
 
 	self.worker = (submission, done) ->
+		return handleError submission, new Error('Missing asgId.'), done if !submission.asgId
+		return handleError submission, new Error('Missing subId.'), done if !submission.subId
+
 		sandboxTask =
 			submission: submission
 
 		$.services.assignmentService.findByAsgId sandboxTask.submission.asgId, (err, assignment) ->
-			return $.utils.onError done, err if err
+			return handleError submission, err, done if err
 
 			sandboxTask.assignment = assignment
 

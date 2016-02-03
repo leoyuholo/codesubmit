@@ -55,7 +55,7 @@ module.exports = ($) ->
 	self.runSandbox = (cmd, opt, containerName, done) ->
 		childProcess.exec cmd, opt, (err, stdout, stderr) ->
 			childProcess.exec makeRmCmd(containerName), (err, stdout, stderr) ->
-				$.utils.onError _.noop, err if !/no such id/.test err.message
+				$.utils.onError _.noop, err if err && !/no such id/.test err.message
 
 			done err, stdout, stderr
 
@@ -97,8 +97,10 @@ module.exports = ($) ->
 				return reject err if err
 				resolve result
 
-			if _.isFunction input?.pipe
-				input.pipe(sandbox.stdin)
+			if _.isObject input
+				input = fse.createReadStream input.filePath
+				input.on('error', reject)
+					.pipe(sandbox.stdin)
 					.on('error', reject)
 					.on 'close', () -> sandbox.stdin.end()
 			else if _.isString input
