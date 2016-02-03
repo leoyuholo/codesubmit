@@ -8,10 +8,11 @@ Promise = require('q').Promise
 module.exports = ($) ->
 	self = {}
 
-	makeCompileCmd = (sandboxrunPath, sandboxConfig) ->
+	makeCompileCmd = (sandboxrunPath, sandboxConfig, containerName) ->
 		[
 			'docker'
 			'run'
+			'--name', containerName
 			'--rm'
 			'--net', 'none'
 			'--security-opt', 'apparmor:unconfined'
@@ -22,10 +23,11 @@ module.exports = ($) ->
 			'-c', "'#{sandboxConfig.compileCommand}'"
 		].join ' '
 
-	makeRunCmd = (sandboxrunPath, sandboxConfig) ->
+	makeRunCmd = (sandboxrunPath, sandboxConfig, containerName) ->
 		[
 			'docker'
 			'run'
+			'--name', containerName
 			'-i'
 			'--rm'
 			'--net', 'none'
@@ -42,8 +44,25 @@ module.exports = ($) ->
 			sandboxConfig.executableFilename
 		].join ' '
 
+	makeRmCmd = (containerName) ->
+		[
+			'docker'
+			'rm'
+			'-f'
+			containerName
+		].join ' '
+
+	self.runSandbox = (cmd, opt, containerName, done) ->
+		childProcess.exec cmd, opt, (err, stdout, stderr) ->
+			childProcess.exec makeRmCmd(containerName), (err, stdout, stderr) ->
+				$.utils.onError _.noop, err if !/no such id/.test err.message
+
+			done err, stdout, stderr
+
 	self.compile = (sandboxrunPath, sandboxConfig, done) ->
-		childProcess.exec makeCompileCmd(sandboxrunPath, sandboxConfig), {timeout: sandboxConfig.commandTimeoutMs}, (err, stdout, stderr) ->
+		containerName = $.utils.rng.generateId()
+
+		self.runSandbox makeCompileCmd(sandboxrunPath, sandboxConfig, containerName), {timeout: sandboxConfig.commandTimeoutMs}, containerName, (err, stdout, stderr) ->
 			if stderr
 				error = new Error('Compile Error')
 				error.compileErrorMessage = stderr
@@ -53,7 +72,9 @@ module.exports = ($) ->
 			done null
 
 	self.run = (sandboxrunPath, sandboxConfig, done) ->
-		return childProcess.exec makeRunCmd(sandboxrunPath, sandboxConfig), {timeout: sandboxConfig.commandTimeoutMs}, (err, stdout, stderr) ->
+		containerName = $.utils.rng.generateId()
+
+		return self.runSandbox makeRunCmd(sandboxrunPath, sandboxConfig, containerName), {timeout: sandboxConfig.commandTimeoutMs}, containerName, (err, stdout, stderr) ->
 			return $.utils.onError done, err if err
 
 			try
