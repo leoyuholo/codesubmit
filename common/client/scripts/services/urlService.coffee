@@ -27,6 +27,7 @@ app.service 'urlService', ($http) ->
 			importByCsv: () -> "#{apiPrefix}/student/importbycsv"
 			changePassword: () -> "#{apiPrefix}/student/changepassword"
 		assignment:
+			listScoreStats: () -> "#{apiPrefix}/assignment/listscorestats"
 			list: () -> "#{apiPrefix}/assignment/list"
 			listPublished: () -> "#{apiPrefix}/assignment/listpublished"
 			findByAsgId: (asgId) -> "#{apiPrefix}/assignment/findbyasgid/#{asgId}"

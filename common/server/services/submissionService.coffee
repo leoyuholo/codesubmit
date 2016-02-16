@@ -11,7 +11,7 @@ module.exports = ($) ->
 			$.services.submissionService.list {asgId: submission.asgId, email: submission.email}, (err, submissions) ->
 				return $.utils.onError done, err if err
 
-				stats =
+				stat =
 					tags:
 						key: 'submission.score'
 						email: submission.email
@@ -20,8 +20,10 @@ module.exports = ($) ->
 					count: submissions.length
 					updateDt: new Date()
 
-				$.services.statService.update stats, (err) ->
+				$.services.statService.update stat, (err) ->
 					return $.utils.onError done, err if err
+
+					$.emitter.emit 'submissionStatUpdated', submission
 
 					done null
 

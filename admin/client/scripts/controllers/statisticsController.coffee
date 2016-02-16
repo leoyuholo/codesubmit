@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'statisticsController', ($scope, $routeParams, $uibModal, submissionService, assignmentService, messageService) ->
+app.controller 'statisticsController', ($scope, $routeParams, $uibModal, submissionService, assignmentService, studentService, messageService) ->
 
 	$scope.openExport = () ->
 		options =
@@ -22,8 +22,12 @@ app.controller 'statisticsController', ($scope, $routeParams, $uibModal, submiss
 			return messageService.error $scope.statsListMsg, err.message if err
 
 			$scope.assignmentStats = data.stats
-			$scope.students = data.students
 			$scope.assignments = data.assignments
+
+		studentService.list (err, data) ->
+			return messageService.error $scope.statsListMsg, err.message if err
+
+			$scope.students = data.students
 
 	$scope.listStatsByAsgId = (asgId) ->
 		submissionService.listSubmissionStatsByAsgId asgId, (err, data) ->

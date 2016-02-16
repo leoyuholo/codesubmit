@@ -8,6 +8,10 @@ module.exports = ($) ->
 		$.services.submissionService.updateScoreStats submission.subId, _.noop
 	$.emitter.on 'submissionUpdated', self.submissionUpdated
 
+	self.submissionStatUpdated = (submission) ->
+		$.services.assignmentService.updateScoreStats submission.asgId, _.noop
+	$.emitter.on 'submissionStatUpdated', self.submissionStatUpdated
+
 	self.submissionRunning = (subId) ->
 		newSubmission =
 			subId: subId

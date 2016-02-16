@@ -6,27 +6,18 @@ app.service 'submissionService', (urlService) ->
 	self.listAssignmentStats = (done) ->
 		async.parallel [
 			_.partial urlService.get, urlService.assignment.list()
-			_.partial urlService.get, urlService.student.list()
-			_.partial urlService.get, urlService.submission.listScoreStats()
-		], (err, [assignmentsData, studentsData, statsData]) ->
+			_.partial urlService.get, urlService.assignment.listScoreStats()
+		], (err, [assignmentsData, statsData]) ->
 			return done err if err
 
-			[assignments, students, stats] = [assignmentsData.assignments, studentsData.students, statsData.stats]
+			[assignments, stats] = [assignmentsData.assignments, statsData.stats]
 
-			stats = _.groupBy stats, (stat) -> stat.tags.asgId
+			stats = _.indexBy stats, (stat) -> stat.tags.asgId
 
 			stats = _.map assignments, (assignment) ->
-				assignmentStats = stats[assignment.asgId]
-				assignmentStats = [] if !assignmentStats
-				stat =
-					count: assignmentStats.length
-					max: _.max(assignmentStats, 'max').max
-					distribution: _.countBy assignmentStats, 'max'
+				_.set (stats[assignment.asgId] || {}), 'assignment', assignment
 
-				stat.assignment = assignment
-				return stat
-
-			done null, {success: true, stats: stats, assignments: assignments, students: students}
+			done null, {success: true, stats: stats, assignments: assignments}
 
 	self.listSubmissionStats = (done) ->
 		async.parallel [

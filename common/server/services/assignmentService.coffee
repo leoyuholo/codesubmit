@@ -4,6 +4,29 @@ async = require 'async'
 module.exports = ($) ->
 	self = {}
 
+	self.updateScoreStats = (asgId, done) ->
+		$.services.statService.findByTags {key: 'submission.score', asgId: asgId}, (err, stats) ->
+			return $.utils.onError done, err if err
+
+			stat =
+				tags:
+					key: 'assignment.score'
+					asgId: asgId
+				max: _.max _.pluck(stats, 'max').concat(0)
+				count: stats.length
+				updateDt: new Date()
+
+			$.services.statService.update stat, (err) ->
+				return $.utils.onError done, err if err
+
+				done null
+
+	self.listScoreStats = (done) ->
+		$.services.statService.findByTags {key: 'assignment.score'}, (err, stats) ->
+			return $.utils.onError done, err if err
+
+			done null, _.map stats, $.models.Stat.envelop
+
 	self.list = (done) ->
 		$.stores.assignmentStore.list (err, assignments) ->
 			return $.utils.onError done, err if err
