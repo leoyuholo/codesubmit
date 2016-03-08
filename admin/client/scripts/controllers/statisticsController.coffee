@@ -15,14 +15,16 @@ app.controller 'statisticsController', ($scope, $routeParams, $uibModal, submiss
 		assignmentService.list (err, data) ->
 			return messageService.error $scope.assignmentListMsg, err.message if err
 
-			$scope.assignments = data.assignments
+			now = Date.now()
+			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sort
 
 	$scope.listStats = () ->
 		submissionService.listAssignmentStats (err, data) ->
 			return messageService.error $scope.statsListMsg, err.message if err
 
-			$scope.assignmentStats = data.stats
-			$scope.assignments = data.assignments
+			now = Date.now()
+			$scope.assignmentStats = _.flatten _.map (_.partition data.stats, (s) -> s.assignment.dueDt >= now), (ss) -> _.sortByOrder ss, ['assignment.dueDt', 'assignment.name'], ['asc', 'asc']
+			$scope.assignments = _.flatten _.map (_.partition data.assignments, (a) -> a.dueDt >= now), assignmentService.sort
 
 		studentService.list (err, data) ->
 			return messageService.error $scope.statsListMsg, err.message if err
