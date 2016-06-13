@@ -27,11 +27,11 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 	$scope.assignmentDetailsMsg = {}
 	$scope.testCaseFileDetails = null
 	$scope.testCaseMsg = {}
+	$scope.testCaseFileNames = []
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 	$scope.forms = {}
 
 	$scope.createAssignment = (assignment) ->
-		
 		assignmentService.create assignment, (err, data) ->
 			return messageService.error $scope.assignmentDetailsMsg, err.message if err
 			messageService.success $scope.assignmentDetailsMsg, 'Assignment created.'
@@ -54,6 +54,21 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 
 	$scope.deleteAssignment = (assignment) ->
 		deleteAssignment assignment if confirm "Click OK to delete assignment [#{assignment.name}] Assignment Id:[#{assignment.asgId}]."
+
+	$scope.testCaseFileChange = () ->
+		testCaseFile = document.getElementById('testCase-input').files?[0]
+
+		if !testCaseFile
+			$scope.testCaseFileNames = []
+			$scope.$digest()
+			return
+
+		storageService.readZipFileNames testCaseFile, (err, fileNames) ->
+			return messageService.error $scope.testCaseMsg, err.message if err
+
+			$scope.testCaseFileNames = fileNames
+
+			$scope.$digest()
 
 	$scope.uploadTestCaseFile = () ->
 		testCaseFile = document.getElementById('testCase-input').files?[0]

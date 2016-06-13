@@ -4,19 +4,23 @@ app.service 'storageService', (urlService) ->
 
 	self = {}
 
-	self.readZipFolderNames = (zipFile, done) ->
+	self.readZipFileNames = (zipFile, done) ->
 		reader = new FileReader()
 
 		reader.onload = (event) ->
 			zip = new JSZip(event.target.result)
 
-			folderNames = _.filter _.keys(zip.files), _.bind RegExp().test, /^[^\/]+\/$/
-
-			folderNames = _.map folderNames, (name) -> name.replace /\/$/, ''
-
-			done null, folderNames.sort()
+			done null, _.keys(zip.files).sort()
 
 		reader.readAsArrayBuffer zipFile
+
+	self.readZipFolderNames = (zipFile, done) ->
+		self.readZipFileNames zipFile, (err, fileNames) ->
+			return done err if err
+
+			folderNames = _.unique _.map fileNames, (name) -> name.replace /\/(in|out|hint)?$/, ''
+
+			done null, folderNames.sort()
 
 	self.post = (key, file, done) ->
 		payload = new FormData()
