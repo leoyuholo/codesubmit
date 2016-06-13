@@ -39,7 +39,7 @@ app.config ($routeProvider, markedProvider) ->
 	})
 
 	markedProvider.setOptions
-		sanitize: true
+		sanitize: false
 		gfm: true
 		tables: true
 
