@@ -22,6 +22,51 @@ module.exports = ($) ->
 			auth:
 				xoauth2: generator
 
+	self.newAdminSubjectTemplate = _.template $.config.email.template.admin.newUser.subject
+	self.newAdminTextTemplate = _.template $.config.email.template.admin.newUser.text
+	self.adminResetPwSubjectTemplate = _.template $.config.email.template.admin.resetPw.subject
+	self.adminResetPwTextTemplate = _.template $.config.email.template.admin.resetPw.text
+	self.newStudentSubjectTemplate = _.template $.config.email.template.student.newUser.subject
+	self.newStudentTextTemplate = _.template $.config.email.template.student.newUser.text
+	self.studentResetPwSubjectTemplate = _.template $.config.email.template.student.resetPw.subject
+	self.studentResetPwTextTemplate = _.template $.config.email.template.student.resetPw.text
+
+	self.makeNewAdminSubject = (admin) ->
+		self.newAdminSubjectTemplate {username: admin.username}
+
+	self.makeNewAdminText = (admin, plainPw) ->
+		self.newAdminTextTemplate
+			username: admin.username
+			password: plainPw
+			url: $.config.origin.admin
+
+	self.makeAdminResetPwSubject = (admin) ->
+		self.adminResetPwSubjectTemplate {username: admin.username}
+
+	self.makeAdminResetPwText = (admin, plainPw) ->
+		self.adminResetPwTextTemplate
+			username: admin.username
+			password: plainPw
+			url: $.config.origin.admin
+
+	self.makeNewStudentSubject = (student) ->
+		self.newStudentSubjectTemplate {username: student.username}
+
+	self.makeNewStudentText = (student, plainPw) ->
+		self.newStudentTextTemplate
+			username: student.username
+			password: plainPw
+			url: $.config.origin.student
+
+	self.makeStudentResetPwSubject = (student) ->
+		self.newStudentSubjectTemplate {username: student.username}
+
+	self.makeStudentResetPwText = (student, plainPw) ->
+		self.newStudentTextTemplate
+			username: student.username
+			password: plainPw
+			url: $.config.origin.student
+
 	self.sendEmail = (to, subject, text, done) ->
 		mail =
 			to: to
@@ -29,51 +74,5 @@ module.exports = ($) ->
 			text: text
 
 		transporter.sendMail mail, done
-
-	self.makeAdminResetPwSubject = (admin) ->
-		"[codeSubmit] Password Reset"
-
-	self.makeAdminResetPwText = (admin, plainPw) ->
-		"""
-		#{admin.username},\n\n
-		Your password for codesubmit of ENGG1110 is reset to #{plainPw}\n\n
-		Please log in #{$.config.origin.admin} and change it.\n\n
-		codeSubmit
-		"""
-
-	self.makeStudentResetPwSubject = (student) ->
-		"[codeSubmit] Password Reset"
-
-	self.makeStudentResetPwText = (student, plainPw) ->
-		"""
-		#{student.username},\n\n
-		Your password for codesubmit of ENGG1110 is reset to #{plainPw}\n\n
-		Please log in #{$.config.origin.student} and change it.\n\n
-		codeSubmit
-		"""
-
-	self.makeNewAdminSubject = (admin) ->
-		"[codeSubmit] Welcome to codeSubmit!"
-
-	self.makeNewAdminText = (admin, plainPw) ->
-		"""
-		#{admin.username},\n\n
-		Your password is #{plainPw}\n\n
-		Please log in #{$.config.origin.admin} and change it.\n\n
-		codeSubmit
-		"""
-
-	self.makeNewStudentSubject = (student) ->
-		"[codeSubmit] Welcome to codeSubmit!"
-
-	self.makeNewStudentText = (student, plainPw) ->
-		"""
-		#{student.username},\n\n
-		Welcome to codeSubmit of ENGG1110! codeSubmit is the place you write code and submit code for the assignments of ENGG1110.\n\n
-		Take the password shown below and try it out. See you in the class!\n\n
-		Your password is #{plainPw}\n\n
-		Please log in #{$.config.origin.student} and change it.\n\n
-		codeSubmit
-		"""
 
 	return self

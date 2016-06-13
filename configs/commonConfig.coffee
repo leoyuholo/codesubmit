@@ -19,6 +19,45 @@ module.exports =
 			clientId: 'xxxxxx.apps.googleusercontent.com'
 			clientSecret: 'xxxxxx'
 			refreshToken: 'xxxxxx'
+		template:
+			admin:
+				newUser:
+					subject: '[codeSubmit] Welcome to codeSubmit!'
+					text:
+						"""
+						<%= username%>,\n
+						Your password is <%= password%>\n
+						Please log in <%= url%> and change it.\n
+						codesubmit
+						"""
+				resetPw:
+					subject: '[codeSubmit] Password Reset'
+					text:
+						"""
+						<%= username%>,\n
+						Your password for codesubmit of ENGG1110 is reset to <%= password%>\n
+						Please log in <%= url%> and change it.\n
+						codesubmit
+						"""
+			student:
+				newUser:
+					subject: '[codeSubmit] Welcome to codeSubmit!'
+					text:
+						"""
+						<%= username%>,\n
+						Your password is <%= password%>\n
+						Please log in <%= url%> and change it.\n
+						codesubmit
+						"""
+				resetPw:
+					subject: '[codeSubmit] Password Reset'
+					text:
+						"""
+						<%= username%>,\n
+						Your password for codesubmit of ENGG1110 is reset to <%= password%>\n
+						Please log in <%= url%> and change it.\n
+						codesubmit
+						"""
 	redis:
 		host: process.env.REDIS_PORT_6379_TCP_ADDR || process.env.HOST_IP || 'localhost'
 		port: process.env.REDIS_PORT_6379_TCP_PORT || 6379
