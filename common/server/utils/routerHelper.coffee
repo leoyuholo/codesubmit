@@ -2,7 +2,7 @@ _ = require 'lodash'
 passport = require 'passport'
 passportLocal = require 'passport-local'
 session = require 'express-session'
-connectRedis = require 'connect-redis'
+connectMongo = require 'connect-mongo'
 
 module.exports = ($) ->
 	self = {}
@@ -86,13 +86,9 @@ module.exports = ($) ->
 						done null, user
 		)
 
-		RedisStore = connectRedis session
+		MongoStore = connectMongo session
 		app.use session
-			store: new RedisStore(
-				host: config.redis.host
-				port: config.redis.port
-				db: config.redis.db
-			)
+			store: new MongoStore(mongooseConnection: $.mongoose.connection)
 			secret: config.sessionSecret
 			cookie:
 				maxAge: 2419200000

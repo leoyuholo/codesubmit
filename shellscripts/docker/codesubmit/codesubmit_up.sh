@@ -15,7 +15,6 @@ docker kill $container_name
 docker rm $container_name
 
 /bin/bash $script_dir/../mongodb/mongodb_up.sh
-/bin/bash $script_dir/../redis/redis_up.sh
 /bin/bash $script_dir/../rabbitmq/rabbitmq_up.sh
 
 sandboxrun=tomlau10/sandbox-run
@@ -34,7 +33,6 @@ echo "argument": $argument
 docker run  -i \
 			-u $(id -u):$(getent group docker | cut -d: -f3) \
 			-e "HOST_IP="$host_ip \
-			--link redis:redis \
 			--link mongodb:mongodb \
 			--link rabbitmq:rabbitmq \
 			-p 8000:8000 \
@@ -45,7 +43,13 @@ docker run  -i \
 			-v $worker_dir:$worker_dir \
 			-v /var/run/docker.sock:/var/run/docker.sock \
 			-v $(which docker):/bin/docker \
-			-v /usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/lib/x86_64-linux-gnu/libapparmor.so.1 \
+			-v /usr/lib/x86_64-linux-gnu/libapparmor.so.1.1.0:/lib/x86_64-linux-gnu/libapparmor.so.1:ro \
+			-v /lib/x86_64-linux-gnu/libsystemd-journal.so.0:/lib/x86_64-linux-gnu/libsystemd-journal.so.0:ro \
+			-v /lib/x86_64-linux-gnu/libcgmanager.so.0:/lib/x86_64-linux-gnu/libcgmanager.so.0:ro \
+			-v /lib/x86_64-linux-gnu/libnih.so.1:/lib/x86_64-linux-gnu/libnih.so.1:ro \
+			-v /lib/x86_64-linux-gnu/libnih-dbus.so.1:/lib/x86_64-linux-gnu/libnih-dbus.so.1:ro \
+			-v /lib/x86_64-linux-gnu/libdbus-1.so.3:/lib/x86_64-linux-gnu/libdbus-1.so.3:ro \
+			-v /lib/x86_64-linux-gnu/libgcrypt.so.11:/lib/x86_64-linux-gnu/libgcrypt.so.11:ro \
 			--name $container_name \
 			${USER}:$container_name \
 			$argument

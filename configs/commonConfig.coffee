@@ -58,9 +58,6 @@ module.exports =
 						Please log in <%= url%> and change it.\n
 						codesubmit
 						"""
-	redis:
-		host: process.env.REDIS_PORT_6379_TCP_ADDR || process.env.HOST_IP || 'localhost'
-		port: process.env.REDIS_PORT_6379_TCP_PORT || 6379
 	mongodb:
 		host: process.env.MONGODB_PORT_27017_TCP_ADDR || process.env.HOST_IP  || 'localhost'
 		port: process.env.MONGODB_PORT_27017_TCP_PORT || 27017

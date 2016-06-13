@@ -6,6 +6,8 @@ amqp = require 'amqplib/callback_api'
 module.exports = ($) ->
 	self = {}
 
+	$.mongoose = mongoose
+
 	setupMongoose = (done) ->
 		mongoose.connect "mongodb://#{$.config.mongodb.host}:#{$.config.mongodb.port}/#{$.config.mongodb.db}", done
 
