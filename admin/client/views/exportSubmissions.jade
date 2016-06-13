@@ -2,6 +2,7 @@ script(type="text/ng-template", id="views/exportSubmissions")
 	.modal-header
 		h4.modal-title Export Submissions
 	.modal-body
+		.message-text.text-warning(ng-if="!exportData") Exporting submission requires a few minutes, depending on the number of submissions, please wait...
 		.message-text.text-danger(ng-if="exportDataMsg.errorMessage") {{exportDataMsg.errorMessage}}
 		.message-text.text-success(ng-if="exportDataMsg.successMessage") {{exportDataMsg.successMessage}}
 		codesubmit-editor(editor-options="exportDataAceOptions" read-only="true" language="text" ng-model="exportData")
