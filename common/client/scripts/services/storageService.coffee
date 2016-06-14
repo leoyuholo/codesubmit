@@ -4,6 +4,9 @@ app.service 'storageService', (urlService) ->
 
 	self = {}
 
+	self.extractFolderNames = (fileNames) ->
+		_.unique(_.map fileNames, (name) -> name.replace /\/(in|out|hint)?$/, '').sort()
+
 	self.readZipFileNames = (zipFile, done) ->
 		reader = new FileReader()
 
@@ -18,9 +21,7 @@ app.service 'storageService', (urlService) ->
 		self.readZipFileNames zipFile, (err, fileNames) ->
 			return done err if err
 
-			folderNames = _.unique _.map fileNames, (name) -> name.replace /\/(in|out|hint)?$/, ''
-
-			done null, folderNames.sort()
+			done null, extractFolderNames fileNames
 
 	self.post = (key, file, done) ->
 		payload = new FormData()

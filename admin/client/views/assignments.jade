@@ -136,7 +136,8 @@ script(type="text/ng-template", id="views/assignments")
 									input#testCase-input(type="file" onchange="angular.element(this).scope().testCaseFileChange(this)")
 									p.help-block Supported format: .zip
 								p
-									strong Test cases zip should have a flat structure, each folder should contain an 'in' file, an 'out' file, and an optional 'hint' file. And should not contain any nested or empty folders.
+									strong Instructions:
+									p.help-block Test cases zip should have a flat structure, each folder should contain an 'in' file, an 'out' file, and an optional 'hint' file. And should not contain any nested or empty folders.
 								p
 									strong Example:
 									ul
@@ -149,6 +150,10 @@ script(type="text/ng-template", id="views/assignments")
 									strong Files detected:
 									ul
 										li(ng-repeat="name in testCaseFileNames") {{name}}
+								p(ng-if="testCaseNames.length > 0")
+									strong Test case names detected:
+									ul
+										li(ng-repeat="name in testCaseNames") {{name}}
 								.message-text.text-danger(ng-if="testCaseMsg.errorMessage") {{testCaseMsg.errorMessage}}
 								.message-text.text-success(ng-if="testCaseMsg.successMessage") {{testCaseMsg.successMessage}}
 								button.btn.btn-primary(type="submit" ng-click="uploadTestCaseFile()") Upload

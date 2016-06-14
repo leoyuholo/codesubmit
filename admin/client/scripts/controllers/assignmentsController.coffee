@@ -28,6 +28,7 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 	$scope.testCaseFileDetails = null
 	$scope.testCaseMsg = {}
 	$scope.testCaseFileNames = []
+	$scope.testCaseNames = []
 	$scope.asgId = $routeParams.asgid if $routeParams.asgid
 	$scope.forms = {}
 
@@ -67,6 +68,7 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 			return messageService.error $scope.testCaseMsg, err.message if err
 
 			$scope.testCaseFileNames = fileNames
+			$scope.testCaseNames = storageService.extractFolderNames fileNames
 
 			$scope.$digest()
 
@@ -74,7 +76,7 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 		testCaseFile = document.getElementById('testCase-input').files?[0]
 
 		return messageService.error $scope.testCaseMsg, 'No file chosen.' if !testCaseFile
-		return messageService.error $scope.testCaseMsg, "Test cases [#{testCaseFile.type || 'no type'}] file type is not supported" if -1 == testCaseFile.type?.indexOf?('zip')
+		# return messageService.error $scope.testCaseMsg, "Test cases [#{testCaseFile.type || 'no type'}] file type is not supported" if -1 == testCaseFile.type?.indexOf?('zip')
 
 		storageService.readZipFolderNames testCaseFile, (err, testCaseNames) ->
 			return messageService.error $scope.testCaseMsg, err.message if err
