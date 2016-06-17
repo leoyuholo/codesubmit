@@ -1,0 +1,8 @@
+script(type="text/ng-template", id="views/exportAssignment")
+	.modal-header
+		h4.modal-title Export Assignment {{assignment.name}}
+	.modal-body
+		codesubmit-editor(editor-options="exportAssignmentAceOptions" read-only="true" language="text" ng-model="exportAssignment")
+		p
+			.text-right
+				button.btn.btn-default.clipboard(data-clipboard-text="{{exportAssignment}}") Copy to clipboard

@@ -1,0 +1,10 @@
+script(type="text/ng-template", id="views/importAssignment")
+	.modal-header
+		h4.modal-title Import Assignment
+	.modal-body
+		codesubmit-editor(local-storage-key="localStorageKey" editor-options="importAssignmentAceOptions" language="text" ng-model="assignmentJson")
+		p.help-block Remember to upload test cases after creating assignment.
+		.message-text.text-danger(ng-if="importAssignmentMsg.errorMessage") {{importAssignmentMsg.errorMessage}}
+		p
+			.text-right
+				button.btn.btn-primary(type="submit" ng-click="importAssignment()") Import

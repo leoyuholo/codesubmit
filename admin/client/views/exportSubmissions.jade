@@ -6,5 +6,6 @@ script(type="text/ng-template", id="views/exportSubmissions")
 		.message-text.text-danger(ng-if="exportDataMsg.errorMessage") {{exportDataMsg.errorMessage}}
 		.message-text.text-success(ng-if="exportDataMsg.successMessage") {{exportDataMsg.successMessage}}
 		codesubmit-editor(editor-options="exportDataAceOptions" read-only="true" language="text" ng-model="exportData")
-		.text-right
-			button.btn.btn-default.clipboard(data-clipboard-text="{{exportData}}") Copy to clipboard
+		p
+			.text-right
+				button.btn.btn-default.clipboard(data-clipboard-text="{{exportData}}") Copy to clipboard

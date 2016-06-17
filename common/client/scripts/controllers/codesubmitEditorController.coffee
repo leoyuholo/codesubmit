@@ -26,7 +26,7 @@ app.controller 'codesubmitEditorController', ($scope) ->
 				mac: 'Command-S'
 			exec: saveCode
 
-		editor.setReadOnly $scope.readOnly
+		editor.setReadOnly $scope.readOnly || $scope.aceOptions?.readOnly
 
 	setAceOptions = () ->
 		defaultOptions =

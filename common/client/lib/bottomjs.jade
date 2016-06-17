@@ -7,4 +7,6 @@ script(src="/common/libs/RickStrahl/json.date-extensions/eab6ebf5a6ee61c7f8c2c2a
 script(src="/common/libs/ajax/libs/marked/0.3.5/marked.min.js")
 script(src="/common/libs/Hypercubed/angular-marked/1b0a4ef682cbdece294db8225db8e81a775acc6b/angular-marked.min.js")
 script(src="/common/libs/ajax/libs/jsSHA/2.0.2/sha512.js")
-script JSON.useDateParser();
+script.
+	JSON.originalParse = JSON.parse;
+	JSON.useDateParser();

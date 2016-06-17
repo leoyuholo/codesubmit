@@ -1,6 +1,6 @@
 app = angular.module 'codesubmit'
 
-app.controller 'assignmentsController', ($scope, $routeParams, assignmentService, messageService, redirectService, storageService, urlService) ->
+app.controller 'assignmentsController', ($scope, $routeParams, $uibModal, assignmentService, messageService, redirectService, storageService, urlService) ->
 
 	editor = {}
 
@@ -55,6 +55,29 @@ app.controller 'assignmentsController', ($scope, $routeParams, assignmentService
 
 	$scope.deleteAssignment = (assignment) ->
 		deleteAssignment assignment if confirm "Click OK to delete assignment [#{assignment.name}] Assignment Id:[#{assignment.asgId}]."
+
+	$scope.exportAssignment = (assignment) ->
+		options =
+			templateUrl: 'views/exportAssignment'
+			controller: 'exportAssignmentController'
+			animation: false
+			size: 'lg'
+			resolve:
+				assignment: () -> assignment
+
+		$uibModal.open options
+
+	$scope.importAssignment = () ->
+		options =
+			templateUrl: 'views/importAssignment'
+			controller: 'importAssignmentController'
+			animation: false
+			size: 'lg'
+
+		modal = $uibModal.open options
+
+		modal.result.then (assignment) ->
+			$scope.assignment = _.assign $scope.assignment, assignment
 
 	$scope.testCaseFileChange = () ->
 		testCaseFile = document.getElementById('testCase-input').files?[0]

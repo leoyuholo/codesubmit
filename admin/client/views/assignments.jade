@@ -25,6 +25,9 @@ script(type="text/ng-template", id="views/assignments")
 							p
 								h2
 									strong {{assignment.asgId ? 'Assignment Details' : 'New Assignment'}}
+									.pull-right.btn-toolbar
+										button.btn.btn-default(type="submit" ng-if="assignment.asgId" ng-click="exportAssignment(assignment)") Export
+										button.btn.btn-default(type="submit" ng-if="!assignment.asgId" ng-click="importAssignment(assignment)") Import
 							//- {{forms.generalForm.$valid}}
 							//- {{forms.generalForm.$error}}
 							form(name="forms.generalForm")
@@ -57,7 +60,7 @@ script(type="text/ng-template", id="views/assignments")
 									button.btn.btn-primary(type="submit" ng-if="!assignment.asgId" ng-click="createAssignment(assignment)") Create
 									button.btn.btn-primary(type="submit" ng-if="assignment.asgId" ng-click="updateAssignment(assignment)") Update
 									a.btn.btn-link(href="preview/#/assignment/{{assignment.asgId}}" target="_blank" ng-if="assignment.asgId") Preview
-									.pull-right
+									.pull-right.btn-toolbar
 										button.btn.btn-danger(type="submit" ng-if="assignment.asgId" ng-click="deleteAssignment(assignment)") Delete
 				uib-tab(heading="Sandbox Config" disable="assignment.asgId === undefined")
 					.panel.panel-default.shadowedBox
