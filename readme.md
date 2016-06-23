@@ -9,7 +9,11 @@ Besides this online judge, we also built a platform for students to program game
 ![screenshot](./codeSubmit.png)
 
 ## Deployment
-To deploy codeSubmit, you need to have a running MongoDB, a running RabbitMQ first. To spin them up, you can run `shellscripts/docker/mongodb/mongodb_up.sh` and `shellscripts/docker/rabbitmq/rabbitmq.sh`.
+You are recommended to deploy on ubuntu because the prepared scripts are written for environment of ubuntu machines.
+
+On the ubuntu machine, run `shellscripts/npm/installg.sh` to install all the required packages. These includes docker, node.js and npm dependencies of codeSubmit.
+
+codeSubmit persists data on MongoDB and queues jobs on RabbitMQ. To spin them up, you can run `shellscripts/docker/mongodb/mongodb_up.sh` and `shellscripts/docker/rabbitmq/rabbitmq.sh`.
 
 And then, configure codeSubmit by modifying `configs/*Config.coffee`.
 
@@ -20,6 +24,17 @@ To spin up codeSubmit student for production use, run `shellscripts/docker/produ
 To spin up codeSubmit worker for production use, run `shellscripts/docker/production/worker_up.sh`.
 
 For deploying more instances on multiple machines, run the corresponding [admin, student, worker] script with an extra argument of master ip. E.g. `shellscripts/docker/production/worker_up.sh 192.168.0.101` to spin up a worker with databases connecting to `192.168.0.101`. Same for codeSubmit admin and codeSubmit student.
+
+## Database maintenance
+There is only one source to maintain, that is MongoDB.
+
+You can have two ways to backup the database, one is through GUI, another is using crontab to save to AWS S3 regularly.
+
+### GUI
+[MongoChef](http://3t.io/mongochef/) is a GUI client of MongoDB. You can use the export feature to backup MongoDB. Next time you want to restore it, you can drop the existing database and then import the one you exported before.
+
+### crontab
+Detailed instruction is in [here](./shellscripts/docker/mongodb/instruction.md).
 
 ## Development
 To spin up all the stuffs for development, run `shellscripts/docker/codesubmit/codesubmit_up.sh`. This will spin up a MongoDB, RabbitMQ, codeSubmit admin, codeSubmit student and codeSubmit worker. And watch for file changes to restart all three codeSubmit instances (admin, student and worker).
