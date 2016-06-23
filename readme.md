@@ -1,9 +1,9 @@
 # codeSubmit
 > write __Code__ then __Submit__
 
-*codeSubmit* is an online judge for programming assignments. It is initially developed for supporting the online course taught by [Dr. Wong Tsz Yeung](http://www.cse.cuhk.edu.hk/~tywong/html/index.html) at [CUHK](http://www.cuhk.edu.hk), see [here](http://tywong.github.io/gitbook-engg1110/).
+*codeSubmit* is an online judge for programming assignments. It is initially developed to support the online course taught by [Dr. Wong Tsz Yeung](http://www.cse.cuhk.edu.hk/~tywong/html/index.html) at [CUHK](http://www.cuhk.edu.hk), see the course [here](http://tywong.github.io/gitbook-engg1110/).
 
-Besides this online judge, we also built a platform for students to program game playing AI and compete with each other. See our [aimole](https://github.com/leoyuholo/aimole) project.
+Besides this online judge, there is also a platform for students to program game playing AI and compete with each other. See [aimole](https://github.com/leoyuholo/aimole).
 
 ## Screenshot
 ![screenshot](./codeSubmit.png)
