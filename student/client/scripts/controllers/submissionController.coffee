@@ -22,6 +22,7 @@ app.controller 'submissionController', ($scope, $routeParams, assignmentService,
 				if data.submission?.results
 					$scope.submission.status = data.submission.status
 					$scope.submission.results = data.submission.results
+					$scope.submission.score = data.submission.score
 					setTimeout reloadSubmission, 1000
 
 	findSubmission = (subId) ->
