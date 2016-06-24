@@ -13,6 +13,8 @@ module.exports =
 	sessionSecret: 'codeSubmit secret'
 	sessionName: 'codesubmit'
 	email:
+		smtp: 'smtp://mail.server.com'
+		from: 'codesubmit@mail.server.com'
 		service: 'gmail'
 		auth:
 			user: 'codesubmit@gmail.com'

@@ -5,22 +5,23 @@ xoauth2 = require 'xoauth2'
 module.exports = ($) ->
 	self = {}
 
-	generator = xoauth2.createXOAuth2Generator
-		user: $.config.email.auth.user
-		clientId: $.config.email.auth.clientId
-		clientSecret: $.config.email.auth.clientSecret
-		refreshToken: $.config.email.auth.refreshToken
-
 	if $.env.development
 		transporter =
 			sendMail: (mail, done) ->
 				$.logger.log 'info', "Simulating sendMail %j", mail, {}
 				done null
 	else
-		transporter = nodemailer.createTransport
-			service: $.config.email.service
-			auth:
-				xoauth2: generator
+		if $.config.email.smtp
+			transporter = nodemailer.createTransport $.config.email.smtp
+		else
+			transporter = nodemailer.createTransport
+				service: $.config.email.service
+				auth:
+					xoauth2: xoauth2.createXOAuth2Generator
+						user: $.config.email.auth.user
+						clientId: $.config.email.auth.clientId
+						clientSecret: $.config.email.auth.clientSecret
+						refreshToken: $.config.email.auth.refreshToken
 
 	self.newAdminSubjectTemplate = _.template $.config.email.template.admin.newUser.subject
 	self.newAdminTextTemplate = _.template $.config.email.template.admin.newUser.text
@@ -72,6 +73,8 @@ module.exports = ($) ->
 			to: to
 			subject: subject
 			text: text
+
+		mail.from = $.config.email.from if $.config.email.from
 
 		transporter.sendMail mail, done
 
