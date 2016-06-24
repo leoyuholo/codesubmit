@@ -2,8 +2,6 @@ app = angular.module 'codesubmit'
 
 app.controller 'studentsController', ($scope, $routeParams, $uibModal, studentService, messageService) ->
 
-	$scope.showResetPw = !!$routeParams.showResetPw
-
 	$scope.openImport = () ->
 		options =
 			templateUrl: 'views/importStudents'
