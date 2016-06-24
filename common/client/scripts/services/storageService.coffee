@@ -21,7 +21,7 @@ app.service 'storageService', (urlService) ->
 		self.readZipFileNames zipFile, (err, fileNames) ->
 			return done err if err
 
-			done null, extractFolderNames fileNames
+			done null, self.extractFolderNames fileNames
 
 	self.post = (key, file, done) ->
 		payload = new FormData()
