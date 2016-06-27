@@ -48,6 +48,11 @@ To watch changes and livereload for admin, run `grunt` and visit `http://localho
 To watch changes and livereload for student, run `grunt student` and visit `http://localhost:8001`
 To watch changes and livereload for worker, run `grunt worker`
 
+## Sandbox-run
+All the user submitted code are running inside sandbox environment. For each code execution, codeSubmit will spawn docker instances to run the compilation and execution process. This isolates each submission as well as providing security to the host.
+
+This sandbox is a sub-project of Dr. Wong Tsz Yeung's students' final year project. You can find its docker hub repository [here](https://hub.docker.com/r/tomlau10/sandbox-run/).
+
 # LICENSE
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
