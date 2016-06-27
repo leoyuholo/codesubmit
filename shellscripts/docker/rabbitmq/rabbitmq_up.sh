@@ -3,7 +3,7 @@
 script_dir=$(readlink -f $(dirname $0))
 
 container_name="rabbitmq"
-argument=""
+argument=$1
 
 docker build -t ${USER}:$container_name $script_dir
 docker kill $container_name

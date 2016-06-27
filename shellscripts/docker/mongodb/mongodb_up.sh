@@ -3,7 +3,7 @@
 script_dir=$(readlink -f $(dirname $0))
 
 container_name="mongodb"
-argument=""
+argument=$1
 
 AWS_ACCESS_KEY=""
 AWS_SECRET_KEY=""
