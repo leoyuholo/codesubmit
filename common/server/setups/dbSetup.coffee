@@ -9,7 +9,8 @@ module.exports = ($) ->
 	$.mongoose = mongoose
 
 	setupMongoose = (done) ->
-		mongoose.connect "mongodb://#{$.config.mongodb.host}:#{$.config.mongodb.port}/#{$.config.mongodb.db}", done
+		{host, port, db, username, password} = $.config.mongodb
+		mongoose.connect "mongodb://#{if username then "#{username}:#{password}@" else  ''}#{host}:#{port}/#{db}", done
 
 	setupGridfs = (done) ->
 		$.gridfs = Grid mongoose.connection.db, mongoose.mongo

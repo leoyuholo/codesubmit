@@ -64,6 +64,8 @@ module.exports =
 		host: process.env.MONGODB_PORT_27017_TCP_ADDR || process.env.HOST_IP  || 'localhost'
 		port: process.env.MONGODB_PORT_27017_TCP_PORT || 27017
 		db: 'codesubmit'
+		username: ''
+		password: ''
 	rabbitmq:
 		host: process.env.RABBITMQ_PORT_5672_TCP_ADDR || process.env.HOST_IP  || 'localhost'
 		port: process.env.RABBITMQ_PORT_5672_TCP_PORT || 5672
